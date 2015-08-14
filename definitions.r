@@ -3,6 +3,12 @@ library(ff)
 
 setClass('symDMatrix',slots=c(names='character',data='list') )
 
+nChunks=function(A) (-1+sqrt(1+8*length(A@data)))/2
+chunkSize=function(A) nrow(A@data[[1]])
+rownames.symDMatrix<-function(x) x@names
+colnames.symDMatrix=rownames.symDMatrix
+
+ 
 as.symDMatrix<-function(x,nChunks=3,vmode='single',folder=randomString()){
 	#nChunks=3;vmode='single';folder=randomString(5)
 	n=nrow(x)
@@ -67,11 +73,49 @@ chunks.symDMatrix<-function(x){
       return(OUT)
 }
 
-rownames.symDMatrix<-function(x){
-	return(x@names)
-}
-
-colnames.symDMatrix=rownames.symDMatrix
 
 randomString<-function(n=10)    paste(sample(c(0:9,letters,LETTERS),size=n,replace=TRUE),collapse="")
 
+
+if(FALSE){
+  ## Code for subseting
+i=sample(1:599,size=2)
+j=sample(1:599,size=2)
+
+j=ifelse(j<=i,i,j)
+
+chunk.i=ceiling(i/chunkSize(A))
+chunk.j=ceiling(j/chunkSize(A))
+
+local.i=i-(chunk.i-1)*chunkSize(A)
+local.j=j-(chunk.j-1)*chunkSize(A)
+
+INDEX=cbind(i,j,chunk.i,chunk.j,local.i,local.j,out.i=1:length(i),out.j=1:length(j))
+
+
+uniqueSets=unique(apply(X=INDEX[,c('chunk.i','chunk.j')],FUN=paste,MARGIN=1,collapse='-'))
+uniqueSets=matrix(data=as.integer(unlist(strsplit(uniqueSets,split='-'))),ncol=2,byrow=T) 
+uniqueSets=uniqueSets[order(uniqueSets[,1],uniqueSets[,2]),]
+colnames(uniqueSets)<-c('rowChunk','colChunk')
+ 
+OUT=matrix(nrow=length(i),ncol=length(j),NA)
+colnames(OUT)<-colnames.symDMatrix(A)[j]
+rownames(OUT)<-rownames.symDMatrix(A)[i]
+
+
+## Have to fix this
+
+for(k in 1:nrow(uniqueSets)){
+	tmp=(INDEX[,'chunk.i']==uniqueSets[k,'rowChunk'])&(INDEX[,'chunk.j']==uniqueSets[k,'colChunk'])
+	
+	previousRow=uniqueSets[k,1]-1
+	filesPreviousRow=previousRow*nChunks(A)-(previousRow)*(previousRow-1)/2
+	filesInRow=uniqueSets[k,'colChunk']-(uniqueSets[k,'rowChunk']-1)
+	fileNumber=filesPreviousRow+filesInRow
+	
+	print(c(filesPreviousRow,filesInRow,fileNumber))          
+	
+	OUT[INDEX[tmp,'out.i'],INDEX[tmp,'out.i']]=A@data[[fileNumber]][INDEX[tmp,'local.i'],INDEX[tmp,'local.j']]
+}
+
+}
