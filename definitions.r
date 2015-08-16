@@ -44,6 +44,8 @@ as.symDMatrix<-function(x,nChunks=3,vmode='single',folder=randomString()){
 			                   vmode=vmode,initdata=as.vector(x[rowIndex,colIndex]),
 			                   filename=paste0('data_',i,'_',j,'.bin')
 			                   )
+			colnames(DATA[[counter]])<-colnames(x)[colIndex]
+			rownames(DATA[[counter]])<-rownames(x)[rowIndex]
 			counter=counter+1
 		}
 	}
