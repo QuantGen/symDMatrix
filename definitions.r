@@ -84,7 +84,10 @@ if(FALSE){
 i=sample(1:599,size=2)
 j=sample(1:599,size=2)
 
-j=ifelse(j<=i,i,j)
+jNew=ifelse(j<=i,i,j)
+iNew=ifelse(i>j,j,i)
+i=iNew
+j=jNew
 
 chunk.i=ceiling(i/chunkSize(A))
 chunk.j=ceiling(j/chunkSize(A))
