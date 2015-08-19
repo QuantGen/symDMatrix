@@ -4,8 +4,9 @@ library(ff)
 setClass('symDMatrix',slots=c(names='character',centers='numeric',
                               scales='numeric',data='list') )
 
-nChunks=function(x) (-1+sqrt(1+8*length(x@data)))/2
-chunkSize=function(x) nrow(x@data[[1]])
+nChunks=function(x) length(x@data)
+chunkSize=function(x) nrow(x@data[[1]][[1]])
+
 setMethod('rownames',signature='symDMatrix',definition=function(x) x@names)
 setMethod('colnames',signature='symDMatrix',definition=function(x) x@names)
 
@@ -31,17 +32,13 @@ diag.symDMatrix<-function(x){
 	out=rep(NA,n)
 	
 	nChunks=nChunks(x)
-	fileNumber<-1
 	end=0
 	for(i in 1:nChunks){
-		tmp=diag(x@data[[fileNumber]])
+		tmp=diag(x@data[[i]][[1]])
 		ini<-end+1
 		end<-ini+length(tmp)-1
 		out[ini:end]<-tmp
-		fileNumber=fileNumber+(nChunks-i)+1
-
 	}
-
 	return(out)
 }
 setMethod('diag',signature='symDMatrix',definition=diag.symDMatrix)
@@ -74,15 +71,16 @@ as.symDMatrix<-function(x,nChunks=3,vmode='single',folder=randomString(),saveRDa
 	counter=1
 	for(i in 1:nChunks){
 		rowIndex=eval(parse(text=paste0(TMP[i,2],":",TMP[i,3])))
+		DATA[[i]]=list()
 		for(j in i:nChunks){
 			colIndex=eval(parse(text=paste0(TMP[j,2],":",TMP[j,3])))
-			DATA[[counter]]=ff(dim=c(length(rowIndex),length(colIndex)),
+			DATA[[i]][[j]]=ff(dim=c(length(rowIndex),length(colIndex)),
 			                   vmode=vmode,initdata=as.vector(x[rowIndex,colIndex]),
 			                   filename=paste0('data_',i,'_',j,'.bin')
 			                   )
-			colnames(DATA[[counter]])<-colnames(x)[colIndex]
-			rownames(DATA[[counter]])<-rownames(x)[rowIndex]
-			counter=counter+1
+			colnames(DATA[[i]][[j]])<-colnames(x)[colIndex]
+			rownames(DATA[[i]][[j]])<-rownames(x)[rowIndex]
+
 		}
 	}
 	setwd(tmpDir)
