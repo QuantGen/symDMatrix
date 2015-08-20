@@ -1,7 +1,8 @@
-## symMatrix
+## symDMatrix
 
 ### Memory-mapped distributed symmetric matrix
 
+Contact: Gustavo de los Campos (gdeloscampos@gmail.com), Paulino Perez-Rodriguez (perpdgo@gmail.com  )
 
 Class: ```symMatrix``` 
 
@@ -11,13 +12,12 @@ Slots:
       - centers (numeric) column-means used in the computation of the matrix
       - scales (numeric) column-standard deviations used to scale the matrix.
 
-#### Examples:
+[Examples]()
 
-```R
- source('~/GitHub/symDMatrix/definitions.r')
- library(BGLR)
- data(wheat)
- A=as.symDMatrix(x=wheat.A,nChunks=10,folder='wheatA')
- round(wheat.A[1:2,1:2],6)==round(A@data[[1]][1:2,1:2],6)
-
-```
+Pending:
+     - Replacement: function to update content of the matrix
+     - Add chunk:   function to add one chunk
+     - load2:       a method for loading the object and oppening connecctions
+                    (currently load() works provided that you are working on the
+                     folder that contains the data). 
+                     A template for load2() method can be obtained from BGData
