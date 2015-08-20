@@ -17,7 +17,7 @@ chunkSize=function(x) nrow(x@data[[1]][[1]])
 
 setMethod('rownames',signature='symDMatrix',definition=function(x) x@names)
 setMethod('colnames',signature='symDMatrix',definition=function(x) x@names)
-
+setMethod('dimnames',signature='symDMatrix',definition=function(x) list(rownames(x),colnames(x)))
 nrow.symDMatrix<-function(x) length(x@names)
 setMethod('nrow',signature='symDMatrix',definition=nrow.symDMatrix)
 setMethod('ncol',signature='symDMatrix',definition=nrow.symDMatrix)
