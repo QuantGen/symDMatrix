@@ -42,7 +42,7 @@ diag.symDMatrix<-function(x){
 	nChunks=nChunks(x)
 	end=0
 	for(i in 1:nChunks){
-		tmp=diag(x@data[[i]][[1]])
+		tmp=diag.ff(x@data[[i]][[1]])
 		ini<-end+1
 		end<-ini+length(tmp)-1
 		out[ini:end]<-tmp
