@@ -4,14 +4,14 @@
 
 **Contact**: Gustavo de los Campos (gdeloscampos@gmail.com), Paulino Perez-Rodriguez (perpdgo@gmail.com  )
 
-**Class**: ```symMatrix``` 
+**Class**: symMatrix 
 
-**Slots**: 
+**Slots**:
 
-      * names (character)
-      * data (list) each element of the list is an ff object
-      * centers (numeric) column-means used in the computation of the matrix
-      * scales (numeric) column-standard deviations used to scale the matrix.
+     * names (character)
+     * data (list) each element of the list is an ff object
+     * centers (numeric) column-means used in the computation of the matrix
+     * scales (numeric) column-standard deviations used to scale the matrix.
 
 #### Examples
 
@@ -54,7 +54,7 @@
    G2[tmp,tmp]
 
 
- # Exhaustive check of indexing
+ # Checking indexing
    for(i in 1:100){
       n1=sample(1:50,size=1)
       n2=sample(1:50,size=1)
@@ -67,6 +67,11 @@
       print(i)
    }
 
+  ## Computing a G matrix (returns a symDMatrix)
+   G3=getG(X,scaleCol=T,centerCol=T,folder='tmp',chunkSize=300)
+   class(G3)
+   cor(diag(G),diag(G3))
+   
 ```
 
 
