@@ -9,6 +9,11 @@ setOldClass('ff_matrix')
     return(x)
 }
 
+`rownames<-.symDMatrix`<-function(x,value) {
+    x@names=values
+    return(x)
+}
+
 setClass('symDMatrix',slots=c(names='character',centers='numeric',
                               scales='numeric',data='list') )
 
