@@ -79,11 +79,7 @@
 
      - Replacement: function to update content of the matrix
      - Add chunk:   function to add one chunk
-     - load2:       a method for loading the object and oppening connecctions
-                    (currently load() works provided that you are working on the
-                     folder that contains the data). 
-                     A template for load2() method can be obtained from BGData
-     - chol:        A recursive method to compute a choleky decomposition
+     - chol:        A recursive method to compute a cholesky decomposition
      - updateChol:  A method for updating a cholesky when a chunk is added
      - Parallel: modify some mehtods (getG, as.symDMatrix) to run in parallel
      
