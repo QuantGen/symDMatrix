@@ -304,7 +304,7 @@ getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,ce
     			Xj[,k]=xjk
     		}            
             
-            Gij=crossprods(Xi,Xj,use_tcrossprod=TRUE,mc.cores=mc.cores,nChunks=nChunks)
+            Gij=crossprods(x=Xi,y=Xj,use_tcrossprod=TRUE,mc.cores=mc.cores,nChunks=nChunks)
             
             DATA[[i]][[j-i+1]]=ff(dim=dim(Gij),
                                   vmode=vmode,initdata=as.vector(Gij),
