@@ -68,7 +68,7 @@
    }
 
   ## Computing a G matrix (returns a symDMatrix)
-   G3=getG(X,scaleCol=T,centerCol=T,folder='tmp',chunkSize=300)
+   G3=getG.symDMatrix(X,scaleCol=T,centerCol=T,folder='tmp',chunkSize=300,mc.cores=6)
    class(G3)
    cor(diag(G),diag(G3))
    
