@@ -192,10 +192,50 @@ subset.symDMatrix=function(x,i,j){
 
 setMethod('[',signature='symDMatrix',definition=subset.symDMatrix)
 
-
-getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,centerCol=T,scaleCol=T,
-						folder=randomString(5),vmode='single',verbose=TRUE,saveRData=TRUE){
+crossprods.chunk<-function(x,y=NULL,chunk,nChunks,use_tcrossprod=FALSE){
+  ## Performs crossprod() or tcrossprod()
+  #  for a chunk (set of columns or sets of rows) of X
  
+  n<-ifelse(use_tcrossprod,ncol(x),nrow(x))
+ 
+  if(!is.null(y)){ y=as.matrix(y) }
+  chunkID=rep(1:nChunks,each=ceiling(n/nChunks))[1:n]
+  if(!is.null(y)){ y=y[chunkID==chunk,]}
+
+  if(use_tcrossprod){
+      X=X[,chunkID==chunk]
+      Xy=tcrossprod(X,y)
+  }else{
+      X=X[chunkID==chunk,]
+      Xy=crossprod(X,y)
+  }
+  return(Xy)
+}
+
+
+crossprods<-function(x,y=NULL,nChunks=detectCores(),mc.cores=detectCores(),use_tcrossprod=FALSE){
+  # Computes crossprod(x,y) or tcrossprod(x,y)
+  #
+  library(parallel)
+  if(nChunks==1){
+    Xy=crossprod(x,y)
+  }else{ 
+    tmpIndex=1:nChunks
+    TMP=mclapply(X=tmpIndex,FUN=crossprods.chunk,x=x,y=y,nChunks=nChunks,mc.cores=mc.cores,use_tcrossprod=use_tcrossprod)
+     ## We now need to add up chunks sequentially
+     Xy=TMP[[1]]
+     if(length(TMP)>1){
+        for(i in 2:length(TMP)){
+          Xy=Xy+TMP[[i]]
+        }
+     }
+   }
+   return(Xy)
+}
+
+getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,centerCol=T,scaleCol=T,nChunks2=1,
+						folder=randomString(5),vmode='single',verbose=TRUE,saveRData=TRUE,mc.cores=1){
+    if(mc.cores>1){ library(parallel) }
  		
     timeIn=proc.time()[3]
 	n<-nrow(X)
@@ -264,7 +304,7 @@ getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,ce
     			Xj[,k]=xjk
     		}            
             
-            Gij=tcrossprod(Xi,Xj)
+            Gij=crossprods(Xi,Xj,use_tcrossprod=TRUE,mc.cores=mc.cores,nChunks=nChunks)
             
             DATA[[i]][[j-i+1]]=ff(dim=dim(Gij),
                                   vmode=vmode,initdata=as.vector(Gij),
