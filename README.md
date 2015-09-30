@@ -7,7 +7,6 @@
 **Class**: symMatrix 
 
 **Slots**:
-
      * @names   (character)
      * @data    (list) each element of the list is an ff object
      * @centers (numeric) column-means used in the computation of the matrix
@@ -77,10 +76,11 @@
 
 #### Pending
 
-     - Replacement: function to update content of the matrix
-     - Add chunk:   function to add one chunk
+     - Replacement: function to update content of the matrix.
+     - Add chunk:   function to add one chunk.
      - chol:        A recursive method to compute a cholesky decomposition
      - updateChol:  A method for updating a cholesky when a chunk is added
-     - Parallel: modify some mehtods (getG, as.symDMatrix) to run in parallel
+     - getG() using parallel computing
+     - create a new object based on on the binary files.
      
      
