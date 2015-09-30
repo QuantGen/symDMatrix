@@ -8,7 +8,7 @@
 
 **Slots**:
 
-     * @names (character)
+     * \code(@names) (character)
      * @data (list) each element of the list is an ff object
      * @centers (numeric) column-means used in the computation of the matrix
      * @scales (numeric) column-standard deviations used to scale the matrix.
