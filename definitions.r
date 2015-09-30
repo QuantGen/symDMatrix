@@ -1,6 +1,57 @@
 
 library(ff)
 
+
+crossprods.chunk<-function(chunk,x,y=NULL,nChunks,use_tcrossprod=FALSE){
+  ## Performs crossprod() or tcrossprod()
+  #  for a chunk (set of columns or sets of rows) of x
+ 
+  n<-ifelse(use_tcrossprod,ncol(x),nrow(x))
+ 
+  if(!is.null(y)){ y=as.matrix(y) }
+  chunkID=rep(1:nChunks,each=ceiling(n/nChunks))[1:n]
+  if(!is.null(y)){ y=y[chunkID==chunk,,drop=FALSE]}
+
+  if(use_tcrossprod){
+      X=x[,chunkID==chunk,drop=FALSE]
+      Xy=tcrossprod(X,y)
+  }else{
+      X=x[chunkID==chunk,,drop=FALSE]
+      Xy=crossprod(X,y)
+  }
+  return(Xy)
+}
+
+#' Computes crossprod (x'y or x'x) or tcrossprod (xy' or xx', used when use_tcrossprod=TRUE) in parallel.
+#' @param x matrix, ff_matrix, rmmMatrix or cmmMatrix
+#' @param y, vector, matrix, ff_matrix, rmmMatrix or cmmMatrix. By default
+#' @param nChunks the number of 'chunks' used when X and y are partitioned.
+#' @param mc.cores  the number of cores (passed to mclapply)
+#' @param use_tcrossprod  if FALSE crossprods computes x'y or x'x (if y=NULL), otherwise crossprods computes xy' or xx' (if y=NULL).
+#' @return xx', x'x, x'y, or xy' depending on whether y is provided and on whether use_tcrossprod=TRUE/FALSE
+#' @export
+crossprods<-function(x,y=NULL,nChunks=detectCores(),mc.cores=detectCores(),use_tcrossprod=FALSE){
+  # Computes crossprod(x,y) or tcrossprod(x,y)
+  if(nChunks==1){
+    if(use_tcrossprod){
+     Xy=tcrossprod(x,y)
+    }else{
+      Xy=crossprod(x,y)
+    }
+  }else{ 
+    tmpIndex=1:nChunks
+    TMP=mclapply(X=tmpIndex,FUN=crossprods.chunk,x=x,y=y,nChunks=nChunks,mc.cores=mc.cores,use_tcrossprod=use_tcrossprod)
+     ## We now need to add up chunks sequentially
+     Xy=TMP[[1]]
+     if(length(TMP)>1){
+        for(i in 2:length(TMP)){
+          Xy=Xy+TMP[[i]]
+        }
+     }
+   }
+   return(Xy)
+}
+
 setOldClass('ff_matrix')
 
 
@@ -8,6 +59,7 @@ setOldClass('ff_matrix')
     x@names=values
     return(x)
 }
+
 `rownames<-.symDMatrix`<-function(x,value) {
     x@names=values
     return(x)
@@ -91,23 +143,19 @@ as.symDMatrix<-function(x,nChunks=3,vmode='single',folder=randomString(),saveRDa
 		for(j in i:nChunks){
 			colIndex=eval(parse(text=paste0(TMP[j,2],":",TMP[j,3])))
 			k=j-i+1
-					
-			
 			DATA[[i]][[k]]=ff( dim=c(length(rowIndex),length(colIndex)),
 			                   vmode=vmode,initdata=as.vector(x[rowIndex,colIndex]),
 			                   filename=paste0('data_',i,'_',j,'.bin')
 			                 )
 			colnames(DATA[[i]][[k]])<-colnames(x)[colIndex]
 			rownames(DATA[[i]][[k]])<-rownames(x)[rowIndex]
-			
 			physical(DATA[[i]][[k]])$pattern<-'ff'
-            physical(DATA[[i]][[k]])$filename<-paste0('data_',i,'_',j,'.bin')
+            		physical(DATA[[i]][[k]])$filename<-paste0('data_',i,'_',j,'.bin')
 		}
 	}
 	G=new('symDMatrix',names=rownames(x),data=DATA,centers=0,scales=0)
 	if(saveRData){save(G,file='G.RData') }
 	setwd(tmpDir)
-
 	return(G)
 }
 
@@ -150,7 +198,6 @@ subset.symDMatrix=function(x,i,j){
  chunkSize=ncol(x@data[[1]][[1]])
  i0=i
  j0=j
-  
  i=rep(i0,each=length(j0))
  j=rep(j0,times=length(i0))
  
@@ -179,59 +226,16 @@ subset.symDMatrix=function(x,i,j){
 	   tmp.row.in=local.i[k]
 	   tmp.col.in=local.j[k]
  	   tmp.in=(tmp.col.in-1)*nrow(x@data[[i]][[j-i+1]])+tmp.row.in
- 
  	   tmp.row.out=out.i[k]
  	   tmp.col.out=out.j[k]
  	   tmp.out=(tmp.col.out-1)*nrow(OUT)+tmp.row.out
  	   OUT[tmp.out]=x@data[[i]][[j-i+1]][tmp.in]
-	   
 	}
  }
  return(OUT)
 }
-
 setMethod('[',signature='symDMatrix',definition=subset.symDMatrix)
 
-crossprods.chunk<-function(x,y=NULL,chunk,nChunks,use_tcrossprod=FALSE){
-  ## Performs crossprod() or tcrossprod()
-  #  for a chunk (set of columns or sets of rows) of X
- 
-  n<-ifelse(use_tcrossprod,ncol(x),nrow(x))
- 
-  if(!is.null(y)){ y=as.matrix(y) }
-  chunkID=rep(1:nChunks,each=ceiling(n/nChunks))[1:n]
-  if(!is.null(y)){ y=y[chunkID==chunk,]}
-
-  if(use_tcrossprod){
-      X=X[,chunkID==chunk]
-      Xy=tcrossprod(X,y)
-  }else{
-      X=X[chunkID==chunk,]
-      Xy=crossprod(X,y)
-  }
-  return(Xy)
-}
-
-
-crossprods<-function(x,y=NULL,nChunks=detectCores(),mc.cores=detectCores(),use_tcrossprod=FALSE){
-  # Computes crossprod(x,y) or tcrossprod(x,y)
-  #
-  library(parallel)
-  if(nChunks==1){
-    Xy=crossprod(x,y)
-  }else{ 
-    tmpIndex=1:nChunks
-    TMP=mclapply(X=tmpIndex,FUN=crossprods.chunk,x=x,y=y,nChunks=nChunks,mc.cores=mc.cores,use_tcrossprod=use_tcrossprod)
-     ## We now need to add up chunks sequentially
-     Xy=TMP[[1]]
-     if(length(TMP)>1){
-        for(i in 2:length(TMP)){
-          Xy=Xy+TMP[[i]]
-        }
-     }
-   }
-   return(Xy)
-}
 
 getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,centerCol=T,scaleCol=T,nChunks2=1,
 						folder=randomString(5),vmode='single',verbose=TRUE,saveRData=TRUE,mc.cores=1){
@@ -292,7 +296,7 @@ getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,ce
     		Xi[,k]=xik
     	}
         
-            for(j in i:nChunks){
+        for(j in i:nChunks){
             rowIndex_j=which(chunkID==j)
     		Xj=X[rowIndex_j,] 
     		
@@ -304,9 +308,9 @@ getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,ce
     			Xj[,k]=xjk
     		}            
             
-            Gij=crossprods(x=Xi,y=Xj,use_tcrossprod=TRUE,mc.cores=mc.cores,nChunks=nChunks)
+             Gij=crossprods(x=Xi,y=Xj,use_tcrossprod=TRUE,mc.cores=mc.cores,nChunks=nChunks2)
             
-            DATA[[i]][[j-i+1]]=ff(dim=dim(Gij),
+             DATA[[i]][[j-i+1]]=ff(dim=dim(Gij),
                                   vmode=vmode,initdata=as.vector(Gij),
                                   filename=paste0('data_',i,'_',j,'.bin')
                                  )
