@@ -153,7 +153,9 @@ as.symDMatrix<-function(x,nChunks=3,vmode='single',folder=randomString(),saveRDa
             		physical(DATA[[i]][[k]])$filename<-paste0('data_',i,'_',j,'.bin')
 		}
 	}
-	G=new('symDMatrix',names=rownames(x),data=DATA,centers=0,scales=0)
+	tmp<-rownames(x)
+	if(is.null(tmp)){ tmp<-paste0('id_',1:nrow(x)) }
+	G=new('symDMatrix',names=tmp,data=DATA,centers=0,scales=0)
 	if(saveRData){save(G,file='G.RData') }
 	setwd(tmpDir)
 	return(G)
