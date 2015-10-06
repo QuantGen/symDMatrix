@@ -2,56 +2,6 @@
 library(ff)
 
 
-crossprods.chunk<-function(chunk,x,y=NULL,nChunks,use_tcrossprod=FALSE){
-  ## Performs crossprod() or tcrossprod()
-  #  for a chunk (set of columns or sets of rows) of x
- 
-  n<-ifelse(use_tcrossprod,ncol(x),nrow(x))
- 
-  if(!is.null(y)){ y=as.matrix(y) }
-  chunkID=rep(1:nChunks,each=ceiling(n/nChunks))[1:n]
-  if(!is.null(y)){ y=y[chunkID==chunk,,drop=FALSE]}
-
-  if(use_tcrossprod){
-      X=x[,chunkID==chunk,drop=FALSE]
-      Xy=tcrossprod(X,y)
-  }else{
-      X=x[chunkID==chunk,,drop=FALSE]
-      Xy=crossprod(X,y)
-  }
-  return(Xy)
-}
-
-#' Computes crossprod (x'y or x'x) or tcrossprod (xy' or xx', used when use_tcrossprod=TRUE) in parallel.
-#' @param x matrix, ff_matrix, rmmMatrix or cmmMatrix
-#' @param y, vector, matrix, ff_matrix, rmmMatrix or cmmMatrix. By default
-#' @param nChunks the number of 'chunks' used when X and y are partitioned.
-#' @param mc.cores  the number of cores (passed to mclapply)
-#' @param use_tcrossprod  if FALSE crossprods computes x'y or x'x (if y=NULL), otherwise crossprods computes xy' or xx' (if y=NULL).
-#' @return xx', x'x, x'y, or xy' depending on whether y is provided and on whether use_tcrossprod=TRUE/FALSE
-#' @export
-crossprods<-function(x,y=NULL,nChunks=detectCores(),mc.cores=detectCores(),use_tcrossprod=FALSE){
-  # Computes crossprod(x,y) or tcrossprod(x,y)
-  if(nChunks==1){
-    if(use_tcrossprod){
-     Xy=tcrossprod(x,y)
-    }else{
-      Xy=crossprod(x,y)
-    }
-  }else{ 
-    tmpIndex=1:nChunks
-    TMP=mclapply(X=tmpIndex,FUN=crossprods.chunk,x=x,y=y,nChunks=nChunks,mc.cores=mc.cores,use_tcrossprod=use_tcrossprod)
-     ## We now need to add up chunks sequentially
-     Xy=TMP[[1]]
-     if(length(TMP)>1){
-        for(i in 2:length(TMP)){
-          Xy=Xy+TMP[[i]]
-        }
-     }
-   }
-   return(Xy)
-}
-
 setOldClass('ff_matrix')
 
 
@@ -310,7 +260,7 @@ getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,ce
     			Xj[,k]=xjk
     		}            
             
-             Gij=crossprods(x=Xi,y=Xj,use_tcrossprod=TRUE,mc.cores=mc.cores,nChunks=nChunks2)
+             Gij=tcrossprod.parallel(x=Xi,y=Xj,mc.cores=mc.cores,nChunks=nChunks2)
             
              DATA[[i]][[j-i+1]]=ff(dim=dim(Gij),
                                   vmode=vmode,initdata=as.vector(Gij),
