@@ -131,20 +131,28 @@ chunks.symDMatrix<-function(x){
 
 setMethod('chunks',signature='symDMatrix',definition=chunks.symDMatrix)
 
-subset.symDMatrix=function(x,i,j){
-  #i=sample(1:nrow(x),size=5)
-  #j=sample(1:ncol(x),size=3)
-  tmpClass<- class(i)
-   if(tmpClass=='factor')    i=as.character(i)
-   if(tmpClass=='character') i=which(x@names%in%i)
-   if(tmpClass=='logical')   i=which(i)
-   if(tmpClass=='numeric')   i=as.integer(i)
-   
- tmpClass<- class(j)
-  if(tmpClass=='factor')    j=as.character(j)
-  if(tmpClass=='character')	j=which(x@names%in%j)
-  if(tmpClass=='logical')	j=which(j)
-  if(tmpClass=='numeric')	j=as.integer(j)
+subset.symDMatrix=function(x,i,j,drop){
+
+    if (missing(i)) {
+        i <- 1:nrow(x)
+    }
+    if (missing(j)) {
+        j <- 1:ncol(x)
+    }
+    if (class(i) == "logical") {
+        i <- which(i)
+    } else if (class(i) == "character") {
+        i <- sapply(i, function(name) {
+            which(rownames(x) == name)
+        }, USE.NAMES = FALSE)
+    }
+    if (class(j) == "logical") {
+        j <- which(j)
+    } else if (class(j) == "character") {
+        j <- sapply(j, function(name) {
+            which(colnames(x) == name)
+        }, USE.NAMES = FALSE)
+    }
   
  nChunks=nChunks(x)
  chunkSize=ncol(x@data[[1]][[1]])
