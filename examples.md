@@ -5,6 +5,10 @@
 
  dir.create("~/test")
  setwd("~/test")
+ library(BGData)
+ source('~/GitHub/symDMatrix/definitions.r')
+ 
+ 
  
  # loading genotypes from a mice data set
   library(BGLR)
