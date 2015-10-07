@@ -1,9 +1,7 @@
 
 library(ff)
 
-
 setOldClass('ff_matrix')
-
 
 `colnames<-.symDMatrix`<-function(x,value) {
     x@names=values
