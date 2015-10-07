@@ -1,9 +1,11 @@
 ### Example 1: Converting a RAM matrix into a symDMatrix
 
- dir.create("~/test")
- setwd("~/test")
 
 ```R
+
+ dir.create("~/test")
+ setwd("~/test")
+ 
  # loading genotypes from a mice data set
   library(BGLR)
   data(mice)
@@ -54,6 +56,31 @@
    	  stopifnot(round(cor(as.vector(TMP1),as.vector(TMP2)),5)==1)
    	  print(i)
    }
-   
+  
+ ## Creating a symDMatrix from ff files containing the blocks
+ 
+ # 1st, let's create the blocks
+ 
+ nBlocks=10
+ 
+ n<-nrow(G)
+ stepSize<-ceiling(n/nBlocks)
+ 
+ for(i in 1:nBlocks){
+   i_ini=(i-1)*stepSize+1
+   if(i_ini<=n){
+     i_end<-min(n,i_ini+stepSize-1)
+     for(j in i:nBlocks){
+      j_ini<-(j-1)*stepSize+1
+      if(j_ini<=n){
+       j_end<-min(n,j_ini+stepSize-1)
+       Gij=as.ff(G[i_ini:i_end,j_ini:j_end],file=paste0('data_',i,'_',j,'.bin'))
+       save(Gij,file=paste0('data_',i,'_',j,'.ff'))
+       print(paste(i_ini,i_end,' ; ', j_ini,j_end))
+      }
+     }
+   }
+ }
+
 
 ```
