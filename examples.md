@@ -1,5 +1,4 @@
-### Example 1: Converting a RAM matrix into a symDMatrix
-
+### (1) Converting a RAM matrix into a symDMatrix
 
 ```R
 
@@ -7,8 +6,6 @@
  setwd("~/test")
  library(BGData)
  source('~/GitHub/symDMatrix/definitions.r')
- 
- 
  
  # loading genotypes from a mice data set
   library(BGLR)
@@ -19,10 +16,13 @@
   p=ncol(X);n=nrow(X)
   rownames(X)=paste0('ID_',1:nrow(X))
   G=tcrossprod(scale(X))/p
- 
+
  # Converting G into a symDMatrix
    G2=as.symDMatrix(G,folder="mice",nChunks=5)
-  
+```
+
+### (2) Exploring operators
+```R
  # Basic operators applied to a matrix in RAM and to a symDMatrix
   # dimension operators
    dim(G)==dim(G2)
@@ -46,7 +46,7 @@
    G2[c("ID_1","ID_2"),c("ID_1","ID_2")]
    tmp=c(T,T,rep(F,nrow(G2)-2))
    G2[tmp,tmp]
-  
+   head(G2[tmp,])
   
  # Exhaustive check of indexing
    for(i in 1:100){
@@ -60,9 +60,11 @@
    	  stopifnot(round(cor(as.vector(TMP1),as.vector(TMP2)),5)==1)
    	  print(i)
    }
-  
- ## Creating a symDMatrix from ff files containing the blocks
- 
+```
+
+### (3) Creating a symDMatrix from ff files containing the blocks
+
+```R
  # 1st, let's create the blocks
  
  nBlocks=10
@@ -107,7 +109,4 @@ for(i in 1:nChunks){
 	}
  }
  
- 
-
-
 ```
