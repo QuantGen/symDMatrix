@@ -91,22 +91,17 @@
  ## code for new
  
  
-
-counter=0
+counter=1
 dataList=list()
 nChunks=(-1+sqrt(1+4*2*length(fileList)))/2
-blockID=rep(1:Chunks,each=ceiling(n/nBlocks))[1:n]
-
-
 for(i in 1:nChunks){
-	nRow=sum(blockID==i)
     dataList[[i]]<-list()
     for(j in i:nChunks){
-    	nCol=sum(blockID==j)
-    	counter=counter+1
-    	dataList[[i]][[j-i+1]]<-ff(dim=c(nRow,nCol),filename=fileList[counter],vmode='double')
-       
-	}
+        load(fileList[counter])
+        counter=counter+1
+        dataList[[i]][[j-i+1]]<-Gij
+        rm(Gij)
+    }
  }
- 
+
 ```
