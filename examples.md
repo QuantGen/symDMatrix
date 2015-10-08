@@ -61,6 +61,27 @@
    	  stopifnot(round(cor(as.vector(TMP1),as.vector(TMP2)),5)==1)
    	  print(i)
    }
+   
+   
+  G3=getG.symDMatrix(X,scaleCol=T,centerCol=T,folder='tmp',chunkSize=300,mc.cores=6)
+  class(G3)
+  cor(diag(G),diag(G3))
+  
+ for(i in 1:10){ 
+  n1<-sample(1:nrow(G),size=1)
+  i1<-sample(1:nrow(G),size=n1)
+  for(j in 1:10){
+    n2<-sample(1:nrow(G),size=1)
+    i2<-sample(1:nrow(G),size=n2)
+    tmp1=G[i1,i2]
+    tmp2<-G3[i1,i2]
+    stopifnot(all.equal(tmp1,tmp2))
+    print(c(i,j))
+  }
+ }
+ 
+ 
+ 
 ```
 
 ### (3) Creating a symDMatrix from ff files containing the blocks
@@ -68,8 +89,10 @@
 ```R
  # 1st, let's create the blocks
  
- nBlocks=10
- 
+ nBlocks=3
+ dir.create('ff_files')
+ setwd('ff_files)
+
  n<-nrow(G)
  stepSize<-ceiling(n/nBlocks)
  
