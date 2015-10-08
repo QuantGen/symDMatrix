@@ -88,6 +88,9 @@
 
 ```R
  # 1st, let's create the blocks
+ # these may have been created in parallel in an HPC
+ # each block was created using getGij  which is similar to getG but computes only one block (see code below)
+ # and in this case the block is saved as ff file
  
  nBlocks=3
  dir.create('ff_files')
@@ -111,24 +114,9 @@
      }
    }
  }
+ ## end of blocks
  
- 
- ## code for new
- 
- counter=1
- fileList=list.files(pattern='*.ff')
- dataList=list()
- n_chunks=(-1+sqrt(1+4*2*length(fileList)))/2
- for(i in 1:n_chunks){
-    dataList[[i]]<-list()
-    for(j in i:n_chunks){
-        load(fileList[counter])
-        counter=counter+1
-        dataList[[i]][[j-i+1]]<-Gij
-        rm(Gij)
-    }
- }
- G4<-new('symDMatrix',names=rownames(G),centers=colMeans(X),
-         scales=apply(X=X,MARGIN=2,FUN=sd)*sqrt((n-1)/n),data=dataList)
-  all.equal(diag(G),diag(G4)) 
+ ## Now we create the object (centers, scales, etc can be also added)
+ G5=symDMatrix(dataFiles=list.files(pattern='*.ff'),names=rownames(X))
+ all.equal(diag(G5),diag(G))
 ```
