@@ -59,7 +59,7 @@ diag.symDMatrix<-function(x){
 }
 setMethod('diag',signature='symDMatrix',definition=diag.symDMatrix)
 
-as.symDMatrix<-function(x,nChunks=3,vmode='single',folder=randomString(),saveRData=TRUE){
+as.symDMatrix<-function(x,nChunks=3,vmode='double',folder=randomString(),saveRData=TRUE){
 	n=nrow(x)
 	if(ncol(x)!=n){ stop('x must by a square matrix') }
 
@@ -193,7 +193,7 @@ setMethod('[',signature='symDMatrix',definition=subset.symDMatrix)
 
 
 getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,centerCol=T,scaleCol=T,nChunks2=1,
-						folder=randomString(5),vmode='single',verbose=TRUE,saveRData=TRUE,mc.cores=1){
+						folder=randomString(5),vmode='double',verbose=TRUE,saveRData=TRUE,mc.cores=1){
     if(mc.cores>1){ library(parallel) }
  		
     timeIn=proc.time()[3]
