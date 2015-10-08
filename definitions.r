@@ -19,6 +19,28 @@ setOldClass('ff_matrix')
 
 setClass('symDMatrix',slots=c(names='character',centers='numeric',
                               scales='numeric',data='list') )
+                              
+ # An interface for creating symDMatrix objects
+ symDMatrix<-function(dataFiles,centers=0,scales=1,names=character()){
+   if(is.list(fileList)){ dataFiles=unlist(dataFiles) }
+   counter=1
+   dataList=list()
+   n_chunks=(-1+sqrt(1+4*2*length(dataFiles)))/2
+   for(i in 1:n_chunks){
+     dataList[[i]]<-list()
+     for(j in i:n_chunks){
+        oldList=ls()
+        load(dataFiles[counter])
+        newList=ls()
+        objectName<-newList[which(!newList%in%c('oldList',oldList))]
+        dataList[[i]][[j-i+1]]<-get(objectName)
+        counter=counter+1
+        rm(list=objectName)
+     }
+   }
+   G<-new('symDMatrix',names=names,centers=centers,scales=scales,data=dataList)
+   return(G) 
+ }
 
 nChunks=function(x) length(x@data[[1]])
 chunkSize=function(x) nrow(x@data[[1]][[1]])
