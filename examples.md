@@ -4,6 +4,7 @@
 
  dir.create("~/test")
  setwd("~/test")
+ library(LinkedMatrix)
  library(BGData)
  source('~/GitHub/symDMatrix/definitions.r')
  
@@ -28,7 +29,7 @@
    dim(G)==dim(G2)
    nrow(G)==nrow(G2)
    ncol(G)==ncol(G2)
-   plot(diag(G),diag(G2))
+   all.equal(round(diag(G),4),round(diag(G2),4))# note symDMatrix is using, by defualt single precision
      
   # names operators
    all(dimnames(G)[[1]]==dimnames(G2)[[1]])
