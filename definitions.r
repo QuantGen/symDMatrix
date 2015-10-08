@@ -1,5 +1,4 @@
-
-library(ff)
+brary(ff)
 
 setOldClass('ff_matrix')
 
