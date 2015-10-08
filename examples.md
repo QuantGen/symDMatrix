@@ -40,7 +40,7 @@
  # Chunk operators
    nChunks(G2)
    chunkSize(G2)
-   chunks.symDMatrix(G2)
+   chunks(G2)
   
  # Indexing (can use booleans, integers or labels)
    G2[1:2,1:2]
