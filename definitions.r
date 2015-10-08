@@ -1,4 +1,4 @@
-brary(ff)
+library(ff)
 
 setOldClass('ff_matrix')
 
@@ -108,7 +108,7 @@ as.symDMatrix<-function(x,nChunks=3,vmode='single',folder=randomString(),saveRDa
 	return(G)
 }
 
-chunks.symDMatrix<-function(x){
+chunks<-function(x){
     if(class(x)!='symDMatrix'){ stop(' the input must be a symDMatrix object.') }
     
     n=length(x@data)
@@ -125,8 +125,6 @@ chunks.symDMatrix<-function(x){
     }
     return(OUT)
 }
-
-setMethod('chunks',signature='symDMatrix',definition=chunks.symDMatrix)
 
 subset.symDMatrix=function(x,i,j,drop){
 
