@@ -15,7 +15,6 @@ A symmeryc matrix is partitioned into blocks as follows:
 Because the matrix is assumed to be symmetric Gij=Gji; therefore, only the upper-triangular blocks are stored. Each block is stored in an ff object. The package defines the class and multiple methods that allow treating this memmory-mapped matrix as a standard RAM matrix.
 
 
-
 **Slots**:
 
      * @names   (character)
