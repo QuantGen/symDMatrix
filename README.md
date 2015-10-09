@@ -12,7 +12,7 @@ A symmeryc matrix is partitioned into blocks as follows:
 | G21 | G22 | G33 |
 | G31 | G32 | G33 |
 
-Because the matrix is assumed to be symmetric Gij=Gji; therefore, only the upper-triangular blocks are stored. Each block is stored in an ff object. The package defines the class and multiple methods that allow treating this memmory-mapped matrix as a standard RAM matrix.
+Because the matrix is assumed to be symmetric (i.e., Gij=Gji), only the upper-triangular blocks are stored. Each block is stored as a flat file using an ff object. The package defines the class and multiple methods that allow treating this memmory-mapped matrix as a standard RAM matrix.
 
 
 **Slots**:
@@ -149,7 +149,7 @@ For very large G-matrices, computation of the blocks of the symDMatrix can be do
 
     - Add chunk:   function to add one chunk.
     - chol:        A recursive method to compute a cholesky decomposition
-     - updateChol:  A method for updating a cholesky when a chunk is added
+    - updateChol:  A method for updating a cholesky when a chunk is added
 
      
      
