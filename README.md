@@ -39,16 +39,19 @@ Before we start, let's create a symmetric matrix in RAM.
   G<-G/mean(diag(G))
 ```  
 
-### (1) Converting a RAM matrix into a symDMatrix
+#### (1) Converting a RAM matrix into a symDMatrix
 
-In practice, if we can hold a matrix in RAM there is not much of a point to convert it to a symDMatrix, however, this will help us to get started.
+In practice, if we can hold a matrix in RAM, there is not much of a point to convert it to a symDMatrix; however, this will help us to get started.
 
 ```R
   source('~/GitHub/symDMatrix/definitions.r')
   G2=as.symDMatrix(G,folder="mice",nChunks=5,vmode='double') # can use single for lighter files.
 ```
 
-### (2) Exploring operators
+#### (2) Exploring operators
+
+Now that we have a symDMatrix, let's illustrate some operators.
+
 ```R
  # Basic operators applied to a matrix in RAM and to a symDMatrix
   # dimension operators
@@ -88,7 +91,7 @@ In practice, if we can hold a matrix in RAM there is not much of a point to conv
    }
    
 ```
-### (3) Creating a symDMatrix from genotypes
+### #(3) Creating a symDMatrix from genotypes
 
 The function ```getG.symDMatrix``` computes G=XX' (with options for centering and scaling) without ever loading G in RAM, it creates the symDMatrix directly. In this example X is a matrix in RAM, for large genotype data sets X could be a mmemory-mapped matrix, ff object, or part of a BGData object.
 
@@ -112,7 +115,7 @@ The function ```getG.symDMatrix``` computes G=XX' (with options for centering an
 ```
 ### (4) Creating a symDMatrix from ff files containing the blocks.
 
-For very large G-matrices, computation of the blocks of the symDMatrix can be done in parallel (e.g., in an HPC). The function getGij is similar to `getG()` (see [BGData](https://github.com/quantgen/bgdata) package) but accepts arguments i1 and i2 which define a block of G (i.e., rows of X).
+The method `symDMatrix()` allows creating a symDMatrix from a list of ff files. The list is assume to provide, in order, files for G11, G12,...,G1q, G22, G23, ...,G2q,...,Gqq, For very large G-matrices, computation of the blocks of the symDMatrix can be done in parallel (e.g., in an HPC). The function getGij is similar to `getG()` (see [BGData](https://github.com/quantgen/bgdata) package) but accepts arguments i1 and i2 which define a block of G (i.e., rows of X).
 
 ```R
  nBlocks=3
