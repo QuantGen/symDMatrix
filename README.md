@@ -115,7 +115,7 @@ The function ```getG.symDMatrix``` computes G=XX' (with options for centering an
 ```
 ### (4) Creating a symDMatrix from ff files containing the blocks.
 
-The method `symDMatrix()` allows creating a symDMatrix from a list of ff files. The list is assume to provide, in order, files for G11, G12,...,G1q, G22, G23, ...,G2q,...,Gqq, For very large G-matrices, computation of the blocks of the symDMatrix can be done in parallel (e.g., in an HPC). The function getGij is similar to `getG()` (see [BGData](https://github.com/quantgen/bgdata) package) but accepts arguments i1 and i2 which define a block of G (i.e., rows of X).
+The method `symDMatrix()` allows creating a symDMatrix from a list of ff files. The list is assume to provide, in order, files for G11, G12,...,G1q, G22, G23, ...,G2q,...,Gqq. This approach will be useful for very large G-matrices, if n is large it may make sense to compute the blocks of the symDMatrix in parallel jobs (e.g., in an HPC). The function `getGij()` is similar to `getG()` (see [BGData](https://github.com/quantgen/bgdata) package) but accepts arguments i1 and i2 which define a block of G (i.e., rows of X).
 
 ```R
  nBlocks=3
@@ -150,9 +150,6 @@ The method `symDMatrix()` allows creating a symDMatrix from a list of ff files. 
 
 #### Pending
 
-    - Add chunk:   function to add one chunk.
+    - addBlock:   function to add one block (e.g., G1q, G1q, ...,Gqq).
     - chol:        A recursive method to compute a cholesky decomposition
     - updateChol:  A method for updating a cholesky when a chunk is added
-
-     
-     
