@@ -13,16 +13,11 @@
      * @centers (numeric) column-means used in the computation of the matrix
      * @scales  (numeric) column-standard deviations used to scale the matrix.
 
-### (1) Converting a RAM matrix into a symDMatrix
+### (0) Creating a symmetric matrix in RAM
+
+Before we start, let's create a symmetric matrix in RAM.
 
 ```R
-
- dir.create("~/test")
- setwd("~/test")
- library(LinkedMatrix)
- library(BGData)
- source('~/GitHub/symDMatrix/definitions.r')
- 
  # loading genotypes from a mice data set
   library(BGLR)
   data(mice)
@@ -33,10 +28,14 @@
   rownames(X)=paste0('ID_',1:nrow(X))
   G=tcrossprod(scale(X))
   G<-G/mean(diag(G))
-  
+```  
 
- # Converting G into a symDMatrix
-   G2=as.symDMatrix(G,folder="mice",nChunks=5,vmode='double') # can use single for lighter files.
+### (1) Converting a RAM matrix into a symDMatrix
+
+In practice, if we can hold a matrix in RAM there is not much of a point to convert it to a symDMatrix, however, this will help us to get started.
+
+```R
+  G2=as.symDMatrix(G,folder="mice",nChunks=5,vmode='double') # can use single for lighter files.
 ```
 
 ### (2) Exploring operators
@@ -78,7 +77,12 @@
    	  stopifnot(all.equal(TMP1,TMP2))
    }
    
-   
+```
+### (3) Creating a symDMatrix from genotypes
+
+The function ```getG.symDMatrix``` computes G=XX' (with options for centering and scaling) without ever loading G in RAM, it creates the symDMatrix directly. In this example X is a matrix in RAM, for large genotype data sets X could be a mmemory-mapped matrix, ff object, or part of a BGData object.
+
+```R
   G3=getG.symDMatrix(X,scaleCol=T,centerCol=T,folder='tmp',chunkSize=300,mc.cores=6,vmode='double')
   class(G3)
   all.equal(diag(G),diag(G3))
@@ -94,19 +98,13 @@
     stopifnot(all.equal(tmp1,tmp2))
   }
  }
- 
- 
- 
-```
 
-### (3) Creating a symDMatrix from ff files containing the blocks
+```
+### (4) Creating a symDMatrix from ff files containing the blocks.
+
+For very large G-matrices, computation of the blocks of the symDMatrix can be done in parallel (e.g., in an HPC). The function getGij is similar to `getG()` (see [BGData](https://github.com/quantgen/bgdata) package) but accepts arguments i1 and i2 which define a block of G (i.e., rows of X).
 
 ```R
- # 1st, let's create the blocks
- # these may have been created in parallel in an HPC
- # each block was created using getGij  which is similar to getG but computes only one block (see code below)
- # and in this case the block is saved as ff file
- 
  nBlocks=3
  dir.create('ff_files')
  setwd('ff_files')
@@ -114,6 +112,7 @@
  n<-nrow(G)
  stepSize<-ceiling(n/nBlocks)
  
+ ## This loop may be executed in parallel
  for(i in 1:nBlocks){
    i_ini=(i-1)*stepSize+1
    if(i_ini<=n){
