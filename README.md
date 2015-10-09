@@ -1,14 +1,20 @@
 ## symDMatrix
 
+**Contact**: Gustavo de los Campos (gdeloscampos@gmail.com)
+**Class**: symMatrix 
+
 ### A memory-mapped-distributed symmetric matrix
 
-|---|---|---|
-| G11 | G12 | G13 |
-|---|---|---|
+A symmeryc matrix is partitioned into blocks as follows:
 
-**Contact**: Gustavo de los Campos (gdeloscampos@gmail.com)
+|:---:|:---:|:---:|
+| G11 | G12 | G33 |
+| G21 | G22 | G33 |
+| G31 | G32 | G33 |
 
-**Class**: symMatrix 
+Because the matrix is assumed to be symmetric Gij=Gji; therefore, only the upper-triangular blocks are stored. Each block is stored in an ff object. The package defines the class and multiple methods that allow treating this memmory-mapped matrix as a standard RAM matrix.
+
+
 
 **Slots**:
 
