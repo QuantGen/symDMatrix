@@ -44,6 +44,7 @@ Before we start, let's create a symmetric matrix in RAM.
 In practice, if we can hold a matrix in RAM there is not much of a point to convert it to a symDMatrix, however, this will help us to get started.
 
 ```R
+  source('~/GitHub/symDMatrix/definitions.r')
   G2=as.symDMatrix(G,folder="mice",nChunks=5,vmode='double') # can use single for lighter files.
 ```
 
