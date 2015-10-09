@@ -7,6 +7,7 @@
 **Class**: symMatrix 
 
 **Slots**:
+
      * @names   (character)
      * @data    (list) each element of the list is an ff object
      * @centers (numeric) column-means used in the computation of the matrix
