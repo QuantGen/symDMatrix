@@ -2,6 +2,10 @@
 
 ### A memory-mapped-distributed symmetric matrix
 
+|---|---|---|
+| G11 | G12 | G13 |
+|---|---|---|
+
 **Contact**: Gustavo de los Campos (gdeloscampos@gmail.com)
 
 **Class**: symMatrix 
