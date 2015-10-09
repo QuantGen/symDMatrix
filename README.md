@@ -7,8 +7,8 @@
 
 A symmeryc matrix is partitioned into blocks as follows:
 
-|:---:|:---:|:---:|
 | G11 | G12 | G33 |
+|:---:|:---:|:---:|
 | G21 | G22 | G33 |
 | G31 | G32 | G33 |
 
