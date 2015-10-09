@@ -145,13 +145,10 @@ For very large G-matrices, computation of the blocks of the symDMatrix can be do
  all.equal(diag(G5),diag(G))
 ```
 
-
-
 #### Pending
 
-     - Replacement: function to update content of the matrix.
-     - Add chunk:   function to add one chunk.
-     - chol:        A recursive method to compute a cholesky decomposition
+    - Add chunk:   function to add one chunk.
+    - chol:        A recursive method to compute a cholesky decomposition
      - updateChol:  A method for updating a cholesky when a chunk is added
 
      
