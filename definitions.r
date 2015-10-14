@@ -221,7 +221,7 @@ getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,ce
     timeIn=proc.time()[3]
 	n<-nrow(X)
 	p<-ncol(X)
-	if(is.null(chunkSize)) nChunks=ceiling(n/nChunks)
+	if(is.null(chunkSize)){ chunkSize=ceiling(n/nChunks) }
 	
 	if( (centerCol|scaleCol)&(is.null(centers)|is.null(scales))){		
 		if(is.null(centers)&is.null(scales)){
