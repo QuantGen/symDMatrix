@@ -309,7 +309,7 @@ getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,ce
     if(scaleG){ K=mean(diag(G)) }
     for(i in 1:nChunks){
     	for(j in i:nChunks){
-    		
+    	   G@data[[i]][[j]][]=G@data[[i]][[j]][]/K	
     	}
     }
     if(saveRData){save(G,file='G.RData') }
