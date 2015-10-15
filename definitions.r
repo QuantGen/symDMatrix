@@ -215,10 +215,11 @@ setMethod('[',signature='symDMatrix',definition=subset.symDMatrix)
 
 
 getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,centerCol=T,scaleCol=T,nChunks2=1,
-						folder=randomString(5),vmode='double',verbose=TRUE,saveRData=TRUE,mc.cores=1){
-    if(mc.cores>1){ library(parallel) }
+			folder=randomString(5),vmode='double',verbose=TRUE,saveRData=TRUE,mc.cores=1){
+
+        if(mc.cores>1){ library(parallel) }
  		
-    timeIn=proc.time()[3]
+        timeIn=proc.time()[3]
 	n<-nrow(X)
 	p<-ncol(X)
 	if(is.null(chunkSize)){ chunkSize=ceiling(n/nChunks) }
@@ -228,18 +229,18 @@ getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,ce
 			centers=rep(NA,p); scales=rep(NA,p)	
 			for(i in 1:p){	
 				xi=X[,i]
-				scales[i]=sd(xi,na.rm=TRUE)*sqrt((n-1)/n)*sqrt(p)
+				scales[i]=sd(xi,na.rm=TRUE)*sqrt((n-1)/n)
 				centers[i]=mean(xi,na.rm=TRUE)
 			}
 		}
-		if(is.null(centers)&(!is.null(scales))){
+		if((!is.null(centers))&(is.null(scales))){
 			scales=rep(NA,p)	
 			for(i in 1:p){	
 				xi=X[,i]
-				scales[i]=sd(xi,na.rm=TRUE)*sqrt((n-1)/n)*sqrt(p)
+				scales[i]=sd(xi,na.rm=TRUE)*sqrt((n-1)/n)
 			}
 		}
-		if((!is.null(centers))&is.null(scales)){
+		if((is.null(centers))&(!is.null(scales))){
 			centers=rep(NA,p)
 			for(i in 1:p){	
 				xi=X[,i]
@@ -247,6 +248,7 @@ getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,ce
 			}
 		}		
 	}
+
 	if(!centerCol) centers<-rep(0,p)
 	if(!scaleCol)  scales<-rep(1,p)
 	 
@@ -257,33 +259,33 @@ getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,ce
 	counter=1
 
 	tmpDir=getwd()
-    dir.create(folder)
-    setwd(folder)
+        dir.create(folder)
+        setwd(folder)
      
 	for(i in 1:nChunks){
-		DATA[[i]]=list()
-    	rowIndex_i=which(chunkID==i)
-    	Xi=X[rowIndex_i,] 
+	  DATA[[i]]=list()
+    	  rowIndex_i=which(chunkID==i)
+    	  Xi=X[rowIndex_i,] 
     	
-    	# centering/scaling
-    	for(k in 1:p){
+    	  # centering/scaling
+    	  for(k in 1:p){
     		xik=Xi[,k]
     		xik=(xik-centers[k])/scales[k]
     		xik[is.na(xik)]=0
     		Xi[,k]=xik
-    	}
+    	  }
         
-        for(j in i:nChunks){
+          for(j in i:nChunks){
             rowIndex_j=which(chunkID==j)
-    		Xj=X[rowIndex_j,] 
+    	    Xj=X[rowIndex_j,] 
     		
-		# centering/scaling
-	    	for(k in 1:p){
-    			xjk=Xj[,k]
-    			xjk=(xjk-centers[k])/scales[k]
-    			xjk[is.na(xjk)]=0
-    			Xj[,k]=xjk
-    		}            
+	    # centering/scaling
+	    for(k in 1:p){
+    		xjk=Xj[,k]
+    		xjk=(xjk-centers[k])/scales[k]
+    		xjk[is.na(xjk)]=0
+    		Xj[,k]=xjk
+    	     }            
             
              Gij=tcrossprod.parallel(x=Xi,y=Xj,mc.cores=mc.cores,nChunks=nChunks2)
             
@@ -304,6 +306,12 @@ getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,ce
     names(centers)=colnames(X)
     names(scales)=colnames(X)
     G=new('symDMatrix',names=rownames(X),data=DATA,centers=centers,scales=scales)
+    if(scaleG){ K=mean(diag(G)) }
+    for(i in 1:nChunks){
+    	for(j in i:nChunks){
+    		
+    	}
+    }
     if(saveRData){save(G,file='G.RData') }
     setwd(tmpDir)
 	return(G)
