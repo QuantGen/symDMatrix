@@ -306,11 +306,13 @@ getG.symDMatrix=function(X,nChunks=5,chunkSize=NULL,centers=NULL, scales=NULL,ce
     names(centers)=colnames(X)
     names(scales)=colnames(X)
     G=new('symDMatrix',names=rownames(X),data=DATA,centers=centers,scales=scales)
-    if(scaleG){ K=mean(diag(G)) }
-    for(i in 1:nChunks){
-    	for(j in i:nChunks){
-    	   #G@data[[i]][[j]][]=G@data[[i]][[j]][]/K	
+    if(scaleG){ 
+     K=mean(diag(G)) 
+     for(i in 1:length(G@data)){
+    	for(j in 1:length(G@data[[i]])){
+    	   G@data[[i]][[j]][]=G@data[[i]][[j]][]/K	
     	}
+      }
     }
     if(saveRData){save(G,file='G.RData') }
     setwd(tmpDir)
