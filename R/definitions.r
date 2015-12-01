@@ -15,7 +15,7 @@ setClass("symDMatrix", slots = c(names = "character", centers = "numeric", scale
 
 # An interface for creating symDMatrix objects
 symDMatrix <- function(dataFiles, centers = 0, scales = 1, names = character()) {
-    if (is.list(fileList)) {
+    if (is.list(dataFiles)) {
         dataFiles <- unlist(dataFiles)
     }
     counter <- 1
