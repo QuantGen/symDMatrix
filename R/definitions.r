@@ -11,7 +11,9 @@
 setClass("symDMatrix", slots = c(names = "character", centers = "numeric", scales = "numeric", 
     data = "list"))
 
-# An interface for creating symDMatrix objects
+#' An interface for creating symDMatrix objects
+#'
+#' @export
 symDMatrix <- function(dataFiles, centers = 0, scales = 1, names = character()) {
     if (is.list(dataFiles)) {
         dataFiles <- unlist(dataFiles)
@@ -38,15 +40,25 @@ symDMatrix <- function(dataFiles, centers = 0, scales = 1, names = character()) 
 nChunks <- function(x) length(x@data[[1]])
 chunkSize <- function(x) nrow(x@data[[1]][[1]])
 
+#' @export
 setMethod("rownames", signature = "symDMatrix", definition = function(x) x@names)
+
+#' @export
 setMethod("colnames", signature = "symDMatrix", definition = function(x) x@names)
-setMethod("dimnames", signature = "symDMatrix", definition = function(x) list(rownames(x), 
-    colnames(x)))
+
+#' @export
+setMethod("dimnames", signature = "symDMatrix", definition = function(x) list(rownames(x), colnames(x)))
+
 nrow.symDMatrix <- function(x) length(x@names)
+
+#' @export
 setMethod("nrow", signature = "symDMatrix", definition = nrow.symDMatrix)
+
+#' @export
 setMethod("ncol", signature = "symDMatrix", definition = nrow.symDMatrix)
-setMethod("dim", signature = "symDMatrix", definition = function(x) rep(nrow(x), 
-    2))
+
+#' @export
+setMethod("dim", signature = "symDMatrix", definition = function(x) rep(nrow(x), 2))
 
 diag.ff <- function(x) {
     if (class(x)[1] != "ff_matrix") {
@@ -75,8 +87,11 @@ diag.symDMatrix <- function(x) {
     names(out) <- x@names
     return(out)
 }
+
+#' @export
 setMethod("diag", signature = "symDMatrix", definition = diag.symDMatrix)
 
+#' @export
 as.symDMatrix <- function(x, nChunks = 3, vmode = "double", folder = randomString(), 
     saveRData = TRUE) {
     n <- nrow(x)
@@ -132,6 +147,7 @@ as.symDMatrix <- function(x, nChunks = 3, vmode = "double", folder = randomStrin
     return(G)
 }
 
+#' @export
 chunks <- function(x) {
     if (class(x) != "symDMatrix") {
         stop(" the input must be a symDMatrix object.")
@@ -215,9 +231,12 @@ subset.symDMatrix <- function(x, i, j, drop) {
     }
     return(OUT)
 }
+
+#' @export
 setMethod("[", signature = "symDMatrix", definition = subset.symDMatrix)
 
 
+#' @export
 getG.symDMatrix <- function(X, nChunks = 5, chunkSize = NULL, centers = NULL, scales = NULL, 
     centerCol = T, scaleCol = T, nChunks2 = 1, folder = randomString(5), vmode = "double", 
     verbose = TRUE, saveRData = TRUE, mc.cores = 1, scaleG = T) {
@@ -334,7 +353,7 @@ getG.symDMatrix <- function(X, nChunks = 5, chunkSize = NULL, centers = NULL, sc
 }
 
 
-
+#' @export
 load.symDMatrix <- function(file, envir = parent.frame(), verbose = TRUE) {
     # determining the object name
     lsOLD <- ls()
