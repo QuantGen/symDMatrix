@@ -1,5 +1,3 @@
-library(ff)
-
 setOldClass("ff_matrix")
 
 `colnames<-.symDMatrix` <- function(x, value) {
@@ -231,10 +229,6 @@ setMethod("[", signature = "symDMatrix", definition = subset.symDMatrix)
 getG.symDMatrix <- function(X, nChunks = 5, chunkSize = NULL, centers = NULL, scales = NULL, 
     centerCol = T, scaleCol = T, nChunks2 = 1, folder = randomString(5), vmode = "double", 
     verbose = TRUE, saveRData = TRUE, mc.cores = 1, scaleG = T) {
-    
-    if (mc.cores > 1) {
-        library(parallel)
-    }
     
     timeIn <- proc.time()[3]
     n <- nrow(X)

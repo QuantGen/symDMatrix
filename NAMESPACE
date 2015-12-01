@@ -1,1 +1,7 @@
 exportPattern("^[^\\.]")
+import(ff)
+import(methods)
+import(parallel)
+importFrom(BGData,tcrossprod.parallel)
+importFrom(bit,"physical<-")
+importFrom(bit,physical)
