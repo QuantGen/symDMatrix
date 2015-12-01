@@ -1,17 +1,17 @@
 setOldClass("ff_matrix")
 
 `colnames<-.symDMatrix` <- function(x, value) {
-    x@names <- values
+    x@names <- value
     return(x)
 }
 
 `rownames<-.symDMatrix` <- function(x, value) {
-    x@names <- values
+    x@names <- value
     return(x)
 }
 
 `rownames<-.symDMatrix` <- function(x, value) {
-    x@names <- values
+    x@names <- value
     return(x)
 }
 
