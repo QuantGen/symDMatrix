@@ -8,8 +8,7 @@
     return(x)
 }
 
-setClass("symDMatrix", slots = c(names = "character", centers = "numeric", scales = "numeric", 
-    data = "list"))
+setClass("symDMatrix", slots = c(names = "character", centers = "numeric", scales = "numeric", data = "list"))
 
 #' An interface for creating symDMatrix objects
 #'
@@ -92,8 +91,7 @@ diag.symDMatrix <- function(x) {
 setMethod("diag", signature = "symDMatrix", definition = diag.symDMatrix)
 
 #' @export
-as.symDMatrix <- function(x, nChunks = 3, vmode = "double", folder = randomString(), 
-    saveRData = TRUE) {
+as.symDMatrix <- function(x, nChunks = 3, vmode = "double", folder = randomString(), saveRData = TRUE) {
     n <- nrow(x)
     if (ncol(x) != n) {
         stop("x must by a square matrix")
@@ -127,8 +125,8 @@ as.symDMatrix <- function(x, nChunks = 3, vmode = "double", folder = randomStrin
             colIndex <- eval(parse(text = paste0(TMP[j, 2], ":", TMP[j, 3])))
             k <- j - i + 1
             DATA[[i]][[k]] <- ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode, 
-                initdata = as.vector(x[rowIndex, colIndex]), filename = paste0("data_", 
-                  i, "_", j, ".bin"))
+                                 initdata = as.vector(x[rowIndex, colIndex]), filename = paste0("data_", 
+                                 i, "_", j, ".bin"))
             colnames(DATA[[i]][[k]]) <- colnames(x)[colIndex]
             rownames(DATA[[i]][[k]]) <- rownames(x)[rowIndex]
             physical(DATA[[i]][[k]])$pattern <- "ff"
@@ -317,7 +315,7 @@ getG.symDMatrix <- function(X, nChunks = 5, chunkSize = NULL, centers = NULL, sc
             Gij <- tcrossprod.parallel(x = Xi, y = Xj, mc.cores = mc.cores, nChunks = nChunks2)
             
             DATA[[i]][[j - i + 1]] <- ff(dim = dim(Gij), vmode = vmode, initdata = as.vector(Gij), 
-                filename = paste0("data_", i, "_", j, ".bin"))
+                                         filename = paste0("data_", i, "_", j, ".bin"))
             colnames(DATA[[i]][[j - i + 1]]) <- colnames(X)[rowIndex_j]
             rownames(DATA[[i]][[j - i + 1]]) <- rownames(X)[rowIndex_i]
             counter <- counter + 1
@@ -373,8 +371,7 @@ load.symDMatrix <- function(file, envir = parent.frame(), verbose = TRUE) {
     objectClass <- class(eval(parse(text = objectName)))
     
     if (verbose) {
-        cat(" Meta data (", fname, ") and its data were stored at folder ", path, 
-            ".\n", sep = "")
+        cat(" Meta data (", fname, ") and its data were stored at folder ", path, ".\n", sep = "")
         cat(" Object Name: ", objectName, "\n", sep = "")
         cat(" Object Class: ", objectClass, "\n", sep = "")
     }
@@ -391,8 +388,7 @@ load.symDMatrix <- function(file, envir = parent.frame(), verbose = TRUE) {
             if (verbose) {
                 cat(" Opening flat file ", i, "\n")
             }
-            open(eval(parse(text = paste0(objectName, "@data[[", i, "]][[", j - i + 
-                1, "]]"))))
+            open(eval(parse(text = paste0(objectName, "@data[[", i, "]][[", j - i + 1, "]]"))))
         }
     }
     # sending the object to envir
@@ -405,6 +401,4 @@ load.symDMatrix <- function(file, envir = parent.frame(), verbose = TRUE) {
     }
 }
 
-randomString <- function(n = 10) paste(sample(c(0:9, letters, LETTERS), size = n, 
-    replace = TRUE), collapse = "")
- 
+randomString <- function(n = 10) paste(sample(c(0:9, letters, LETTERS), size = n, replace = TRUE), collapse = "")
