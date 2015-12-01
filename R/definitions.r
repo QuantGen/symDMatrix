@@ -59,7 +59,6 @@ diag.ff <- function(x) {
     }
     return(out)
 }
-# setMethod('diag',signature='ff_matrix',definition=diag.ff)
 
 diag.symDMatrix <- function(x) {
     n <- min(dim(x))
