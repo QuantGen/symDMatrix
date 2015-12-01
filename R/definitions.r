@@ -1,5 +1,3 @@
-setOldClass("ff_matrix")
-
 `colnames<-.symDMatrix` <- function(x, value) {
     x@names <- value
     return(x)
