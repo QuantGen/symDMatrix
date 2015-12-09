@@ -1,4 +1,4 @@
-#' @exportClass
+#' @exportClass symDMatrix
 setClass("symDMatrix", slots = c(names = "character", centers = "numeric", scales = "numeric", data = "list"))
 
 #' An interface for creating symDMatrix objects
