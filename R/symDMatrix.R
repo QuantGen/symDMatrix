@@ -26,9 +26,6 @@ symDMatrix <- function(dataFiles, centers = 0, scales = 1, names = character()) 
     return(G)
 }
 
-nChunks <- function(x) length(x@data[[1]])
-chunkSize <- function(x) nrow(x@data[[1]][[1]])
-
 rownames.symDMatrix <- function(x) x@names
 
 colnames.symDMatrix <- function(x) x@names
@@ -46,6 +43,10 @@ dimnames.symDMatrix <- function(x) list(rownames.symDMatrix(x), colnames.symDMat
 dim.symDMatrix <- function(x) {
     rep(length(x@names), 2)
 }
+
+nChunks <- function(x) length(x@data[[1]])
+
+chunkSize <- function(x) nrow(x@data[[1]][[1]])
 
 diag.ff <- function(x) {
     if (class(x)[1] != "ff_matrix") {
