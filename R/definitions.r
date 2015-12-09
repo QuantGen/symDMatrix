@@ -74,7 +74,7 @@ diag.ff <- function(x) {
 diag.symDMatrix <- function(x) {
     n <- min(dim(x))
     out <- rep(NA, n)
-    
+
     nChunks <- nChunks(x)
     end <- 0
     for (i in 1:nChunks) {
@@ -96,13 +96,13 @@ as.symDMatrix <- function(x, nChunks = 3, vmode = "double", folder = randomStrin
     if (ncol(x) != n) {
         stop("x must by a square matrix")
     }
-    
+
     tmpDir <- getwd()
     dir.create(folder)
     setwd(folder)
-    
+
     chunkSize <- ceiling(n/nChunks)
-    
+
     ## Determining chunk size and subjects in each chunk
     TMP <- matrix(nrow = nChunks, ncol = 3)
     TMP[, 1] <- 1:nChunks
@@ -117,15 +117,15 @@ as.symDMatrix <- function(x, nChunks = 3, vmode = "double", folder = randomStrin
     ini <- 1
     end <- 0
     DATA <- list()
-    
+
     for (i in 1:nChunks) {
         rowIndex <- eval(parse(text = paste0(TMP[i, 2], ":", TMP[i, 3])))
         DATA[[i]] <- list()
         for (j in i:nChunks) {
             colIndex <- eval(parse(text = paste0(TMP[j, 2], ":", TMP[j, 3])))
             k <- j - i + 1
-            DATA[[i]][[k]] <- ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode, 
-                                 initdata = as.vector(x[rowIndex, colIndex]), filename = paste0("data_", 
+            DATA[[i]][[k]] <- ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode,
+                                 initdata = as.vector(x[rowIndex, colIndex]), filename = paste0("data_",
                                  i, "_", j, ".bin"))
             colnames(DATA[[i]][[k]]) <- colnames(x)[colIndex]
             rownames(DATA[[i]][[k]]) <- rownames(x)[rowIndex]
@@ -150,7 +150,7 @@ chunks <- function(x) {
     if (class(x) != "symDMatrix") {
         stop(" the input must be a symDMatrix object.")
     }
-    
+
     n <- length(x@data)
     OUT <- matrix(nrow = n, ncol = 3)
     OUT[, 1] <- 1:n
@@ -167,7 +167,7 @@ chunks <- function(x) {
 }
 
 subset.symDMatrix <- function(x, i, j, drop) {
-    
+
     if (missing(i)) {
         i <- 1:nrow(x)
     }
@@ -188,32 +188,32 @@ subset.symDMatrix <- function(x, i, j, drop) {
             which(colnames(x) == name)
         }, USE.NAMES = FALSE)
     }
-    
+
     nChunks <- nChunks(x)
     chunkSize <- ncol(x@data[[1]][[1]])
     i0 <- i
     j0 <- j
     i <- rep(i0, each = length(j0))
     j <- rep(j0, times = length(i0))
-    
+
     # switching indexes ( i must be smaller than j)
     tmp <- i > j
     tmp2 <- i[tmp]
     i[tmp] <- j[tmp]
     j[tmp] <- tmp2
-    
+
     out.i <- rep(1:length(i0), each = length(j0))
     out.j <- rep(1:length(j0), length(i0))
-    
+
     row.chunk <- ceiling(i/chunkSize)
     col.chunk <- ceiling(j/chunkSize)
     local.i <- i - (row.chunk - 1) * chunkSize
     local.j <- j - (col.chunk - 1) * chunkSize
-    
+
     OUT <- matrix(nrow = length(i0), ncol = length(j0), NA)
     rownames(OUT) <- x@names[i0]
     colnames(OUT) <- x@names[j0]
-    
+
     for (i in unique(row.chunk)) {
         tmp <- which(row.chunk == i)
         for (j in unique(col.chunk[tmp])) {
@@ -235,17 +235,17 @@ setMethod("[", signature = "symDMatrix", definition = subset.symDMatrix)
 
 
 #' @export
-getG.symDMatrix <- function(X, nChunks = 5, chunkSize = NULL, centers = NULL, scales = NULL, 
-    centerCol = T, scaleCol = T, nChunks2 = 1, folder = randomString(5), vmode = "double", 
+getG.symDMatrix <- function(X, nChunks = 5, chunkSize = NULL, centers = NULL, scales = NULL,
+    centerCol = T, scaleCol = T, nChunks2 = 1, folder = randomString(5), vmode = "double",
     verbose = TRUE, saveRData = TRUE, mc.cores = 1, scaleG = T) {
-    
+
     timeIn <- proc.time()[3]
     n <- nrow(X)
     p <- ncol(X)
     if (is.null(chunkSize)) {
         chunkSize <- ceiling(n/nChunks)
     }
-    
+
     if ((centerCol | scaleCol) & (is.null(centers) | is.null(scales))) {
         if (is.null(centers) & is.null(scales)) {
             centers <- rep(NA, p)
@@ -271,27 +271,27 @@ getG.symDMatrix <- function(X, nChunks = 5, chunkSize = NULL, centers = NULL, sc
             }
         }
     }
-    
-    if (!centerCol) 
+
+    if (!centerCol)
         centers <- rep(0, p)
-    if (!scaleCol) 
+    if (!scaleCol)
         scales <- rep(1, p)
-    
+
     chunkID <- ceiling(1:n/chunkSize)
     nChunks <- max(chunkID)
     nFiles <- nChunks * (nChunks + 1)/2
     DATA <- list()
     counter <- 1
-    
+
     tmpDir <- getwd()
     dir.create(folder)
     setwd(folder)
-    
+
     for (i in 1:nChunks) {
         DATA[[i]] <- list()
         rowIndex_i <- which(chunkID == i)
         Xi <- X[rowIndex_i, ]
-        
+
         # centering/scaling
         for (k in 1:p) {
             xik <- Xi[, k]
@@ -299,11 +299,11 @@ getG.symDMatrix <- function(X, nChunks = 5, chunkSize = NULL, centers = NULL, sc
             xik[is.na(xik)] <- 0
             Xi[, k] <- xik
         }
-        
+
         for (j in i:nChunks) {
             rowIndex_j <- which(chunkID == j)
             Xj <- X[rowIndex_j, ]
-            
+
             # centering/scaling
             for (k in 1:p) {
                 xjk <- Xj[, k]
@@ -311,26 +311,26 @@ getG.symDMatrix <- function(X, nChunks = 5, chunkSize = NULL, centers = NULL, sc
                 xjk[is.na(xjk)] <- 0
                 Xj[, k] <- xjk
             }
-            
+
             Gij <- tcrossprod.parallel(x = Xi, y = Xj, mc.cores = mc.cores, nChunks = nChunks2)
-            
-            DATA[[i]][[j - i + 1]] <- ff(dim = dim(Gij), vmode = vmode, initdata = as.vector(Gij), 
+
+            DATA[[i]][[j - i + 1]] <- ff(dim = dim(Gij), vmode = vmode, initdata = as.vector(Gij),
                                          filename = paste0("data_", i, "_", j, ".bin"))
             colnames(DATA[[i]][[j - i + 1]]) <- colnames(X)[rowIndex_j]
             rownames(DATA[[i]][[j - i + 1]]) <- rownames(X)[rowIndex_i]
             counter <- counter + 1
             physical(DATA[[i]][[j - i + 1]])$pattern <- "ff"
-            physical(DATA[[i]][[j - i + 1]])$filename <- paste0("data_", i, "_", 
+            physical(DATA[[i]][[j - i + 1]])$filename <- paste0("data_", i, "_",
                 j, ".bin")
-            
+
             if (verbose) {
-                cat(" Done with pair ", i, "-", j, " (", round(100 * counter/(nChunks * 
-                  (nChunks + 1)/2)), "% ", round(proc.time()[3] - timeIn, 3), " seconds).\n", 
+                cat(" Done with pair ", i, "-", j, " (", round(100 * counter/(nChunks *
+                  (nChunks + 1)/2)), "% ", round(proc.time()[3] - timeIn, 3), " seconds).\n",
                   sep = "")
             }
         }
     }
-    if (is.null(rownames(X))) 
+    if (is.null(rownames(X)))
         rownames(X) <- 1:n
     names(centers) <- colnames(X)
     names(scales) <- colnames(X)
@@ -358,18 +358,18 @@ load.symDMatrix <- function(file, envir = parent.frame(), verbose = TRUE) {
     load(file = file)
     lsNEW <- ls()
     objectName <- lsNEW[(!lsNEW %in% lsOLD) & (lsNEW != "lsOLD")]
-    
+
     # determining path and filename
     path <- dirname(file)
     fname <- basename(file)
-    
+
     # stores current working directiory and sets working directory to path
     cwd <- getwd()
     setwd(path)
-    
+
     # determining object class
     objectClass <- class(eval(parse(text = objectName)))
-    
+
     if (verbose) {
         cat(" Meta data (", fname, ") and its data were stored at folder ", path, ".\n", sep = "")
         cat(" Object Name: ", objectName, "\n", sep = "")
@@ -378,10 +378,10 @@ load.symDMatrix <- function(file, envir = parent.frame(), verbose = TRUE) {
     if (!(objectClass %in% c("BGData", "rmmMatrix", "cmmMatrix", "symDMatrix"))) {
         stop(" Object class must be either BGData, cmmMatrix, rmmMatrix or symDMatrix")
     }
-    
+
     # Determining number of chunks
     nChunks <- nChunks(eval(parse(text = objectName)))
-    
+
     # opening files
     for (i in 1:nChunks) {
         for (j in i:nChunks) {
@@ -393,7 +393,7 @@ load.symDMatrix <- function(file, envir = parent.frame(), verbose = TRUE) {
     }
     # sending the object to envir
     assign(objectName, get(objectName), envir = envir)
-    
+
     # restoring the working directory
     setwd(cwd)
     if (verbose) {
