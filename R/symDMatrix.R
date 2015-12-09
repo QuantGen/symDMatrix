@@ -1,13 +1,3 @@
-`colnames<-.symDMatrix` <- function(x, value) {
-    x@names <- value
-    return(x)
-}
-
-`rownames<-.symDMatrix` <- function(x, value) {
-    x@names <- value
-    return(x)
-}
-
 setClass("symDMatrix", slots = c(names = "character", centers = "numeric", scales = "numeric", data = "list"))
 
 #' An interface for creating symDMatrix objects
@@ -44,6 +34,16 @@ setMethod("rownames", signature = "symDMatrix", definition = function(x) x@names
 
 #' @export
 setMethod("colnames", signature = "symDMatrix", definition = function(x) x@names)
+
+`rownames<-.symDMatrix` <- function(x, value) {
+    x@names <- value
+    return(x)
+}
+
+`colnames<-.symDMatrix` <- function(x, value) {
+    x@names <- value
+    return(x)
+}
 
 #' @export
 setMethod("dimnames", signature = "symDMatrix", definition = function(x) list(rownames(x), colnames(x)))
