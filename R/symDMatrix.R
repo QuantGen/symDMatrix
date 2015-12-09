@@ -42,16 +42,10 @@ dimnames.symDMatrix <- function(x) list(rownames.symDMatrix(x), colnames.symDMat
     return(x)
 }
 
-nrow.symDMatrix <- function(x) length(x@names)
-
 #' @export
-setMethod("nrow", signature = "symDMatrix", definition = nrow.symDMatrix)
-
-#' @export
-setMethod("ncol", signature = "symDMatrix", definition = nrow.symDMatrix)
-
-#' @export
-setMethod("dim", signature = "symDMatrix", definition = function(x) rep(nrow(x), 2))
+dim.symDMatrix <- function(x) {
+    rep(length(x@names), 2)
+}
 
 diag.ff <- function(x) {
     if (class(x)[1] != "ff_matrix") {
