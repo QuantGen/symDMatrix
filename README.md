@@ -16,12 +16,14 @@ Because the matrix is assumed to be symmetric (i.e., Gij=Gji), only the upper-tr
 
 #### Slots
 
-* @names   (character)
-* @data    (list) each element of the list is an ff object
-* @centers (numeric) column-means used in the computation of the matrix
-* @scales  (numeric) column-standard deviations used to scale the matrix.
+* `@names` (character) names of rows and columns
+* `@data` (list) each element of the list is an ff object
+* `@centers` (numeric) column-means used in the computation of the matrix
+* `@scales` (numeric) column-standard deviations used to scale the matrix
 
-### (0) Creating a symmetric matrix in RAM
+### Tutorial
+
+#### (0) Creating a symmetric matrix in RAM
 
 Before we start, let's create a symmetric matrix in RAM.
 
@@ -94,7 +96,7 @@ for (i in 1:100) {
 
 ```
 
-### #(3) Creating a symDMatrix from genotypes
+#### (3) Creating a symDMatrix from genotypes
 
 The function `getG.symDMatrix` computes G=XX' (with options for centering and scaling) without ever loading G in RAM. It creates the `symDMatrix` directly. In this example, X is a matrix in RAM. For large genotype data sets, X could be a mmemory-mapped matrix, `ff` object, or part of a `BGData` object.
 
@@ -116,7 +118,7 @@ for(i in 1:10){
 }
 ```
 
-### (4) Creating a symDMatrix from `ff` files containing the blocks
+#### (4) Creating a symDMatrix from `ff` files containing the blocks
 
 The function `symDMatrix` allows creating a `symDMatrix` from a list of `ff` files. The list is assumed to provide, in order, files for G11, G12,..., G1q, G22, G23, ..., G2q,..., Gqq. This approach will be useful for very large G-matrices. If n is large it may make sense to compute the blocks of the `symDMatrix` in parallel jobs (e.g., in an HPC). The function `getGij` is similar to `getG` (see [BGData](https://github.com/QuantGen/BGData) package) but accepts arguments i1 and i2 which define a block of G (i.e., rows of X).
 
@@ -152,6 +154,6 @@ all.equal(diag(G5), diag(G))
 
 ### Pending
 
-- `addBlock`: A function to add one block (e.g., G1q, G1q, ...,Gqq)
+- `addBlock`: A function to add one block (e.g., G1q, G1q, ..., Gqq)
 - `chol`: A recursive method to compute a cholesky decomposition
 - `updateChol`: A method for updating a cholesky when a chunk is added
