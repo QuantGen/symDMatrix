@@ -26,6 +26,11 @@ symDMatrix <- function(dataFiles, centers = 0, scales = 1, names = character()) 
     return(G)
 }
 
+#' @export
+dim.symDMatrix <- function(x) {
+    rep(length(x@names), 2)
+}
+
 rownames.symDMatrix <- function(x) x@names
 
 colnames.symDMatrix <- function(x) x@names
@@ -38,15 +43,6 @@ dimnames.symDMatrix <- function(x) list(rownames.symDMatrix(x), colnames.symDMat
     x@names <- value[[1]]
     return(x)
 }
-
-#' @export
-dim.symDMatrix <- function(x) {
-    rep(length(x@names), 2)
-}
-
-nChunks <- function(x) length(x@data[[1]])
-
-chunkSize <- function(x) nrow(x@data[[1]][[1]])
 
 diag.ff <- function(x) {
     if (class(x)[1] != "ff_matrix") {
@@ -132,27 +128,6 @@ as.symDMatrix <- function(x, nChunks = 3, vmode = "double", folder = randomStrin
     }
     setwd(tmpDir)
     return(G)
-}
-
-#' @export
-chunks <- function(x) {
-    if (class(x) != "symDMatrix") {
-        stop(" the input must be a symDMatrix object.")
-    }
-
-    n <- length(x@data)
-    OUT <- matrix(nrow = n, ncol = 3)
-    OUT[, 1] <- 1:n
-    colnames(OUT) <- c("chunk", "ini", "end")
-    end <- 0
-    for (i in 1:n) {
-        ini <- end + 1
-        end <- ini + nrow(x@data[[i]][[1]]) - 1
-        OUT[i, 2] <- ini
-        OUT[i, 3] <- end
-        ini <- end + 1
-    }
-    return(OUT)
 }
 
 subset.symDMatrix <- function(x, i, j, drop) {
@@ -270,6 +245,31 @@ load.symDMatrix <- function(file, envir = parent.frame(), verbose = TRUE) {
     if (verbose) {
         cat(" Original directory (", getwd(), ") restored \n", sep = "")
     }
+}
+
+nChunks <- function(x) length(x@data[[1]])
+
+chunkSize <- function(x) nrow(x@data[[1]][[1]])
+
+#' @export
+chunks <- function(x) {
+    if (class(x) != "symDMatrix") {
+        stop(" the input must be a symDMatrix object.")
+    }
+
+    n <- length(x@data)
+    OUT <- matrix(nrow = n, ncol = 3)
+    OUT[, 1] <- 1:n
+    colnames(OUT) <- c("chunk", "ini", "end")
+    end <- 0
+    for (i in 1:n) {
+        ini <- end + 1
+        end <- ini + nrow(x@data[[i]][[1]]) - 1
+        OUT[i, 2] <- ini
+        OUT[i, 3] <- end
+        ini <- end + 1
+    }
+    return(OUT)
 }
 
 randomString <- function(n = 10) paste(sample(c(0:9, letters, LETTERS), size = n, replace = TRUE), collapse = "")
