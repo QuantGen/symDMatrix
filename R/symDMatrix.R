@@ -29,24 +29,18 @@ symDMatrix <- function(dataFiles, centers = 0, scales = 1, names = character()) 
 nChunks <- function(x) length(x@data[[1]])
 chunkSize <- function(x) nrow(x@data[[1]][[1]])
 
-#' @export
-setMethod("rownames", signature = "symDMatrix", definition = function(x) x@names)
+rownames.symDMatrix <- function(x) x@names
+
+colnames.symDMatrix <- function(x) x@names
 
 #' @export
-setMethod("colnames", signature = "symDMatrix", definition = function(x) x@names)
+dimnames.symDMatrix <- function(x) list(rownames.symDMatrix(x), colnames.symDMatrix(x))
 
-`rownames<-.symDMatrix` <- function(x, value) {
-    x@names <- value
+#' @export
+`dimnames<-.symDMatrix` <- function(x, value) {
+    x@names <- value[[1]]
     return(x)
 }
-
-`colnames<-.symDMatrix` <- function(x, value) {
-    x@names <- value
-    return(x)
-}
-
-#' @export
-setMethod("dimnames", signature = "symDMatrix", definition = function(x) list(rownames(x), colnames(x)))
 
 nrow.symDMatrix <- function(x) length(x@names)
 
