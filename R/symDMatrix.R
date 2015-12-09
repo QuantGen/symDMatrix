@@ -247,8 +247,10 @@ load.symDMatrix <- function(file, envir = parent.frame(), verbose = TRUE) {
     }
 }
 
+#' @export
 nChunks <- function(x) length(x@data[[1]])
 
+#' @export
 chunkSize <- function(x) nrow(x@data[[1]][[1]])
 
 #' @export
