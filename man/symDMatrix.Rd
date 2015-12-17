@@ -2,11 +2,31 @@
 % Please edit documentation in R/symDMatrix.R
 \name{symDMatrix}
 \alias{symDMatrix}
-\title{An interface for creating symDMatrix objects}
+\title{A constructor for creating \code{\linkS4class{symDMatrix}} objects.}
 \usage{
 symDMatrix(dataFiles, centers = 0, scales = 1, names = character())
 }
+\arguments{
+\item{dataFiles}{A character vector with names of the \code{ff} files that
+contain the data needed to create the object. The files must be order by
+block, G11, G12, G13, ..., G1q, G22, G23,...., Gqq.}
+
+\item{centers}{(numeric) A vector storing the means used, if any, when
+creating G.}
+
+\item{scales}{(numeric) A vector storing the standard deviations used, if
+any, when creating G.}
+
+\item{names}{(character) The rownames of the matrix.}
+}
+\value{
+A \code{\linkS4class{symDMatrix}} object.
+}
 \description{
-An interface for creating symDMatrix objects
+A \code{\linkS4class{symDMatrix}} is a memory-mapped symmetric matrix. The
+data of the matrix is stored in \code{ff} files. The matrix is chunked into
+blocks, the data for the diagonal and off-diagonal blocks (because the matrix
+is symmetric only the upper-triangular blocks are stored) is stored in
+\code{ff} files.
 }
 

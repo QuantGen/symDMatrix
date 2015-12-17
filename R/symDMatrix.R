@@ -1,16 +1,25 @@
+#' An S4 class that represents a memory-mapped symmetric matrix.
+#'
 #' @exportClass symDMatrix
 setClass("symDMatrix", slots = c(names = "character", centers = "numeric", scales = "numeric", data = "list"))
 
-#' An constructor for creating symDMatrix objects.
-#' A symDMatrix is a mmemory-mapped symmetric matrix. The data of the matrix is stored in ff files. The 
-#'   matrix is chunked into blocks, the data for the diagnoal and off-diagnoal blocks (because the matrix is symmetric only 
-#'   the upper-triangular blocks are stored) is stored in ff-files.
-#'  
-#' @param dataFiles  a character vector with names of the ff files that contain the data needed to create the object.
-#'        The files must be order by block, G11, G12, G13,..,G1q, G22, G23,....,Gqq.
-#' @param centers, scales (numeric) are vectors storing the means and standard deviations used, if any, when creating G.
-#' @param names (character), the rownames of the matrix.
-#' @return a symDMatrix object.
+#' A constructor for creating \code{\linkS4class{symDMatrix}} objects.
+#'
+#' A \code{\linkS4class{symDMatrix}} is a memory-mapped symmetric matrix. The
+#' data of the matrix is stored in \code{ff} files. The matrix is chunked into
+#' blocks, the data for the diagonal and off-diagonal blocks (because the matrix
+#' is symmetric only the upper-triangular blocks are stored) is stored in
+#' \code{ff} files.
+#'
+#' @param dataFiles A character vector with names of the \code{ff} files that
+#'   contain the data needed to create the object. The files must be order by
+#'   block, G11, G12, G13, ..., G1q, G22, G23,...., Gqq.
+#' @param centers (numeric) A vector storing the means used, if any, when
+#'   creating G.
+#' @param scales (numeric) A vector storing the standard deviations used, if
+#'   any, when creating G.
+#' @param names (character) The rownames of the matrix.
+#' @return A \code{\linkS4class{symDMatrix}} object.
 #' @export
 symDMatrix <- function(dataFiles, centers = 0, scales = 1, names = character()) {
     if (is.list(dataFiles)) {
@@ -81,17 +90,24 @@ diag.symDMatrix <- function(x) {
     return(out)
 }
 
+#' Extract the diagonal of a \code{\linkS4class{symDMatrix}}
+#'
+#' @inheritParams base::diag
 #' @export
 setMethod("diag", signature = "symDMatrix", definition = diag.symDMatrix)
 
 
-#' Coerce a RAM numeric matrix (assumed to be symmetric) into a symDMatrix.
-#' @param x a numeric matrix.
-#' @param nChunks the number of column (also row) blocks to be used. 
-#' @param vmode the vmode used to store the data in the ff objects.
-#' @param folder a name for a folder where to store the data of the resulting symDMatrix
-#' @param saveRData if TRUE, the  metha data (the symDMatrix) is saved using the name G.RData
-#' @return a symDMatrix object.
+#' Coerce a RAM numeric matrix (assumed to be symmetric) into a
+#' \code{\linkS4class{symDMatrix}}
+#'
+#' @param x A numeric matrix.
+#' @param nChunks The number of column (also row) blocks to be used.
+#' @param vmode The vmode used to store the data in the \code{ff} objects.
+#' @param folder A name for a folder where to store the data of the resulting
+#'   \code{\linkS4class{symDMatrix}}
+#' @param saveRData If TRUE, the metadata (the \code{\linkS4class{symDMatrix}})
+#'   is saved using the name G.RData.
+#' @return A \code{\linkS4class{symDMatrix}} object.
 #' @export
 as.symDMatrix <- function(x, nChunks = 3, vmode = "double", folder = randomString(), saveRData = TRUE) {
     n <- nrow(x)
@@ -211,13 +227,21 @@ subset.symDMatrix <- function(x, i, j, drop) {
     return(OUT)
 }
 
+#' Extract parts of a \code{\linkS4class{symDMatrix}}.
+#'
+#' @inheritParams base::`[`
+#' @param j Column indices.
 #' @export
 setMethod("[", signature = "symDMatrix", definition = subset.symDMatrix)
 
-#' A function to load symDMatrix objects into an R session.
-#' Conceptually this function is similar to load(), however, load.symDMatrix also opens the connections to the ff files.
-#'  
-#' @param file the name of a *.RData file (created using save()).
+#' A function to load \code{\linkS4class{symDMatrix}} objects into an R session.
+#'
+#' Conceptually this function is similar to \code{load()}. However,
+#' \code{load.symDMatrix} also opens the connections to the \code{ff} files.
+#'
+#' @param file The name of an .RData file (created using \code{save()}).
+#' @param envir The environment where to load the data.
+#' @param verbose Whether to print additional information.
 #' @export
 load.symDMatrix <- function(file, envir = parent.frame(), verbose = TRUE) {
     # determining the object name
@@ -268,15 +292,23 @@ load.symDMatrix <- function(file, envir = parent.frame(), verbose = TRUE) {
     }
 }
 
+#' Determines the number of column/row chunks of a
+#' \code{\linkS4class{symDMatrix}} object.
+#'
+#' @param x A \code{\linkS4class{symDMatrix}} object.
 #' @export
-#' Determines the number of column/row chunks of a symDMatrix object.
 nChunks <- function(x) length(x@data[[1]])
 
-#' Returns the column (also row)-chunk size of a symDMatrix object. Note, the last column/row block may be smaller.
+#' Returns the column (also row) chunk size of a \code{\linkS4class{symDMatrix}}
+#' object. Note, the last column/row block may be smaller.
+#'
+#' @param x A \code{\linkS4class{symDMatrix}} object.
 #' @export
 chunkSize <- function(x) nrow(x@data[[1]][[1]])
 
-#' Returns the chunk-structure of a symDMatrix object.
+#' Returns the chunk structure of a \code{\linkS4class{symDMatrix}} object.
+#'
+#' @param x A \code{\linkS4class{symDMatrix}} object.
 #' @export
 chunks <- function(x) {
     if (class(x) != "symDMatrix") {
