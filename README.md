@@ -98,7 +98,7 @@ for (i in 1:100) {
 
 #### (3) Creating a symDMatrix from genotypes
 
-The function `getG.symDMatrix` computes G=XX' (with options for centering and scaling) without ever loading G in RAM. It creates the `symDMatrix` directly. In this example, X is a matrix in RAM. For large genotype data sets, X could be a mmemory-mapped matrix, `ff` object, or part of a `BGData` object.
+The function `getG.symDMatrix` of the [BGData](https://github.com/QuantGen/BGData) package computes G=XX' (with options for centering and scaling) without ever loading G in RAM. It creates the `symDMatrix` directly. In this example, X is a matrix in RAM. For large genotype data sets, X could be a memory-mapped matrix, `ff` object, or part of a `BGData` object.
 
 ```R
 G3 <- getG.symDMatrix(X, scaleCol = TRUE, centerCol = TRUE, folder = "tmp", chunkSize = 300, mc.cores = 6, vmode = "double")
@@ -120,7 +120,7 @@ for(i in 1:10){
 
 #### (4) Creating a symDMatrix from `ff` files containing the blocks
 
-The function `symDMatrix` allows creating a `symDMatrix` from a list of `ff` files. The list is assumed to provide, in order, files for G11, G12,..., G1q, G22, G23, ..., G2q,..., Gqq. This approach will be useful for very large G-matrices. If n is large it may make sense to compute the blocks of the `symDMatrix` in parallel jobs (e.g., in an HPC). The function `getGij` is similar to `getG` (see [BGData](https://github.com/QuantGen/BGData) package) but accepts arguments i1 and i2 which define a block of G (i.e., rows of X).
+The function `symDMatrix` allows creating a `symDMatrix` from a list of `ff` files. The list is assumed to provide, in order, files for G11, G12,..., G1q, G22, G23, ..., G2q,..., Gqq. This approach will be useful for very large G-matrices. If n is large it may make sense to compute the blocks of the `symDMatrix` in parallel jobs (e.g., in an HPC). The function `getGij` is similar to `getG.symDMatrix` (see [BGData](https://github.com/QuantGen/BGData) package) but accepts arguments `i1` and `i2` which define a block of G (i.e., rows of X).
 
 ```R
 nBlocks <- 3
