@@ -21,7 +21,7 @@ setClass("symDMatrix", slots = c(names = "character", centers = "numeric", scale
 #' @param names (character) The rownames of the matrix.
 #' @return A \code{\linkS4class{symDMatrix}} object.
 #' @export
-symDMatrix <- function(dataFiles, centers = 0, scales = 1, names = character()) {
+symDMatrix <- function(dataFiles, centers = 0, scales = 1, names = NULL) {
     if (is.list(dataFiles)) {
         dataFiles <- unlist(dataFiles)
     }
@@ -46,7 +46,8 @@ symDMatrix <- function(dataFiles, centers = 0, scales = 1, names = character()) 
 
 #' @export
 dim.symDMatrix <- function(x) {
-    rep(length(x@names), 2)
+    p <- sum(sapply(x@data[[1]], ncol))
+    rep(p, 2)
 }
 
 rownames.symDMatrix <- function(x) x@names
@@ -151,11 +152,7 @@ as.symDMatrix <- function(x, nChunks = 3, vmode = "double", folder = randomStrin
             physical(DATA[[i]][[k]])$filename <- paste0("data_", i, "_", j, ".bin")
         }
     }
-    tmp <- rownames(x)
-    if (is.null(tmp)) {
-        tmp <- paste0("id_", 1:nrow(x))
-    }
-    G <- new("symDMatrix", names = tmp, data = DATA, centers = 0, scales = 0)
+    G <- new("symDMatrix", names = rownames(x), data = DATA, centers = 0, scales = 0)
     if (saveRData) {
         save(G, file = "G.RData")
     }
