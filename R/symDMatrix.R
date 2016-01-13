@@ -224,7 +224,12 @@ subset.symDMatrix <- function(x, i, j, drop) {
             OUT[tmp.out] <- x@data[[i]][[j - i + 1]][tmp.in]
         }
     }
-    return(OUT)
+
+    if (drop == TRUE && (length(i0) == 1 || length(j0) == 1)) {
+        return(OUT[, ])
+    } else {
+        return(OUT)
+    }
 }
 
 #' Extract parts of a \code{\linkS4class{symDMatrix}}.
