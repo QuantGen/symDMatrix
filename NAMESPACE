@@ -3,6 +3,7 @@
 S3method("dimnames<-",symDMatrix)
 S3method(dim,symDMatrix)
 S3method(dimnames,symDMatrix)
+S3method(length,symDMatrix)
 export(as.symDMatrix)
 export(chunkSize)
 export(chunks)

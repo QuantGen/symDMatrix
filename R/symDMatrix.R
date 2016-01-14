@@ -52,6 +52,11 @@ dim.symDMatrix <- function(x) {
     rep(p, 2)
 }
 
+#' @export
+length.symDMatrix <- function(x) {
+    prod(dim(x))
+}
+
 rownames.symDMatrix <- function(x) x@names
 
 colnames.symDMatrix <- function(x) x@names
