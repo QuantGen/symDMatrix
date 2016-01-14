@@ -1,7 +1,9 @@
+setClassUnion("characterOrNULL", members = c("character", "NULL"))
+
 #' An S4 class that represents a memory-mapped symmetric matrix.
 #'
 #' @exportClass symDMatrix
-setClass("symDMatrix", slots = c(names = "character", centers = "numeric", scales = "numeric", data = "list"))
+setClass("symDMatrix", slots = c(names = "characterOrNULL", centers = "numeric", scales = "numeric", data = "list"))
 
 #' A constructor for creating \code{\linkS4class{symDMatrix}} objects.
 #'

@@ -4,7 +4,7 @@
 \alias{symDMatrix}
 \title{A constructor for creating \code{\linkS4class{symDMatrix}} objects.}
 \usage{
-symDMatrix(dataFiles, centers = 0, scales = 1, names = character())
+symDMatrix(dataFiles, centers = 0, scales = 1, names = NULL)
 }
 \arguments{
 \item{dataFiles}{A character vector with names of the \code{ff} files that
