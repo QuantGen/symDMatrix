@@ -1,9 +1,11 @@
 setClassUnion("characterOrNULL", members = c("character", "NULL"))
 
+
 #' An S4 class that represents a memory-mapped symmetric matrix.
 #'
 #' @exportClass symDMatrix
 setClass("symDMatrix", slots = c(names = "characterOrNULL", centers = "numeric", scales = "numeric", data = "list"))
+
 
 #' A constructor for creating \code{\linkS4class{symDMatrix}} objects.
 #'
@@ -46,16 +48,19 @@ symDMatrix <- function(dataFiles, centers = 0, scales = 1, names = NULL) {
     return(G)
 }
 
+
 #' @export
 dim.symDMatrix <- function(x) {
     p <- sum(sapply(x@data[[1]], ncol))
     rep(p, 2)
 }
 
+
 #' @export
 length.symDMatrix <- function(x) {
     prod(dim(x))
 }
+
 
 rownames.symDMatrix <- function(x) x@names
 
@@ -64,11 +69,13 @@ colnames.symDMatrix <- function(x) x@names
 #' @export
 dimnames.symDMatrix <- function(x) list(rownames.symDMatrix(x), colnames.symDMatrix(x))
 
+
 #' @export
 `dimnames<-.symDMatrix` <- function(x, value) {
     x@names <- value[[1]]
     return(x)
 }
+
 
 diag.ff <- function(x) {
     if (class(x)[1] != "ff_matrix") {
@@ -81,6 +88,7 @@ diag.ff <- function(x) {
     }
     return(out)
 }
+
 
 diag.symDMatrix <- function(x) {
     n <- min(dim(x))
@@ -97,6 +105,7 @@ diag.symDMatrix <- function(x) {
     names(out) <- x@names
     return(out)
 }
+
 
 #' Extract the diagonal of a \code{\linkS4class{symDMatrix}}
 #'
@@ -167,6 +176,7 @@ as.symDMatrix <- function(x, nChunks = 3, vmode = "double", folder = randomStrin
     return(G)
 }
 
+
 subset.symDMatrix <- function(x, i, j, drop) {
 
     if (missing(i)) {
@@ -236,12 +246,14 @@ subset.symDMatrix <- function(x, i, j, drop) {
     }
 }
 
+
 #' Extract parts of a \code{\linkS4class{symDMatrix}}.
 #'
 #' @inheritParams base::`[`
 #' @param j Column indices.
 #' @export
 setMethod("[", signature = "symDMatrix", definition = subset.symDMatrix)
+
 
 #' A function to load \code{\linkS4class{symDMatrix}} objects into an R session.
 #'
@@ -280,6 +292,7 @@ load.symDMatrix <- function(file, envir = parent.frame()) {
     message("Loaded objects: ", paste0(names, collapse = ", "))
 }
 
+
 #' Determines the number of column/row chunks of a
 #' \code{\linkS4class{symDMatrix}} object.
 #'
@@ -287,12 +300,14 @@ load.symDMatrix <- function(file, envir = parent.frame()) {
 #' @export
 nChunks <- function(x) length(x@data[[1]])
 
+
 #' Returns the column (also row) chunk size of a \code{\linkS4class{symDMatrix}}
 #' object. Note, the last column/row block may be smaller.
 #'
 #' @param x A \code{\linkS4class{symDMatrix}} object.
 #' @export
 chunkSize <- function(x) nrow(x@data[[1]][[1]])
+
 
 #' Returns the chunk structure of a \code{\linkS4class{symDMatrix}} object.
 #'
@@ -318,4 +333,7 @@ chunks <- function(x) {
     return(OUT)
 }
 
-randomString <- function(n = 10) paste(sample(c(0:9, letters, LETTERS), size = n, replace = TRUE), collapse = "")
+
+randomString <- function(n = 10) {
+    paste(sample(c(0:9, letters, LETTERS), size = n, replace = TRUE), collapse = "")
+}
