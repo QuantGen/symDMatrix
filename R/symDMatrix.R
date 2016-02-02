@@ -271,12 +271,12 @@ load.symDMatrix <- function(file, envir = parent.frame(), verbose = TRUE) {
     objectClass <- class(eval(parse(text = objectName)))
 
     if (verbose) {
-        cat(" Meta data (", fname, ") and its data were stored at folder ", path, ".\n", sep = "")
-        cat(" Object Name: ", objectName, "\n", sep = "")
-        cat(" Object Class: ", objectClass, "\n", sep = "")
+        message("Meta data (", fname, ") and its data were stored at folder ", path)
+        message("Object Name: ", objectName)
+        message("Object Class: ", objectClass)
     }
     if (!(objectClass %in% c("BGData", "rmmMatrix", "cmmMatrix", "symDMatrix"))) {
-        stop(" Object class must be either BGData, cmmMatrix, rmmMatrix or symDMatrix")
+        stop("Object class must be either BGData, cmmMatrix, rmmMatrix or symDMatrix")
     }
 
     # Determining number of chunks
@@ -286,7 +286,7 @@ load.symDMatrix <- function(file, envir = parent.frame(), verbose = TRUE) {
     for (i in 1:nChunks) {
         for (j in i:nChunks) {
             if (verbose) {
-                cat(" Opening flat file ", i, "\n")
+                message("Opening flat file ", i)
             }
             open(eval(parse(text = paste0(objectName, "@data[[", i, "]][[", j - i + 1, "]]"))))
         }
@@ -297,7 +297,7 @@ load.symDMatrix <- function(file, envir = parent.frame(), verbose = TRUE) {
     # restoring the working directory
     setwd(cwd)
     if (verbose) {
-        cat(" Original directory (", getwd(), ") restored \n", sep = "")
+        message("Original directory (", getwd(), ") restored")
     }
 }
 
@@ -321,7 +321,7 @@ chunkSize <- function(x) nrow(x@data[[1]][[1]])
 #' @export
 chunks <- function(x) {
     if (class(x) != "symDMatrix") {
-        stop(" the input must be a symDMatrix object.")
+        stop("The input must be a symDMatrix object")
     }
 
     n <- length(x@data)
