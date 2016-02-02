@@ -4,14 +4,12 @@
 \alias{load.symDMatrix}
 \title{A function to load \code{\linkS4class{symDMatrix}} objects into an R session.}
 \usage{
-load.symDMatrix(file, envir = parent.frame(), verbose = TRUE)
+load.symDMatrix(file, envir = parent.frame())
 }
 \arguments{
 \item{file}{The name of an .RData file (created using \code{save()}).}
 
 \item{envir}{The environment where to load the data.}
-
-\item{verbose}{Whether to print additional information.}
 }
 \description{
 Conceptually this function is similar to \code{load()}. However,

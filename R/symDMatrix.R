@@ -250,55 +250,34 @@ setMethod("[", signature = "symDMatrix", definition = subset.symDMatrix)
 #'
 #' @param file The name of an .RData file (created using \code{save()}).
 #' @param envir The environment where to load the data.
-#' @param verbose Whether to print additional information.
 #' @export
-load.symDMatrix <- function(file, envir = parent.frame(), verbose = TRUE) {
-    # determining the object name
-    lsOLD <- ls()
-    load(file = file)
-    lsNEW <- ls()
-    objectName <- lsNEW[(!lsNEW %in% lsOLD) & (lsNEW != "lsOLD")]
-
-    # determining path and filename
-    path <- dirname(file)
-    fname <- basename(file)
-
-    # stores current working directiory and sets working directory to path
-    cwd <- getwd()
-    setwd(path)
-
-    # determining object class
-    objectClass <- class(eval(parse(text = objectName)))
-
-    if (verbose) {
-        message("Meta data (", fname, ") and its data were stored at folder ", path)
-        message("Object Name: ", objectName)
-        message("Object Class: ", objectClass)
-    }
-    if (!(objectClass %in% c("BGData", "rmmMatrix", "cmmMatrix", "symDMatrix"))) {
-        stop("Object class must be either BGData, cmmMatrix, rmmMatrix or symDMatrix")
-    }
-
-    # Determining number of chunks
-    nChunks <- nChunks(eval(parse(text = objectName)))
-
-    # opening files
-    for (i in 1:nChunks) {
-        for (j in i:nChunks) {
-            if (verbose) {
-                message("Opening flat file ", i)
+load.symDMatrix <- function(file, envir = parent.frame()) {
+    # Load data into new environment
+    loadingEnv <- new.env()
+    load(file = file, envir = loadingEnv)
+    names <- ls(envir = loadingEnv)
+    for (name in names) {
+        object <- get(name, envir = loadingEnv)
+        # Load genotypes of BGData objects
+        if (class(object) == "symDMatrix") {
+            # Store current working directory and set working directory to
+            # dirname of file
+            cwd <- getwd()
+            setwd(dirname(file))
+            # Open ff objects
+            nChunks <- nChunks(object)
+            for (i in 1:nChunks) {
+                for (j in i:nChunks) {
+                    ff::open.ff(object@data[[i]][[j - i + 1]])
+                }
             }
-            open(eval(parse(text = paste0(objectName, "@data[[", i, "]][[", j - i + 1, "]]"))))
+            # Restore the working directory
+            setwd(cwd)
         }
+        # Assign object to envir
+        assign(name, object, envir = envir)
     }
-    # sending the object to envir
-    assign(objectName, get(objectName), envir = envir)
-
-    # restoring the working directory
-    setwd(cwd)
-    if (verbose) {
-        message("Original directory (", getwd(), ") restored")
-    }
+    message("Loaded objects: ", paste0(names, collapse = ", "))
 }
 
 #' Determines the number of column/row chunks of a
