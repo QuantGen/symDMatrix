@@ -123,33 +123,53 @@ for(i in 1:10){
 The function `symDMatrix` allows creating a `symDMatrix` from a list of `ff` files. The list is assumed to provide, in order, files for G11, G12,..., G1q, G22, G23, ..., G2q,..., Gqq. This approach will be useful for very large G-matrices. If n is large it may make sense to compute the blocks of the `symDMatrix` in parallel jobs (e.g., in an HPC). The function `getGij` is similar to `getG.symDMatrix` (see [BGData](https://github.com/QuantGen/BGData) package) but accepts arguments `i1` and `i2` which define a block of G (i.e., rows of X).
 
 ```R
-nBlocks <- 3
-dir.create("ff_files")
-setwd("ff_files")
+library(BGData)
+library(BGLR)
+data(wheat)
+X=wheat.X
+rownames(X)=1:599
 
-n <- nrow(G)
+
+centers=colMeans(X)
+scales=apply(FUN=sd,MARGIN=2,X=X)
+
+nBlocks <- 8
+
+dir.create("GMatrix")
+setwd("GMatrix")
+
+## Load your BGData object here, let's assume X has the genotypes
+n <- nrow(X)
 stepSize <- ceiling(n / nBlocks)
+
+G1=tcrossprod(scale(X,center=centers,scale=scales));G1=G1/mean(diag(G1))
 
 # This loop may be executed in parallel
 for (i in 1:nBlocks) {
     i_ini <- (i - 1) * stepSize + 1
     if (i_ini <= n) {
         i_end <- min(n, i_ini + stepSize - 1)
+        i1<-i_ini:i_end
+        
         for (j in i:nBlocks) {
             j_ini <- (j - 1) * stepSize + 1
-            if (j_ini <= n) {
-                j_end <- min(n, j_ini + stepSize - 1)
-                Gij = as.ff(G[i_ini:i_end, j_ini:j_end], file = paste0("data_", i, "_", j, ".bin"), vmode = "double")
-                save(Gij, file = paste0("data_", i, "_", j, ".ff"))
+            j_end <- min(n, j_ini + stepSize - 1)
+            i2=j_ini:j_end
+            if (j_ini <= n) {                
+                Gij=getG(x=X,i=i1, i2=i2, saveName = paste0("G_", i, "_", j, ".bin"),
+                 		saveType="ff",centers=centers,scales=scales,scaleG=T,verbose=F,
+                 		scaleCol=T,nChunks=4,nChunks2=4,mc.cores=4,saveG=T)
                 print(paste(i_ini, i_end, " ; ",  j_ini, j_end))
             }
         }
     }
 }
 
-# Now we create the object (centers,  scales,  etc can be also added)
-G5 <- symDMatrix(dataFiles = list.files(pattern = "*.ff"), names = rownames(X))
-all.equal(diag(G5), diag(G))
+#  note, file list needs to be orderd G11, G12, .... Gqq
+G2 <- symDMatrix(dataFiles = list.files(pattern = "*.ff"), names =rownames(X))
+ 
+
+
 ```
 
 ### Pending
