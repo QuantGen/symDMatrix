@@ -4,7 +4,7 @@
 \alias{symDMatrix}
 \title{A constructor for creating \code{\linkS4class{symDMatrix}} objects.}
 \usage{
-symDMatrix(dataFiles, centers = 0, scales = 1, names = NULL)
+symDMatrix(dataFiles, centers = 0, scales = 1)
 }
 \arguments{
 \item{dataFiles}{A character vector with names of the \code{ff} files that
@@ -16,8 +16,6 @@ creating G.}
 
 \item{scales}{(numeric) A vector storing the standard deviations used, if
 any, when creating G.}
-
-\item{names}{(character) The rownames of the matrix.}
 }
 \value{
 A \code{\linkS4class{symDMatrix}} object.

@@ -1,10 +1,7 @@
-setClassUnion("characterOrNULL", members = c("character", "NULL"))
-
-
 #' An S4 class that represents a memory-mapped symmetric matrix.
 #'
 #' @exportClass symDMatrix
-setClass("symDMatrix", slots = c(names = "characterOrNULL", centers = "numeric", scales = "numeric", data = "list"))
+setClass("symDMatrix", slots = c(centers = "numeric", scales = "numeric", data = "list"))
 
 
 #' A constructor for creating \code{\linkS4class{symDMatrix}} objects.
@@ -22,10 +19,9 @@ setClass("symDMatrix", slots = c(names = "characterOrNULL", centers = "numeric",
 #'   creating G.
 #' @param scales (numeric) A vector storing the standard deviations used, if
 #'   any, when creating G.
-#' @param names (character) The rownames of the matrix.
 #' @return A \code{\linkS4class{symDMatrix}} object.
 #' @export
-symDMatrix <- function(dataFiles, centers = 0, scales = 1, names = NULL) {
+symDMatrix <- function(dataFiles, centers = 0, scales = 1) {
     if (is.list(dataFiles)) {
         dataFiles <- unlist(dataFiles)
     }
@@ -44,7 +40,7 @@ symDMatrix <- function(dataFiles, centers = 0, scales = 1, names = NULL) {
             rm(list = objectName)
         }
     }
-    G <- new("symDMatrix", names = names, centers = centers, scales = scales, data = dataList)
+    G <- new("symDMatrix", centers = centers, scales = scales, data = dataList)
     return(G)
 }
 
@@ -62,18 +58,24 @@ length.symDMatrix <- function(x) {
 }
 
 
-rownames.symDMatrix <- function(x) x@names
+names.symDMatrix <- function(x) {
+    names <- vector(mode = "character", length = ncol(x))
+    nChunks <- nChunks(x)
+    end <- 0
+    for (k in 1:nChunks) {
+        block <- x@data[[1]][[k]]
+        ini <- end + 1
+        end <- ini + ncol(block) - 1
+        names[ini:end] <- colnames(block)
+    }
+    return(names)
+}
 
-colnames.symDMatrix <- function(x) x@names
 
 #' @export
-dimnames.symDMatrix <- function(x) list(rownames.symDMatrix(x), colnames.symDMatrix(x))
-
-
-#' @export
-`dimnames<-.symDMatrix` <- function(x, value) {
-    x@names <- value[[1]]
-    return(x)
+dimnames.symDMatrix <- function(x) {
+    names <- names.symDMatrix(x)
+    list(names, names)
 }
 
 
@@ -102,7 +104,7 @@ diag.symDMatrix <- function(x) {
         end <- ini + length(tmp) - 1
         out[ini:end] <- tmp
     }
-    names(out) <- x@names
+    names(out) <- names.symDMatrix(x)
     return(out)
 }
 
@@ -168,7 +170,7 @@ as.symDMatrix <- function(x, nChunks = 3, vmode = "double", folder = randomStrin
             physical(DATA[[i]][[k]])$filename <- paste0("data_", i, "_", j, ".bin")
         }
     }
-    G <- new("symDMatrix", names = rownames(x), data = DATA, centers = 0, scales = 0)
+    G <- new("symDMatrix", data = DATA, centers = 0, scales = 0)
     if (saveRData) {
         save(G, file = "G.RData")
     }
@@ -222,8 +224,8 @@ subset.symDMatrix <- function(x, i, j, drop) {
     local.j <- j - (col.chunk - 1) * chunkSize
 
     OUT <- matrix(nrow = length(i0), ncol = length(j0), NA)
-    rownames(OUT) <- x@names[i0]
-    colnames(OUT) <- x@names[j0]
+    rownames(OUT) <- names.symDMatrix(x)[i0]
+    colnames(OUT) <- names.symDMatrix(x)[j0]
 
     for (i in unique(row.chunk)) {
         tmp <- which(row.chunk == i)
