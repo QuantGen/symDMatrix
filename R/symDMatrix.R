@@ -190,16 +190,12 @@ subset.symDMatrix <- function(x, i, j, drop) {
     if (class(i) == "logical") {
         i <- which(i)
     } else if (class(i) == "character") {
-        i <- sapply(i, function(name) {
-            which(rownames(x) == name)
-        }, USE.NAMES = FALSE)
+        i <- match(i, rownames(x))
     }
     if (class(j) == "logical") {
         j <- which(j)
     } else if (class(j) == "character") {
-        j <- sapply(j, function(name) {
-            which(colnames(x) == name)
-        }, USE.NAMES = FALSE)
+        j <- match(j, colnames(x))
     }
 
     nChunks <- nChunks(x)
