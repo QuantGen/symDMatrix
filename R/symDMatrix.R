@@ -224,7 +224,13 @@ subset.symDMatrix <- function(x, i, j, drop) {
     local.i <- i - (row.chunk - 1) * chunkSize
     local.j <- j - (col.chunk - 1) * chunkSize
 
-    OUT <- matrix(data = double(), nrow = length(i0), ncol = length(j0), dimnames = list(names.symDMatrix(x)[i0], names.symDMatrix(x)[j0]))
+    names <- names.symDMatrix(x)
+    if (is.null(names)) {
+        dimnames <- NULL
+    } else {
+        dimnames <- list(names[i0], names[j0])
+    }
+    OUT <- matrix(data = double(), nrow = length(i0), ncol = length(j0), dimnames = dimnames)
 
     for (i in unique(row.chunk)) {
         tmp <- which(row.chunk == i)
