@@ -59,16 +59,17 @@ length.symDMatrix <- function(x) {
 
 
 names.symDMatrix <- function(x) {
-    names <- vector(mode = "character", length = ncol(x))
-    nChunks <- nChunks(x)
-    end <- 0
-    for (k in 1:nChunks) {
-        block <- x@data[[1]][[k]]
-        ini <- end + 1
-        end <- ini + ncol(block) - 1
-        names[ini:end] <- colnames(block)
+    blockNames <- lapply(x@data[[1]], function(block) {
+        colnames(block)
+    })
+    isNULL <- sapply(blockNames, function(blockName) {
+        is.null(blockName)
+    })
+    if (any(isNULL)) {
+        NULL
+    } else {
+        unlist(blockNames)
     }
-    return(names)
 }
 
 
