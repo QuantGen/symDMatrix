@@ -76,7 +76,11 @@ names.symDMatrix <- function(x) {
 #' @export
 dimnames.symDMatrix <- function(x) {
     names <- names.symDMatrix(x)
-    list(names, names)
+    if (is.null(names)) {
+        NULL
+    } else {
+        list(names, names)
+    }
 }
 
 
