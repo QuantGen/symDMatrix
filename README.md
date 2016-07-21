@@ -51,7 +51,7 @@ In practice, if we can hold a matrix in RAM, there is not much of a point to con
 install_github("QuantGen/symDMatrix")
 library(symDMatrix)
 
-G2 <- as.symDMatrix(G, folder = "mice", nChunks = 5, vmode = "double") # can use single for lighter files
+G2 <- as.symDMatrix(G, folder = "mice", nBlocks = 5, vmode = "double") # can use single for lighter files
 ```
 
 #### (2) Exploring operators
@@ -73,10 +73,10 @@ all(dimnames(G)[[2]] == dimnames(G2)[[2]])
 all(rownames(G) == rownames(G2))
 all(colnames(G) == rownames(G2))
 
-# Chunk operators
-nChunks(G2)
-chunkSize(G2)
-chunks(G2)
+# Block operators
+nBlocks(G2)
+blockSize(G2)
+blocks(G2)
 
 # Indexing (can use booleans, integers or labels)
 G2[1:2, 1:2]
@@ -103,7 +103,7 @@ for (i in 1:100) {
 The function `getG.symDMatrix` of the [BGData](https://github.com/QuantGen/BGData) package computes G=XX' (with options for centering and scaling) without ever loading G in RAM. It creates the `symDMatrix` directly. In this example, X is a matrix in RAM. For large genotype data sets, X could be a memory-mapped matrix, `ff` object, or part of a `BGData` object.
 
 ```R
-G3 <- getG.symDMatrix(X, scaleCol = TRUE, centerCol = TRUE, folder = "tmp", chunkSize = 300, vmode = "double")
+G3 <- getG.symDMatrix(X, scaleCol = TRUE, centerCol = TRUE, folder = "tmp", blockSize = 300, vmode = "double")
 class(G3)
 all.equal(diag(G), diag(G3))
 
@@ -178,7 +178,7 @@ G2 <- symDMatrix(dataFiles = list.files(pattern = "*.ff"), names =rownames(X))
 
 - `addBlock`: A function to add one block (e.g., G1q, G1q, ..., Gqq)
 - `chol`: A recursive method to compute a cholesky decomposition
-- `updateChol`: A method for updating a cholesky when a chunk is added
+- `updateChol`: A method for updating a cholesky when a block is added
 
 
 ### Example Dataset
@@ -190,7 +190,7 @@ library(BGData)
 
 X <- BEDMatrix(system.file("extdata", "mice.bed", package = "BEDMatrix"))
 
-G <- getG.symDMatrix(X, i = 1:100, nChunks = 3, folder = "inst/extdata")
+G <- getG.symDMatrix(X, i = 1:100, nBlocks = 3, folder = "inst/extdata")
 ```
 
 To load the dataset:

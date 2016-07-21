@@ -5,13 +5,13 @@
 \title{Coerce a RAM numeric matrix (assumed to be symmetric) into a
 \code{\linkS4class{symDMatrix}}}
 \usage{
-as.symDMatrix(x, nChunks = 3, vmode = "double", folder = randomString(),
+as.symDMatrix(x, nBlocks = 3, vmode = "double", folder = randomString(),
   saveRData = TRUE)
 }
 \arguments{
 \item{x}{A numeric matrix.}
 
-\item{nChunks}{The number of column (also row) blocks to be used.}
+\item{nBlocks}{The number of column (also row) blocks to be used.}
 
 \item{vmode}{The vmode used to store the data in the \code{ff} objects.}
 

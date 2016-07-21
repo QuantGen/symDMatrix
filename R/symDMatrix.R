@@ -27,10 +27,10 @@ symDMatrix <- function(dataFiles, centers = 0, scales = 1) {
     }
     counter <- 1
     dataList <- list()
-    n_chunks <- (-1 + sqrt(1 + 4 * 2 * length(dataFiles)))/2
-    for (i in 1:n_chunks) {
+    nBlocks <- (-1 + sqrt(1 + 4 * 2 * length(dataFiles)))/2
+    for (i in 1:nBlocks) {
         dataList[[i]] <- list()
-        for (j in i:n_chunks) {
+        for (j in i:nBlocks) {
             oldList <- ls()
             load(dataFiles[counter])
             newList <- ls()
@@ -100,9 +100,8 @@ diag.ff <- function(x) {
 diag.symDMatrix <- function(x) {
     n <- min(dim(x))
     out <- vector(mode = "double", length = n)
-    nChunks <- nChunks(x)
     end <- 0
-    for (i in 1:nChunks) {
+    for (i in seq_len(nBlocks(x))) {
         tmp <- diag.ff(x@data[[i]][[1]])
         ini <- end + 1
         end <- ini + length(tmp) - 1
@@ -124,7 +123,7 @@ setMethod("diag", signature = "symDMatrix", definition = diag.symDMatrix)
 #' \code{\linkS4class{symDMatrix}}
 #'
 #' @param x A numeric matrix.
-#' @param nChunks The number of column (also row) blocks to be used.
+#' @param nBlocks The number of column (also row) blocks to be used.
 #' @param vmode The vmode used to store the data in the \code{ff} objects.
 #' @param folder A name for a folder where to store the data of the resulting
 #'   \code{\linkS4class{symDMatrix}}
@@ -132,7 +131,7 @@ setMethod("diag", signature = "symDMatrix", definition = diag.symDMatrix)
 #'   is saved using the name G.RData.
 #' @return A \code{\linkS4class{symDMatrix}} object.
 #' @export
-as.symDMatrix <- function(x, nChunks = 3, vmode = "double", folder = randomString(), saveRData = TRUE) {
+as.symDMatrix <- function(x, nBlocks = 3, vmode = "double", folder = randomString(), saveRData = TRUE) {
     n <- nrow(x)
     if (ncol(x) != n) {
         stop("x must by a square matrix")
@@ -142,27 +141,27 @@ as.symDMatrix <- function(x, nChunks = 3, vmode = "double", folder = randomStrin
     dir.create(folder)
     setwd(folder)
 
-    chunkSize <- ceiling(n/nChunks)
+    blockSize <- ceiling(n/nBlocks)
 
-    ## Determining chunk size and subjects in each chunk
-    TMP <- matrix(nrow = nChunks, ncol = 3)
-    TMP[, 1] <- 1:nChunks
+    ## Determining block size and subjects in each block
+    TMP <- matrix(nrow = nBlocks, ncol = 3)
+    TMP[, 1] <- 1:nBlocks
     TMP[1, 2] <- 1
-    TMP[1, 3] <- chunkSize
-    if (nChunks > 1) {
-        for (i in 2:nChunks) {
+    TMP[1, 3] <- blockSize
+    if (nBlocks > 1) {
+        for (i in 2:nBlocks) {
             TMP[i, 2] <- TMP[(i - 1), 3] + 1
-            TMP[i, 3] <- min(TMP[i, 2] + chunkSize - 1, n)
+            TMP[i, 3] <- min(TMP[i, 2] + blockSize - 1, n)
         }
     }
     ini <- 1
     end <- 0
     DATA <- list()
 
-    for (i in 1:nChunks) {
+    for (i in 1:nBlocks) {
         rowIndex <- eval(parse(text = paste0(TMP[i, 2], ":", TMP[i, 3])))
         DATA[[i]] <- list()
-        for (j in i:nChunks) {
+        for (j in i:nBlocks) {
             colIndex <- eval(parse(text = paste0(TMP[j, 2], ":", TMP[j, 3])))
             k <- j - i + 1
             DATA[[i]][[k]] <- ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode,
@@ -206,9 +205,9 @@ subset.symDMatrix <- function(x, i, j, drop) {
         j <- match(j, colnames(x))
     }
 
-    # Retrieve chunkSize
+    # Retrieve block size
     # TODO: do not assume that all blocks have the same size
-    chunkSize <- ncol(x@data[[1]][[1]])
+    blockSize <- ncol(x@data[[1]][[1]])
 
     # Create all combinations of i and j and switch indices for combinations in
     # which i is larger than j to redirect queries to the lower triangle to the
@@ -221,10 +220,10 @@ subset.symDMatrix <- function(x, i, j, drop) {
     global.j[switch] <- flip
 
     # Create retrieval index
-    row.chunks <- ceiling(global.i / chunkSize)
-    col.chunks <- ceiling(global.j / chunkSize)
-    local.i <- global.i - (row.chunks - 1) * chunkSize
-    local.j <- global.j - (col.chunks - 1) * chunkSize
+    row.chunks <- ceiling(global.i / blockSize)
+    col.chunks <- ceiling(global.j / blockSize)
+    local.i <- global.i - (row.chunks - 1) * blockSize
+    local.j <- global.j - (col.chunks - 1) * blockSize
 
     # Initialize output matrix
     names <- names.symDMatrix(x)
@@ -287,9 +286,9 @@ load.symDMatrix <- function(file, envir = parent.frame()) {
             cwd <- getwd()
             setwd(dirname(file))
             # Open ff objects
-            nChunks <- nChunks(object)
-            for (i in 1:nChunks) {
-                for (j in i:nChunks) {
+            nBlocks <- nBlocks(object)
+            for (i in 1:nBlocks) {
+                for (j in i:nBlocks) {
                     ff::open.ff(object@data[[i]][[j - i + 1]])
                 }
             }
@@ -303,27 +302,27 @@ load.symDMatrix <- function(file, envir = parent.frame()) {
 }
 
 
-#' Determines the number of column/row chunks of a
+#' Determines the number of column/row blocks of a
 #' \code{\linkS4class{symDMatrix}} object.
 #'
 #' @param x A \code{\linkS4class{symDMatrix}} object.
 #' @export
-nChunks <- function(x) length(x@data[[1]])
+nBlocks <- function(x) length(x@data[[1]])
 
 
-#' Returns the column (also row) chunk size of a \code{\linkS4class{symDMatrix}}
+#' Returns the column (also row) block size of a \code{\linkS4class{symDMatrix}}
 #' object. Note, the last column/row block may be smaller.
 #'
 #' @param x A \code{\linkS4class{symDMatrix}} object.
 #' @export
-chunkSize <- function(x) nrow(x@data[[1]][[1]])
+blockSize <- function(x) nrow(x@data[[1]][[1]])
 
 
-#' Returns the chunk structure of a \code{\linkS4class{symDMatrix}} object.
+#' Returns the block structure of a \code{\linkS4class{symDMatrix}} object.
 #'
 #' @param x A \code{\linkS4class{symDMatrix}} object.
 #' @export
-chunks <- function(x) {
+blocks <- function(x) {
     if (class(x) != "symDMatrix") {
         stop("The input must be a symDMatrix object")
     }
