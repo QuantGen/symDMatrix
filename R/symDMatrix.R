@@ -48,7 +48,7 @@ symDMatrix <- function(dataFiles, centers = 0, scales = 1) {
 #' @export
 dim.symDMatrix <- function(x) {
     p <- sum(sapply(x@data[[1]], ncol))
-    rep(p, 2)
+    c(p, p)
 }
 
 
@@ -89,7 +89,7 @@ diag.ff <- function(x) {
         stop("x must be an ff_matrix object")
     }
     n <- min(dim(x))
-    out <- rep(NA, n)
+    out <- vector(mode = "double", length = n)
     for (i in 1:n) {
         out[i] <- x[i, i]
     }
@@ -99,8 +99,7 @@ diag.ff <- function(x) {
 
 diag.symDMatrix <- function(x) {
     n <- min(dim(x))
-    out <- rep(NA, n)
-
+    out <- vector(mode = "double", length = n)
     nChunks <- nChunks(x)
     end <- 0
     for (i in 1:nChunks) {
