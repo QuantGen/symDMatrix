@@ -228,10 +228,10 @@ subset.symDMatrix <- function(x, i, j, drop) {
     local.j <- global.j - (col.chunks - 1) * chunkSize
 
     names <- names.symDMatrix(x)
-    if (is.null(names)) {
-        dimnames <- NULL
-    } else {
+    if (!is.null(names)) {
         dimnames <- list(names[i], names[j])
+    } else {
+        dimnames <- NULL
     }
     OUT <- matrix(data = double(), nrow = length(i), ncol = length(j), dimnames = dimnames)
 
