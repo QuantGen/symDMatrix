@@ -208,48 +208,43 @@ subset.symDMatrix <- function(x, i, j, drop) {
 
     nChunks <- nChunks(x)
     chunkSize <- ncol(x@data[[1]][[1]])
-    i0 <- i
-    j0 <- j
-    i <- rep(i0, each = length(j0))
-    j <- rep(j0, times = length(i0))
 
-    # switching indexes ( i must be smaller than j)
-    tmp <- i > j
-    tmp2 <- i[tmp]
-    i[tmp] <- j[tmp]
-    j[tmp] <- tmp2
+    # Create all combinations of i and j and switch indices for combinations in
+    # which i is larger than j to redirect queries to the lower triangle to the
+    # upper triangle
+    global.i <- rep(i, each = length(j))
+    global.j <- rep(j, times = length(i))
+    switch <- global.i > global.j
+    flip <- global.i[switch]
+    global.i[switch] <- global.j[switch]
+    global.j[switch] <- flip
 
-    out.i <- rep(1:length(i0), each = length(j0))
-    out.j <- rep(1:length(j0), length(i0))
+    out.i <- rep(1:length(i), each = length(j))
+    out.j <- rep(1:length(j), times = length(i))
 
-    row.chunk <- ceiling(i/chunkSize)
-    col.chunk <- ceiling(j/chunkSize)
-    local.i <- i - (row.chunk - 1) * chunkSize
-    local.j <- j - (col.chunk - 1) * chunkSize
+    row.chunks <- ceiling(global.i / chunkSize)
+    col.chunks <- ceiling(global.j / chunkSize)
+    local.i <- global.i - (row.chunks - 1) * chunkSize
+    local.j <- global.j - (col.chunks - 1) * chunkSize
 
     names <- names.symDMatrix(x)
     if (is.null(names)) {
         dimnames <- NULL
     } else {
-        dimnames <- list(names[i0], names[j0])
+        dimnames <- list(names[i], names[j])
     }
-    OUT <- matrix(data = double(), nrow = length(i0), ncol = length(j0), dimnames = dimnames)
+    OUT <- matrix(data = double(), nrow = length(i), ncol = length(j), dimnames = dimnames)
 
-    for (i in unique(row.chunk)) {
-        tmp <- which(row.chunk == i)
-        for (j in unique(col.chunk[tmp])) {
-            k <- which(row.chunk == i & col.chunk == j)
-            tmp.row.in <- local.i[k]
-            tmp.col.in <- local.j[k]
-            tmp.in <- (tmp.col.in - 1) * nrow(x@data[[i]][[j - i + 1]]) + tmp.row.in
-            tmp.row.out <- out.i[k]
-            tmp.col.out <- out.j[k]
-            tmp.out <- (tmp.col.out - 1) * length(i0) + tmp.row.out
-            OUT[tmp.out] <- x@data[[i]][[j - i + 1]][tmp.in]
+    for (row.chunk in unique(row.chunks)) {
+        for (col.chunk in unique(col.chunks[which(row.chunks == row.chunk)])) {
+            cur.chunk <- which(row.chunks == row.chunk & col.chunks == col.chunk)
+            chunk.idx <- (local.j[cur.chunk] - 1) * nrow(x@data[[row.chunk]][[col.chunk - row.chunk + 1]]) + local.i[cur.chunk]
+            out.idx <- (out.j[cur.chunk] - 1) * length(i) + out.i[cur.chunk]
+            OUT[out.idx] <- x@data[[row.chunk]][[col.chunk - row.chunk + 1]][chunk.idx]
         }
     }
 
-    if (drop == TRUE && (length(i0) == 1 || length(j0) == 1)) {
+    if (drop == TRUE && (length(i) == 1 || length(j) == 1)) {
         return(OUT[, ])
     } else {
         return(OUT)
