@@ -177,3 +177,22 @@ G2 <- symDMatrix(dataFiles = list.files(pattern = "*.ff"), names =rownames(X))
 - `addBlock`: A function to add one block (e.g., G1q, G1q, ..., Gqq)
 - `chol`: A recursive method to compute a cholesky decomposition
 - `updateChol`: A method for updating a cholesky when a chunk is added
+
+
+### Example Dataset
+
+The example dataset in the `inst/extdata` folder is the G matrix of the first 100 mice in the `mice` dataset that comes with the BGLR package. It has been generated as follows:
+
+```R
+library(BGData)
+
+X <- BEDMatrix(system.file("extdata", "mice.bed", package = "BEDMatrix"))
+
+G <- getG.symDMatrix(X, i = 1:100, nChunks = 3, folder = "inst/extdata")
+```
+
+To load the dataset:
+
+```R
+load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix")) # loads G
+```
