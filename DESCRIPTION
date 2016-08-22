@@ -19,4 +19,7 @@ Imports:
     methods,
     parallel,
     bit
+Suggests:
+    testthat,
+    BEDMatrix
 RoxygenNote: 5.0.1

@@ -1,5 +1,7 @@
 ## symDMatrix
 
+[![Travis-CI Build Status](https://travis-ci.org/QuantGen/symDMatrix.svg?branch=master)](https://travis-ci.org/QuantGen/symDMatrix)
+
 **Contact**: Gustavo de los Campos (gdeloscampos@gmail.com)
 
 ### A memory-mapped distributed symmetric matrix
