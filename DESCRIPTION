@@ -22,4 +22,5 @@ Imports:
 Suggests:
     testthat,
     BEDMatrix
+Remotes: QuantGen/BEDMatrix
 RoxygenNote: 5.0.1
