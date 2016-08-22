@@ -10,6 +10,12 @@ G2 <- G2 / mean(diag(G2))
 # Prepare dummy symDMatrix
 load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"))
 
+test_that("diag", {
+
+    expect_equal(diag(G), diag(G2))
+
+})
+
 test_that("subsetting", {
 
     expect_equal(G[], G2[])
