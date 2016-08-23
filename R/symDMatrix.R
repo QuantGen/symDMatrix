@@ -206,7 +206,6 @@ subset.symDMatrix <- function(x, i, j, drop) {
         j <- match(j, colnames(x))
     }
 
-    nChunks <- nChunks(x)
     chunkSize <- ncol(x@data[[1]][[1]])
 
     # Create all combinations of i and j and switch indices for combinations in
