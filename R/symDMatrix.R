@@ -206,8 +206,6 @@ subset.symDMatrix <- function(x, i, j, drop) {
         j <- match(j, colnames(x))
     }
 
-    chunkSize <- ncol(x@data[[1]][[1]])
-
     # Create all combinations of i and j and switch indices for combinations in
     # which i is larger than j to redirect queries to the lower triangle to the
     # upper triangle
@@ -218,14 +216,14 @@ subset.symDMatrix <- function(x, i, j, drop) {
     global.i[switch] <- global.j[switch]
     global.j[switch] <- flip
 
-    out.i <- rep(1:length(i), each = length(j))
-    out.j <- rep(1:length(j), times = length(i))
-
+    # Create retrieval index
+    chunkSize <- ncol(x@data[[1]][[1]])
     row.chunks <- ceiling(global.i / chunkSize)
     col.chunks <- ceiling(global.j / chunkSize)
     local.i <- global.i - (row.chunks - 1) * chunkSize
     local.j <- global.j - (col.chunks - 1) * chunkSize
 
+    # Initialize output matrix
     names <- names.symDMatrix(x)
     if (!is.null(names)) {
         dimnames <- list(names[i], names[j])
@@ -234,6 +232,11 @@ subset.symDMatrix <- function(x, i, j, drop) {
     }
     OUT <- matrix(data = double(), nrow = length(i), ncol = length(j), dimnames = dimnames)
 
+    # Create output index
+    out.i <- rep(1:length(i), each = length(j))
+    out.j <- rep(1:length(j), times = length(i))
+
+    # Retrieve elements by block
     for (row.chunk in unique(row.chunks)) {
         for (col.chunk in unique(col.chunks[which(row.chunks == row.chunk)])) {
             cur.chunk <- which(row.chunks == row.chunk & col.chunks == col.chunk)
