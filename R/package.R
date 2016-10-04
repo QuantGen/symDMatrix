@@ -1,3 +1,2 @@
-#' @import ff methods parallel
-#' @importFrom bit physical physical<-
+#' @import methods
 NULL

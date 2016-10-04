@@ -164,13 +164,13 @@ as.symDMatrix <- function(x, nBlocks = 3, vmode = "double", folder = randomStrin
         for (j in i:nBlocks) {
             colIndex <- eval(parse(text = paste0(TMP[j, 2], ":", TMP[j, 3])))
             k <- j - i + 1
-            DATA[[i]][[k]] <- ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode,
-                                 initdata = as.vector(x[rowIndex, colIndex]), filename = paste0("data_",
-                                 i, "_", j, ".bin"))
+            DATA[[i]][[k]] <- ff::ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode,
+                                     initdata = as.vector(x[rowIndex, colIndex]),
+                                     filename = paste0("data_", i, "_", j, ".bin"))
             colnames(DATA[[i]][[k]]) <- colnames(x)[colIndex]
             rownames(DATA[[i]][[k]]) <- rownames(x)[rowIndex]
-            physical(DATA[[i]][[k]])$pattern <- "ff"
-            physical(DATA[[i]][[k]])$filename <- paste0("data_", i, "_", j, ".bin")
+            bit::physical(DATA[[i]][[k]])$pattern <- "ff"
+            bit::physical(DATA[[i]][[k]])$filename <- paste0("data_", i, "_", j, ".bin")
         }
     }
     G <- new("symDMatrix", data = DATA, centers = 0, scales = 0)

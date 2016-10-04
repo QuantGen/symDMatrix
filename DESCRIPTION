@@ -17,7 +17,6 @@ Depends:
     ff
 Imports:
     methods,
-    parallel,
     bit
 Suggests:
     testthat,
