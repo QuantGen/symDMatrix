@@ -1,12 +1,11 @@
-## symDMatrix
+symDMatrix
+==========
 
 [![Travis-CI Build Status](https://travis-ci.org/QuantGen/symDMatrix.svg?branch=master)](https://travis-ci.org/QuantGen/symDMatrix)
 
 **Contact**: Gustavo de los Campos (gdeloscampos@gmail.com)
 
-### A memory-mapped distributed symmetric matrix
-
-A symmetric matrix is partitioned into blocks as follows:
+symDMatrix is an R package that provides memory-mapped distributed symmetric matrices. A symmetric matrix is partitioned into blocks as follows:
 
 | G11 | G12 | G13 |
 |:---:|:---:|:---:|
@@ -15,17 +14,18 @@ A symmetric matrix is partitioned into blocks as follows:
 
 Because the matrix is assumed to be symmetric (i.e., Gij=Gji), only the upper-triangular blocks are stored. Each block is stored as a flat file using an `ff` object. The package defines the class and multiple methods that allow treating this memory-mapped matrix as a standard RAM matrix.
 
-
-#### Slots
+Internally, a symDMatrix object is an S4 class with the following slots:
 
 * `@names` (character) names of rows and columns
 * `@data` (list) each element of the list is an ff object
 * `@centers` (numeric) column-means used in the computation of the matrix
 * `@scales` (numeric) column-standard deviations used to scale the matrix
 
-### Tutorial
 
-#### (0) Creating a symmetric matrix in RAM
+Tutorial
+--------
+
+### (0) Creating a symmetric matrix in RAM
 
 Before we start, let's create a symmetric matrix in RAM.
 
@@ -43,7 +43,7 @@ G <- tcrossprod(scale(X))
 G <- G / mean(diag(G))
 ```
 
-#### (1) Converting a RAM matrix into a symDMatrix
+### (1) Converting a RAM matrix into a symDMatrix
 
 In practice, if we can hold a matrix in RAM, there is not much of a point to convert it to a `symDMatrix`; however, this will help us to get started.
 
@@ -54,7 +54,7 @@ library(symDMatrix)
 G2 <- as.symDMatrix(G, folder = "mice", nBlocks = 5, vmode = "double") # can use single for lighter files
 ```
 
-#### (2) Exploring operators
+### (2) Exploring operators
 
 Now that we have a `symDMatrix`, let's illustrate some operators.
 
@@ -98,7 +98,7 @@ for (i in 1:100) {
 
 ```
 
-#### (3) Creating a symDMatrix from genotypes
+### (3) Creating a symDMatrix from genotypes
 
 The function `getG.symDMatrix` of the [BGData](https://github.com/QuantGen/BGData) package computes G=XX' (with options for centering and scaling) without ever loading G in RAM. It creates the `symDMatrix` directly. In this example, X is a matrix in RAM. For large genotype data sets, X could be a memory-mapped matrix, `ff` object, or part of a `BGData` object.
 
@@ -120,7 +120,7 @@ for(i in 1:10){
 }
 ```
 
-#### (4) Creating a symDMatrix from `ff` files containing the blocks
+### (4) Creating a symDMatrix from `ff` files containing the blocks
 
 The function `symDMatrix` allows creating a `symDMatrix` from a list of `ff` files. The list is assumed to provide, in order, files for G11, G12,..., G1q, G22, G23, ..., G2q,..., Gqq. This approach will be useful for very large G-matrices. If n is large it may make sense to compute the blocks of the `symDMatrix` in parallel jobs (e.g., in an HPC). The function `getGij` is similar to `getG.symDMatrix` (see [BGData](https://github.com/QuantGen/BGData) package) but accepts arguments `i1` and `i2` which define a block of G (i.e., rows of X).
 
@@ -174,14 +174,17 @@ G2 <- symDMatrix(dataFiles = list.files(pattern = "*.ff"), names =rownames(X))
 
 ```
 
-### Pending
+
+Pending
+-------
 
 - `addBlock`: A function to add one block (e.g., G1q, G1q, ..., Gqq)
 - `chol`: A recursive method to compute a cholesky decomposition
 - `updateChol`: A method for updating a cholesky when a block is added
 
 
-### Example Dataset
+Example Dataset
+---------------
 
 The example dataset in the `inst/extdata` folder is the G matrix of the first 100 mice in the `mice` dataset that comes with the BGLR package. It has been generated as follows:
 
