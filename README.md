@@ -186,14 +186,14 @@ Pending
 Example Dataset
 ---------------
 
-The example dataset in the `inst/extdata` folder is the G matrix of the first 100 mice in the `mice` dataset that comes with the BGLR package. It has been generated as follows:
+The example dataset in the `inst/extdata` folder is the G matrix of the dummy dataset that comes with the [BEDMatrix](https://cran.r-project.org/package=BEDMatrix) package. It has been generated as follows:
 
 ```R
 library(BGData)
 
-X <- BEDMatrix(system.file("extdata", "mice.bed", package = "BEDMatrix"))
+X <- BEDMatrix(system.file("extdata", "example.bed", package = "BEDMatrix"))
 
-G <- getG.symDMatrix(X, i = 1:100, nBlocks = 3, folder = "inst/extdata")
+G <- getG.symDMatrix(X, nBlocks = 3, folder = "inst/extdata")
 ```
 
 To load the dataset:
