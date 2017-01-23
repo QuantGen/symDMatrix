@@ -312,10 +312,6 @@ blockSize <- function(x) nrow(x@data[[1]][[1]])
 #' @param x A \code{\linkS4class{symDMatrix}} object.
 #' @export
 blocks <- function(x) {
-    if (class(x) != "symDMatrix") {
-        stop("The input must be a symDMatrix object")
-    }
-
     n <- length(x@data)
     OUT <- matrix(nrow = n, ncol = 3)
     OUT[, 1] <- 1:n
