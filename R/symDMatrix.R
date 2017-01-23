@@ -28,13 +28,13 @@ symDMatrix <- function(dataFiles, centers = 0, scales = 1) {
     for (i in 1:nBlocks) {
         dataList[[i]] <- vector(mode = "list", length = nBlocks - i)
         for (j in i:nBlocks) {
-            oldList <- ls()
-            load(dataFiles[[counter]])
-            newList <- ls()
-            objectName <- newList[which(!newList %in% c("oldList", oldList))]
-            dataList[[i]][[j - i + 1]] <- get(objectName)
+            loadingEnv <- new.env()
+            load(file = dataFiles[[counter]], envir = loadingEnv)
+            # TODO: Assumes only one object per data file
+            objectName <- ls(envir = loadingEnv)[1]
+            object <- get(objectName, envir = loadingEnv)
+            dataList[[i]][[j - i + 1]] <- object
             counter <- counter + 1
-            rm(list = objectName)
         }
     }
     G <- new("symDMatrix", data = dataList, centers = centers, scales = scales)
