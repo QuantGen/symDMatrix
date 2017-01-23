@@ -314,15 +314,12 @@ blockSize <- function(x) nrow(x@data[[1]][[1]])
 blocks <- function(x) {
     n <- length(x@data)
     OUT <- matrix(nrow = n, ncol = 3)
-    OUT[, 1] <- 1:n
     colnames(OUT) <- c("block", "ini", "end")
     end <- 0
     for (i in 1:n) {
         ini <- end + 1
         end <- ini + nrow(x@data[[i]][[1]]) - 1
-        OUT[i, 2] <- ini
-        OUT[i, 3] <- end
-        ini <- end + 1
+        OUT[i, ] <- c(i, ini, end)
     }
     return(OUT)
 }
