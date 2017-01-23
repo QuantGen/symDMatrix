@@ -1,7 +1,7 @@
 #' An S4 class that represents a memory-mapped symmetric matrix.
 #'
 #' @exportClass symDMatrix
-setClass("symDMatrix", slots = c(centers = "numeric", scales = "numeric", data = "list"))
+setClass("symDMatrix", slots = c(data = "list", centers = "numeric", scales = "numeric"))
 
 
 #' A constructor for creating \code{\linkS4class{symDMatrix}} objects.
@@ -40,7 +40,7 @@ symDMatrix <- function(dataFiles, centers = 0, scales = 1) {
             rm(list = objectName)
         }
     }
-    G <- new("symDMatrix", centers = centers, scales = scales, data = dataList)
+    G <- new("symDMatrix", data = dataList, centers = centers, scales = scales)
     return(G)
 }
 
