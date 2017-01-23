@@ -22,9 +22,6 @@ setClass("symDMatrix", slots = c(data = "list", centers = "numeric", scales = "n
 #' @return A \code{\linkS4class{symDMatrix}} object.
 #' @export
 symDMatrix <- function(dataFiles, centers = 0, scales = 1) {
-    if (is.list(dataFiles)) {
-        dataFiles <- unlist(dataFiles)
-    }
     counter <- 1
     dataList <- list()
     nBlocks <- (-1 + sqrt(1 + 4 * 2 * length(dataFiles)))/2
@@ -32,7 +29,7 @@ symDMatrix <- function(dataFiles, centers = 0, scales = 1) {
         dataList[[i]] <- list()
         for (j in i:nBlocks) {
             oldList <- ls()
-            load(dataFiles[counter])
+            load(dataFiles[[counter]])
             newList <- ls()
             objectName <- newList[which(!newList %in% c("oldList", oldList))]
             dataList[[i]][[j - i + 1]] <- get(objectName)
