@@ -23,10 +23,10 @@ setClass("symDMatrix", slots = c(data = "list", centers = "numeric", scales = "n
 #' @export
 symDMatrix <- function(dataFiles, centers = 0, scales = 1) {
     counter <- 1
-    dataList <- list()
-    nBlocks <- (-1 + sqrt(1 + 4 * 2 * length(dataFiles)))/2
+    nBlocks <- (-1 + sqrt(1 + 4 * 2 * length(dataFiles))) / 2
+    dataList <- vector(mode = "list", length = nBlocks)
     for (i in 1:nBlocks) {
-        dataList[[i]] <- list()
+        dataList[[i]] <- vector(mode = "list", length = nBlocks - i)
         for (j in i:nBlocks) {
             oldList <- ls()
             load(dataFiles[[counter]])
