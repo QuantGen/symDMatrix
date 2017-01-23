@@ -3,7 +3,7 @@
 \docType{methods}
 \name{diag,symDMatrix-method}
 \alias{diag,symDMatrix-method}
-\title{Extract the diagonal of a \code{\linkS4class{symDMatrix}}}
+\title{Extract the diagonal of a \code{\linkS4class{symDMatrix}} object.}
 \usage{
 \S4method{diag}{symDMatrix}(x)
 }
@@ -11,6 +11,6 @@
 \item{x}{a matrix, vector or 1D array, or missing.}
 }
 \description{
-Extract the diagonal of a \code{\linkS4class{symDMatrix}}
+Extract the diagonal of a \code{\linkS4class{symDMatrix}} object.
 }
 

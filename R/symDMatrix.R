@@ -109,7 +109,7 @@ diag.symDMatrix <- function(x) {
 }
 
 
-#' Extract the diagonal of a \code{\linkS4class{symDMatrix}}
+#' Extract the diagonal of a \code{\linkS4class{symDMatrix}} object.
 #'
 #' @inheritParams base::diag
 #' @export
