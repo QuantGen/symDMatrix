@@ -1,9 +1,7 @@
 context("symDMatrix")
 
-library(BEDMatrix)
-
 # Prepare dummy data
-X <- suppressMessages(BEDMatrix(system.file("extdata", "example.bed", package = "BEDMatrix")))
+X <- suppressMessages(BEDMatrix::BEDMatrix(system.file("extdata", "example.bed", package = "BEDMatrix")))
 X <- scale(X)
 X[is.na(X)] <- 0
 G2 <- tcrossprod(X)
