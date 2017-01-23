@@ -315,7 +315,7 @@ blocks <- function(x) {
     n <- length(x@data)
     OUT <- matrix(nrow = n, ncol = 3)
     OUT[, 1] <- 1:n
-    colnames(OUT) <- c("chunk", "ini", "end")
+    colnames(OUT) <- c("block", "ini", "end")
     end <- 0
     for (i in 1:n) {
         ini <- end + 1
