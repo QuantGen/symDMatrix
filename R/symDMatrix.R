@@ -95,15 +95,10 @@ diag.ff <- function(x) {
 
 
 diag.symDMatrix <- function(x) {
-    n <- min(dim(x))
-    out <- vector(mode = "double", length = n)
-    end <- 0
-    for (i in seq_len(nBlocks(x))) {
-        tmp <- diag.ff(x@data[[i]][[1]])
-        ini <- end + 1
-        end <- ini + length(tmp) - 1
-        out[ini:end] <- tmp
-    }
+    out <- unlist(lapply(seq_len(nBlocks(x)), function(i) {
+        block <- x@data[[i]][[1]]
+        diag.ff(block)
+    }))
     names(out) <- names.symDMatrix(x)
     return(out)
 }
