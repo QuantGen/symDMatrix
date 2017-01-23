@@ -82,9 +82,6 @@ dimnames.symDMatrix <- function(x) {
 
 
 diag.ff <- function(x) {
-    if (!inherits(x, "ff_matrix")) {
-        stop("x must be an ff_matrix object")
-    }
     n <- min(dim(x))
     out <- vector(mode = "double", length = n)
     for (i in 1:n) {
