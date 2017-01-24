@@ -170,6 +170,23 @@ G2 <- symDMatrix(dataFiles = list.files(pattern = "*.ff"), names = rownames(X))
 ```
 
 
+Installation
+------------
+
+To get the current released version from CRAN:
+
+```r
+install.packages("symDMatrix")
+```
+
+To get the current development version from GitHub:
+
+```r
+# install.packages("devtools")
+devtools::install_github("QuantGen/symDMatrix")
+```
+
+
 Pending
 -------
 
