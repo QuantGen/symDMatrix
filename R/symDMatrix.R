@@ -121,52 +121,59 @@ setMethod("diag", signature = "symDMatrix", definition = diag.symDMatrix)
 #' @return A \code{\linkS4class{symDMatrix}} object.
 #' @export
 as.symDMatrix <- function(x, nBlocks = 3, vmode = "double", folder = randomString(), saveRData = TRUE) {
+
     n <- nrow(x)
+
     if (ncol(x) != n) {
         stop("x must by a square matrix")
     }
 
-    tmpDir <- getwd()
+    # Save current working directory before switching to destination path to
+    # support relative paths in ff objects
+    curDir <- getwd()
     dir.create(folder)
     setwd(folder)
 
-    blockSize <- ceiling(n/nBlocks)
+    blockSize <- ceiling(n / nBlocks)
 
-    ## Determining block size and subjects in each block
-    TMP <- matrix(nrow = nBlocks, ncol = 3)
-    TMP[, 1] <- 1:nBlocks
-    TMP[1, 2] <- 1
-    TMP[1, 3] <- blockSize
+    # Determe block size and subjects of each block
+    index <- matrix(data = integer(), nrow = nBlocks, ncol = 3)
+    index[1, ] <- c(1, 1, blockSize)
     if (nBlocks > 1) {
         for (i in 2:nBlocks) {
-            TMP[i, 2] <- TMP[(i - 1), 3] + 1
-            TMP[i, 3] <- min(TMP[i, 2] + blockSize - 1, n)
+            index[i, 1] <- i
+            index[i, 2] <- index[(i - 1), 3] + 1
+            index[i, 3] <- min(index[i, 2] + blockSize - 1, n)
         }
     }
+
+    dataList <- vector(mode = "list", length = nBlocks)
     ini <- 1
     end <- 0
-    DATA <- list()
-
     for (i in 1:nBlocks) {
-        rowIndex <- eval(parse(text = paste0(TMP[i, 2], ":", TMP[i, 3])))
-        DATA[[i]] <- list()
+        rowIndex <- seq(index[i, 2], index[i, 3])
+        dataList[[i]] <- vector(mode = "list", length = nBlocks - i)
         for (j in i:nBlocks) {
-            colIndex <- eval(parse(text = paste0(TMP[j, 2], ":", TMP[j, 3])))
+            colIndex <- seq(index[j, 2], index[j, 3])
             k <- j - i + 1
-            DATA[[i]][[k]] <- ff::ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode,
-                                     initdata = as.vector(x[rowIndex, colIndex]),
-                                     filename = paste0("data_", i, "_", j, ".bin"))
-            colnames(DATA[[i]][[k]]) <- colnames(x)[colIndex]
-            rownames(DATA[[i]][[k]]) <- rownames(x)[rowIndex]
-            bit::physical(DATA[[i]][[k]])$pattern <- "ff"
-            bit::physical(DATA[[i]][[k]])$filename <- paste0("data_", i, "_", j, ".bin")
+            block <- ff::ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode,
+                            initdata = x[rowIndex, colIndex],
+                            filename = paste0("data_", i, "_", j, ".bin"))
+            colnames(block) <- colnames(x)[colIndex]
+            rownames(block) <- rownames(x)[rowIndex]
+            bit::physical(block)$pattern <- "ff"
+            bit::physical(block)$filename <- paste0("data_", i, "_", j, ".bin")
+            dataList[[i]][[k]] <- block
         }
     }
-    G <- new("symDMatrix", data = DATA, centers = 0, scales = 0)
+    G <- new("symDMatrix", data = dataList, centers = 0, scales = 0)
     if (saveRData) {
         save(G, file = "G.RData")
     }
-    setwd(tmpDir)
+
+    # Restore working directory
+    setwd(curDir)
+
     return(G)
 }
 
