@@ -3,8 +3,15 @@
 \docType{class}
 \name{symDMatrix-class}
 \alias{symDMatrix-class}
-\title{An S4 class that represents a memory-mapped symmetric matrix.}
+\title{An S4 class that represents a symmetric matrix assembled from memory-mapped
+blocks.}
 \description{
-An S4 class that represents a memory-mapped symmetric matrix.
+A \code{\linkS4class{symDMatrix}} is a symmetric matrix assembled from
+memory-mapped blocks. Because the matrix is symmetric, only the diagonal and
+upper-triangular blocks are stored. Each block is an \code{ff} object.
+}
+\details{
+Internally, the blocks are organized as a nested list in the \code{@data}
+slot, each list element representing one row of the symmetric matrix.
 }
 

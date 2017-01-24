@@ -3,7 +3,7 @@
 \docType{methods}
 \name{[,symDMatrix-method}
 \alias{[,symDMatrix-method}
-\title{Extract parts of a \code{\linkS4class{symDMatrix}}.}
+\title{Extract parts of a \code{\linkS4class{symDMatrix}} object.}
 \usage{
 \S4method{[}{symDMatrix}(x, i, j, drop)
 }
@@ -44,6 +44,6 @@
   }
 }
 \description{
-Extract parts of a \code{\linkS4class{symDMatrix}}.
+Extract parts of a \code{\linkS4class{symDMatrix}} object.
 }
 

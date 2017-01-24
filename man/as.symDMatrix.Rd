@@ -3,7 +3,7 @@
 \name{as.symDMatrix}
 \alias{as.symDMatrix}
 \title{Coerce a RAM numeric matrix (assumed to be symmetric) into a
-\code{\linkS4class{symDMatrix}}}
+\code{\linkS4class{symDMatrix}} object.}
 \usage{
 as.symDMatrix(x, nBlocks = 3, vmode = "double", folder = randomString(),
   saveRData = TRUE)
@@ -26,6 +26,6 @@ A \code{\linkS4class{symDMatrix}} object.
 }
 \description{
 Coerce a RAM numeric matrix (assumed to be symmetric) into a
-\code{\linkS4class{symDMatrix}}
+\code{\linkS4class{symDMatrix}} object.
 }
 

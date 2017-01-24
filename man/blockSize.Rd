@@ -2,7 +2,7 @@
 % Please edit documentation in R/symDMatrix.R
 \name{blockSize}
 \alias{blockSize}
-\title{Returns the column (also row) block size of a \code{\linkS4class{symDMatrix}}
+\title{Returns the column/row block size of a \code{\linkS4class{symDMatrix}}
 object. Note, the last column/row block may be smaller.}
 \usage{
 blockSize(x)
@@ -11,7 +11,7 @@ blockSize(x)
 \item{x}{A \code{\linkS4class{symDMatrix}} object.}
 }
 \description{
-Returns the column (also row) block size of a \code{\linkS4class{symDMatrix}}
+Returns the column/row block size of a \code{\linkS4class{symDMatrix}}
 object. Note, the last column/row block may be smaller.
 }
 
