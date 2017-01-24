@@ -187,14 +187,6 @@ devtools::install_github("QuantGen/symDMatrix")
 ```
 
 
-Pending
--------
-
-- `addBlock`: A function to add one block (e.g., G1q, G1q, ..., Gqq)
-- `chol`: A recursive method to compute a cholesky decomposition
-- `updateChol`: A method for updating a cholesky when a block is added
-
-
 Example Dataset
 ---------------
 
