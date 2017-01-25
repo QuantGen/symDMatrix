@@ -103,7 +103,7 @@ The function `getG.symDMatrix` of the [BGData](https://github.com/QuantGen/BGDat
 ```R
 library(BGData)
 
-G3 <- getG.symDMatrix(X, scaleCol = TRUE, centerCol = TRUE, folder = "tmp", blockSize = 300, vmode = "double")
+G3 <- getG.symDMatrix(X, scaleCol = TRUE, centerCol = TRUE, nBlocks = 5, folder = "tmp", vmode = "double")
 class(G3)
 all.equal(diag(G), diag(G3))
 
