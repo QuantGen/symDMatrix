@@ -101,6 +101,8 @@ for (i in 1:100) {
 The function `getG.symDMatrix` of the [BGData](https://github.com/QuantGen/BGData) package computes G=XX' (with options for centering and scaling) without ever loading G in RAM. It creates the `symDMatrix` object directly. In this example, X is a matrix in RAM. For large genotype data sets, X could be a memory-mapped matrix, `ff` object, or part of a `BGData` object.
 
 ```R
+library(BGData)
+
 G3 <- getG.symDMatrix(X, scaleCol = TRUE, centerCol = TRUE, folder = "tmp", blockSize = 300, vmode = "double")
 class(G3)
 all.equal(diag(G), diag(G3))
