@@ -48,51 +48,6 @@ symDMatrix <- function(dataFiles, centers = 0, scales = 1) {
 }
 
 
-#' @export
-is.matrix.symDMatrix <- function(x) {
-    TRUE
-}
-
-
-#' @export
-dim.symDMatrix <- function(x) {
-    p <- sum(sapply(x@data[[1]], ncol))
-    c(p, p)
-}
-
-
-#' @export
-length.symDMatrix <- function(x) {
-    prod(dim(x))
-}
-
-
-names.symDMatrix <- function(x) {
-    blockNames <- lapply(x@data[[1]], function(block) {
-        colnames(block)
-    })
-    isNULL <- sapply(blockNames, function(blockName) {
-        is.null(blockName)
-    })
-    if (any(isNULL)) {
-        NULL
-    } else {
-        unlist(blockNames)
-    }
-}
-
-
-#' @export
-dimnames.symDMatrix <- function(x) {
-    names <- names.symDMatrix(x)
-    if (is.null(names)) {
-        NULL
-    } else {
-        list(names, names)
-    }
-}
-
-
 #' Coerce a RAM numeric matrix (assumed to be symmetric) into a
 #' \code{\linkS4class{symDMatrix}} object.
 #'
@@ -160,6 +115,51 @@ as.symDMatrix <- function(x, nBlocks = 3, vmode = "double", folder = randomStrin
     setwd(curDir)
 
     return(G)
+}
+
+
+#' @export
+is.matrix.symDMatrix <- function(x) {
+    TRUE
+}
+
+
+#' @export
+dim.symDMatrix <- function(x) {
+    p <- sum(sapply(x@data[[1]], ncol))
+    c(p, p)
+}
+
+
+#' @export
+length.symDMatrix <- function(x) {
+    prod(dim(x))
+}
+
+
+names.symDMatrix <- function(x) {
+    blockNames <- lapply(x@data[[1]], function(block) {
+        colnames(block)
+    })
+    isNULL <- sapply(blockNames, function(blockName) {
+        is.null(blockName)
+    })
+    if (any(isNULL)) {
+        NULL
+    } else {
+        unlist(blockNames)
+    }
+}
+
+
+#' @export
+dimnames.symDMatrix <- function(x) {
+    names <- names.symDMatrix(x)
+    if (is.null(names)) {
+        NULL
+    } else {
+        list(names, names)
+    }
 }
 
 
