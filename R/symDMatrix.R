@@ -184,7 +184,8 @@ as.symDMatrix <- function(x, nBlocks = 3, vmode = "double", folder = randomStrin
 }
 
 
-subset.symDMatrix <- function(x, i, j, drop) {
+#' @export
+`[.symDMatrix` <- function(x, i, j, drop = TRUE) {
 
     nX <- nrow(x)
     pX <- ncol(x)
@@ -255,15 +256,8 @@ subset.symDMatrix <- function(x, i, j, drop) {
     } else {
         return(OUT)
     }
+
 }
-
-
-#' Extract parts of a \code{\linkS4class{symDMatrix}} object.
-#'
-#' @inheritParams base::`[`
-#' @param j Column indices.
-#' @export
-setMethod("[", signature = "symDMatrix", definition = subset.symDMatrix)
 
 
 #' A function to load \code{\linkS4class{symDMatrix}} objects into an R session.
