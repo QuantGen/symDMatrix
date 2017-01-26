@@ -49,6 +49,12 @@ symDMatrix <- function(dataFiles, centers = 0, scales = 1) {
 
 
 #' @export
+is.matrix.symDMatrix <- function(x) {
+    TRUE
+}
+
+
+#' @export
 dim.symDMatrix <- function(x) {
     p <- sum(sapply(x@data[[1]], ncol))
     c(p, p)
@@ -85,33 +91,6 @@ dimnames.symDMatrix <- function(x) {
         list(names, names)
     }
 }
-
-
-diag.ff <- function(x) {
-    n <- min(dim(x))
-    out <- vector(mode = "double", length = n)
-    for (i in 1:n) {
-        out[i] <- x[i, i]
-    }
-    return(out)
-}
-
-
-diag.symDMatrix <- function(x) {
-    out <- unlist(lapply(seq_len(nBlocks(x)), function(i) {
-        block <- x@data[[i]][[1]]
-        diag.ff(block)
-    }))
-    names(out) <- names.symDMatrix(x)
-    return(out)
-}
-
-
-#' Extract the diagonal of a \code{\linkS4class{symDMatrix}} object.
-#'
-#' @inheritParams base::diag
-#' @export
-setMethod("diag", signature = "symDMatrix", definition = diag.symDMatrix)
 
 
 #' Coerce a RAM numeric matrix (assumed to be symmetric) into a
