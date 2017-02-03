@@ -2,6 +2,7 @@ symDMatrix
 ==========
 
 [![Travis-CI Build Status](https://travis-ci.org/QuantGen/symDMatrix.svg?branch=master)](https://travis-ci.org/QuantGen/symDMatrix)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/symDMatrix)](https://cran.r-project.org/package=symDMatrix)
 
 symDMatrix is an R package that provides symmetric matrices assembled from memory-mapped blocks.
 
