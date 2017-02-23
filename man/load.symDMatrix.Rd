@@ -2,17 +2,16 @@
 % Please edit documentation in R/symDMatrix.R
 \name{load.symDMatrix}
 \alias{load.symDMatrix}
-\title{A function to load \code{\linkS4class{symDMatrix}} objects into an R session.}
+\title{A function to load [symDMatrix-class] objects into an R session.}
 \usage{
 load.symDMatrix(file, envir = parent.frame())
 }
 \arguments{
-\item{file}{The name of an .RData file (created using \code{save()}).}
+\item{file}{The name of an .RData file (created using [base::save()]).}
 
 \item{envir}{The environment where to load the data.}
 }
 \description{
-Conceptually this function is similar to \code{load()}. However,
-\code{load.symDMatrix} also opens the connections to the \code{ff} files.
+Conceptually this function is similar to [base::load()]. However,
+[load.symDMatrix()] also opens the connections to the `ff` files.
 }
-

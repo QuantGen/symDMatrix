@@ -2,16 +2,13 @@
 % Please edit documentation in R/symDMatrix.R
 \name{nBlocks}
 \alias{nBlocks}
-\title{Determines the number of column/row blocks of a
-\code{\linkS4class{symDMatrix}} object.}
+\title{Determines the number of column/row blocks of a [symDMatrix-class] object.}
 \usage{
 nBlocks(x)
 }
 \arguments{
-\item{x}{A \code{\linkS4class{symDMatrix}} object.}
+\item{x}{A [symDMatrix-class] object.}
 }
 \description{
-Determines the number of column/row blocks of a
-\code{\linkS4class{symDMatrix}} object.
+Determines the number of column/row blocks of a [symDMatrix-class] object.
 }
-
