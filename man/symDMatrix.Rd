@@ -2,12 +2,12 @@
 % Please edit documentation in R/symDMatrix.R
 \name{symDMatrix}
 \alias{symDMatrix}
-\title{A constructor for creating [symDMatrix-class] objects.}
+\title{A constructor for creating \linkS4class{symDMatrix} objects.}
 \usage{
 symDMatrix(dataFiles, centers = 0, scales = 1)
 }
 \arguments{
-\item{dataFiles}{A character vector with names of the `ff` files that
+\item{dataFiles}{A character vector with names of the \code{ff} files that
 contain the data needed to create the object. The files must be ordered by
 block, G11, G12, G13, ..., G1q, G22, G23, ..., Gqq.}
 
@@ -18,10 +18,10 @@ creating the symmetric matrix.}
 any, when creating the symmetric matrix.}
 }
 \value{
-A [symDMatrix-class] object.
+A \linkS4class{symDMatrix} object.
 }
 \description{
-A [symDMatrix-class] is a symmetric matrix assembled from memory-mapped
+A \linkS4class{symDMatrix} is a symmetric matrix assembled from memory-mapped
 blocks. Because the matrix is symmetric, only the diagonal and
-upper-triangular blocks are stored. Each block is an `ff` object.
+upper-triangular blocks are stored. Each block is an \code{ff} object.
 }

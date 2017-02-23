@@ -2,13 +2,13 @@
 % Please edit documentation in R/symDMatrix.R
 \name{blocks}
 \alias{blocks}
-\title{Returns the block structure of a [symDMatrix-class] object.}
+\title{Returns the block structure of a \linkS4class{symDMatrix} object.}
 \usage{
 blocks(x)
 }
 \arguments{
-\item{x}{A [symDMatrix-class] object.}
+\item{x}{A \linkS4class{symDMatrix} object.}
 }
 \description{
-Returns the block structure of a [symDMatrix-class] object.
+Returns the block structure of a \linkS4class{symDMatrix} object.
 }

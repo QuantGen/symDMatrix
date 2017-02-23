@@ -3,7 +3,7 @@
 \name{as.symDMatrix}
 \alias{as.symDMatrix}
 \title{Coerce a RAM numeric matrix (assumed to be symmetric) into a
-[symDMatrix-class] object.}
+\linkS4class{symDMatrix} object.}
 \usage{
 as.symDMatrix(x, nBlocks = 3, vmode = "double", folder = randomString(),
   saveRData = TRUE)
@@ -13,18 +13,18 @@ as.symDMatrix(x, nBlocks = 3, vmode = "double", folder = randomString(),
 
 \item{nBlocks}{The number of column (also row) blocks to be used.}
 
-\item{vmode}{The vmode used to store the data in the `ff` objects.}
+\item{vmode}{The vmode used to store the data in the \code{ff} objects.}
 
 \item{folder}{A name for a folder where to store the data of the resulting
-[symDMatrix-class]}
+\linkS4class{symDMatrix}}
 
-\item{saveRData}{If TRUE, the metadata (the [symDMatrix-class]) is saved
+\item{saveRData}{If TRUE, the metadata (the \linkS4class{symDMatrix}) is saved
 using the name G.RData.}
 }
 \value{
-A [symDMatrix-class] object.
+A \linkS4class{symDMatrix} object.
 }
 \description{
 Coerce a RAM numeric matrix (assumed to be symmetric) into a
-[symDMatrix-class] object.
+\linkS4class{symDMatrix} object.
 }

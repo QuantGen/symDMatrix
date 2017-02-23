@@ -6,11 +6,11 @@
 \title{An S4 class that represents a symmetric matrix assembled from memory-mapped
 blocks.}
 \description{
-A [symDMatrix-class] is a symmetric matrix assembled from memory-mapped
+A \linkS4class{symDMatrix} is a symmetric matrix assembled from memory-mapped
 blocks. Because the matrix is symmetric, only the diagonal and
-upper-triangular blocks are stored. Each block is an `ff` object.
+upper-triangular blocks are stored. Each block is an \code{ff} object.
 }
 \details{
-Internally, the blocks are organized as a nested list in the `@data` slot,
+Internally, the blocks are organized as a nested list in the \code{@data} slot,
 each list element representing one row of the symmetric matrix.
 }

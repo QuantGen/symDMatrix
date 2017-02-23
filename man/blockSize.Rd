@@ -2,15 +2,15 @@
 % Please edit documentation in R/symDMatrix.R
 \name{blockSize}
 \alias{blockSize}
-\title{Returns the column/row block size of a [symDMatrix-class] object. Note, the
+\title{Returns the column/row block size of a \linkS4class{symDMatrix} object. Note, the
 last column/row block may be smaller.}
 \usage{
 blockSize(x)
 }
 \arguments{
-\item{x}{A [symDMatrix-class] object.}
+\item{x}{A \linkS4class{symDMatrix} object.}
 }
 \description{
-Returns the column/row block size of a [symDMatrix-class] object. Note, the
+Returns the column/row block size of a \linkS4class{symDMatrix} object. Note, the
 last column/row block may be smaller.
 }
