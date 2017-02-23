@@ -13,10 +13,9 @@ Authors@R: c(
     person("Alexander", "Grueneberg", email = "alexander.grueneberg@googlemail.com", role = c("ctb")))
 URL: https://github.com/gdlc/symDMatrix
 BugReports: https://github.com/gdlc/symDMatrix/issues
-Depends:
-    ff
 Imports:
     methods,
+    ff,
     bit
 Suggests:
     testthat,
