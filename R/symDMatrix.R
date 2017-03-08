@@ -168,19 +168,18 @@ dimnames.symDMatrix <- function(x) {
 
     nX <- nrow(x)
     pX <- ncol(x)
+
     if (missing(i)) {
         i <- 1:nX
-    }
-    if (missing(j)) {
-        j <- 1:pX
-    }
-    if (class(i) == "logical") {
+    } else if (class(i) == "logical") {
         i <- rep_len(i, nX)
         i <- which(i)
     } else if (class(i) == "character") {
         i <- match(i, rownames(x))
     }
-    if (class(j) == "logical") {
+    if (missing(j)) {
+        j <- 1:pX
+    } else if (class(j) == "logical") {
         j <- rep_len(j, pX)
         j <- which(j)
     } else if (class(j) == "character") {
