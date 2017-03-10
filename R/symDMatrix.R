@@ -193,18 +193,18 @@ dimnames.symDMatrix <- function(x) {
     # Create all combinations of i and j and switch indices for combinations in
     # which i is larger than j to redirect queries to the lower triangle to the
     # upper triangle
-    paired.i <- rep(i, each = length(j))
-    paired.j <- rep(j, times = length(i))
-    switch <- paired.i > paired.j
-    flip <- paired.i[switch]
-    paired.i[switch] <- paired.j[switch]
-    paired.j[switch] <- flip
+    paired_i <- rep(i, each = length(j))
+    paired_j <- rep(j, times = length(i))
+    switch <- paired_i > paired_j
+    flip <- paired_i[switch]
+    paired_i[switch] <- paired_j[switch]
+    paired_j[switch] <- flip
 
     # Create retrieval index
-    row.blocks <- ceiling(paired.i / blockSize)
-    col.blocks <- ceiling(paired.j / blockSize)
-    local.i <- paired.i - (row.blocks - 1) * blockSize
-    local.j <- paired.j - (col.blocks - 1) * blockSize
+    row_blocks <- ceiling(paired_i / blockSize)
+    col_blocks <- ceiling(paired_j / blockSize)
+    local_i <- paired_i - (row_blocks - 1) * blockSize
+    local_j <- paired_j - (col_blocks - 1) * blockSize
 
     # Initialize output matrix
     names <- names.symDMatrix(x)
@@ -216,16 +216,16 @@ dimnames.symDMatrix <- function(x) {
     OUT <- matrix(data = double(), nrow = length(i), ncol = length(j), dimnames = dimnames)
 
     # Create output index
-    out.i <- rep(1:length(i), each = length(j))
-    out.j <- rep(1:length(j), times = length(i))
+    out_i <- rep(1:length(i), each = length(j))
+    out_j <- rep(1:length(j), times = length(i))
 
     # Retrieve elements by block
-    for (row.block in unique(row.blocks)) {
-        for (col.block in unique(col.blocks[which(row.blocks == row.block)])) {
-            cur.block <- which(row.blocks == row.block & col.blocks == col.block)
-            block.idx <- (local.j[cur.block] - 1) * nrow(x@data[[row.block]][[col.block - row.block + 1]]) + local.i[cur.block]
-            out.idx <- (out.j[cur.block] - 1) * length(i) + out.i[cur.block]
-            OUT[out.idx] <- x@data[[row.block]][[col.block - row.block + 1]][block.idx]
+    for (row_block in unique(row_blocks)) {
+        for (col_block in unique(col_blocks[which(row_blocks == row_block)])) {
+            cur_block <- which(row_blocks == row_block & col_blocks == col_block)
+            block_idx <- (local_j[cur_block] - 1) * nrow(x@data[[row_block]][[col_block - row_block + 1]]) + local_i[cur_block]
+            out_idx <- (out_j[cur_block] - 1) * length(i) + out_i[cur_block]
+            OUT[out_idx] <- x@data[[row_block]][[col_block - row_block + 1]][block_idx]
         }
     }
 
