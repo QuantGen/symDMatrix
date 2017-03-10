@@ -29,7 +29,7 @@ setClass("symDMatrix", slots = c(data = "list", centers = "numeric", scales = "n
 #' @export
 symDMatrix <- function(dataFiles, centers = 0L, scales = 1L) {
     counter <- 1L
-    nBlocks <- (-1L + sqrt(1L + 4L * 2L * length(dataFiles))) / 2L
+    nBlocks <- as.integer((-1L + sqrt(1L + 4L * 2L * length(dataFiles))) / 2L)
     dataList <- vector(mode = "list", length = nBlocks)
     for (i in 1L:nBlocks) {
         dataList[[i]] <- vector(mode = "list", length = nBlocks - i)
@@ -74,7 +74,7 @@ as.symDMatrix <- function(x, nBlocks = 3L, vmode = "double", folder = randomStri
     dir.create(folder)
     setwd(folder)
 
-    blockSize <- ceiling(n / nBlocks)
+    blockSize <- as.integer(ceiling(n / nBlocks))
 
     # Determe block size and subjects of each block
     index <- matrix(data = integer(), nrow = nBlocks, ncol = 3L)
@@ -192,7 +192,7 @@ dimnames.symDMatrix <- function(x) {
 
     # Retrieve block size
     # TODO: do not assume that all blocks have the same size
-    blockSize <- ncol(x@data[[1L]][[1L]])
+    blockSize <- blockSize(x)
 
     # Create all combinations of i and j and switch indices for combinations in
     # which i is larger than j to redirect queries to the lower triangle to the
