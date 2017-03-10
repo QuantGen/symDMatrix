@@ -201,10 +201,10 @@ dimnames.symDMatrix <- function(x) {
     paired_j[switch] <- flip
 
     # Create retrieval index
-    row_blocks <- ceiling(paired_i / blockSize)
-    col_blocks <- ceiling(paired_j / blockSize)
-    local_i <- paired_i - (row_blocks - 1) * blockSize
-    local_j <- paired_j - (col_blocks - 1) * blockSize
+    row_blocks <- as.integer(ceiling(paired_i / blockSize))
+    col_blocks <- as.integer(ceiling(paired_j / blockSize))
+    local_i <- paired_i - (row_blocks - 1L) * blockSize
+    local_j <- paired_j - (col_blocks - 1L) * blockSize
 
     # Initialize output matrix
     names <- names.symDMatrix(x)
@@ -224,7 +224,7 @@ dimnames.symDMatrix <- function(x) {
         row_block_matches <- row_blocks == row_block
         for (col_block in unique(col_blocks[row_block_matches])) {
             cur_block <- row_block_matches & col_blocks == col_block
-            OUT[cbind(out_i[cur_block], out_j[cur_block])] <- x@data[[row_block]][[col_block - row_block + 1]][cbind(local_i[cur_block], local_j[cur_block])]
+            OUT[cbind(out_i[cur_block], out_j[cur_block])] <- x@data[[row_block]][[col_block - row_block + 1L]][cbind(local_i[cur_block], local_j[cur_block])]
         }
     }
 
