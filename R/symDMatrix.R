@@ -171,19 +171,23 @@ dimnames.symDMatrix <- function(x) {
 
     if (missing(i)) {
         i <- 1L:nX
-    } else if (class(i) == "logical") {
+    } else if (typeof(i) == "logical") {
         i <- rep_len(i, nX)
         i <- which(i)
-    } else if (class(i) == "character") {
+    } else if (typeof(i) == "character") {
         i <- match(i, rownames(x))
+    } else if (typeof(i) == "double") {
+        i <- as.integer(i)
     }
     if (missing(j)) {
         j <- 1L:pX
-    } else if (class(j) == "logical") {
+    } else if (typeof(j) == "logical") {
         j <- rep_len(j, pX)
         j <- which(j)
-    } else if (class(j) == "character") {
+    } else if (typeof(j) == "character") {
         j <- match(j, colnames(x))
+    } else if (typeof(j) == "double") {
+        j <- as.integer(j)
     }
 
     # Retrieve block size
