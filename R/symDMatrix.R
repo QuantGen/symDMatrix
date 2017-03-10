@@ -193,18 +193,18 @@ dimnames.symDMatrix <- function(x) {
     # Create all combinations of i and j and switch indices for combinations in
     # which i is larger than j to redirect queries to the lower triangle to the
     # upper triangle
-    global.i <- rep(i, each = length(j))
-    global.j <- rep(j, times = length(i))
-    switch <- global.i > global.j
-    flip <- global.i[switch]
-    global.i[switch] <- global.j[switch]
-    global.j[switch] <- flip
+    paired.i <- rep(i, each = length(j))
+    paired.j <- rep(j, times = length(i))
+    switch <- paired.i > paired.j
+    flip <- paired.i[switch]
+    paired.i[switch] <- paired.j[switch]
+    paired.j[switch] <- flip
 
     # Create retrieval index
-    row.blocks <- ceiling(global.i / blockSize)
-    col.blocks <- ceiling(global.j / blockSize)
-    local.i <- global.i - (row.blocks - 1) * blockSize
-    local.j <- global.j - (col.blocks - 1) * blockSize
+    row.blocks <- ceiling(paired.i / blockSize)
+    col.blocks <- ceiling(paired.j / blockSize)
+    local.i <- paired.i - (row.blocks - 1) * blockSize
+    local.j <- paired.j - (col.blocks - 1) * blockSize
 
     # Initialize output matrix
     names <- names.symDMatrix(x)
