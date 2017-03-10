@@ -27,20 +27,20 @@ setClass("symDMatrix", slots = c(data = "list", centers = "numeric", scales = "n
 #' any, when creating the symmetric matrix.
 #' @return A [symDMatrix-class] object.
 #' @export
-symDMatrix <- function(dataFiles, centers = 0, scales = 1) {
-    counter <- 1
-    nBlocks <- (-1 + sqrt(1 + 4 * 2 * length(dataFiles))) / 2
+symDMatrix <- function(dataFiles, centers = 0L, scales = 1L) {
+    counter <- 1L
+    nBlocks <- (-1L + sqrt(1L + 4L * 2L * length(dataFiles))) / 2L
     dataList <- vector(mode = "list", length = nBlocks)
-    for (i in 1:nBlocks) {
+    for (i in 1L:nBlocks) {
         dataList[[i]] <- vector(mode = "list", length = nBlocks - i)
         for (j in i:nBlocks) {
             loadingEnv <- new.env()
             load(file = dataFiles[[counter]], envir = loadingEnv)
             # TODO: Assumes only one object per data file
-            objectName <- ls(envir = loadingEnv)[1]
+            objectName <- ls(envir = loadingEnv)[1L]
             object <- get(objectName, envir = loadingEnv)
-            dataList[[i]][[j - i + 1]] <- object
-            counter <- counter + 1
+            dataList[[i]][[j - i + 1L]] <- object
+            counter <- counter + 1L
         }
     }
     G <- new("symDMatrix", data = dataList, centers = centers, scales = scales)
@@ -60,7 +60,7 @@ symDMatrix <- function(dataFiles, centers = 0, scales = 1) {
 #' using the name G.RData.
 #' @return A [symDMatrix-class] object.
 #' @export
-as.symDMatrix <- function(x, nBlocks = 3, vmode = "double", folder = randomString(), saveRData = TRUE) {
+as.symDMatrix <- function(x, nBlocks = 3L, vmode = "double", folder = randomString(), saveRData = TRUE) {
 
     n <- nrow(x)
 
@@ -77,25 +77,25 @@ as.symDMatrix <- function(x, nBlocks = 3, vmode = "double", folder = randomStrin
     blockSize <- ceiling(n / nBlocks)
 
     # Determe block size and subjects of each block
-    index <- matrix(data = integer(), nrow = nBlocks, ncol = 3)
-    index[1, ] <- c(1, 1, blockSize)
-    if (nBlocks > 1) {
-        for (i in 2:nBlocks) {
-            index[i, 1] <- i
-            index[i, 2] <- index[(i - 1), 3] + 1
-            index[i, 3] <- min(index[i, 2] + blockSize - 1, n)
+    index <- matrix(data = integer(), nrow = nBlocks, ncol = 3L)
+    index[1L, ] <- c(1L, 1L, blockSize)
+    if (nBlocks > 1L) {
+        for (i in 2L:nBlocks) {
+            index[i, 1L] <- i
+            index[i, 2L] <- index[(i - 1L), 3L] + 1L
+            index[i, 3L] <- min(index[i, 2L] + blockSize - 1L, n)
         }
     }
 
     dataList <- vector(mode = "list", length = nBlocks)
-    ini <- 1
-    end <- 0
-    for (i in 1:nBlocks) {
-        rowIndex <- seq(index[i, 2], index[i, 3])
+    ini <- 1L
+    end <- 0L
+    for (i in 1L:nBlocks) {
+        rowIndex <- seq(index[i, 2L], index[i, 3L])
         dataList[[i]] <- vector(mode = "list", length = nBlocks - i)
         for (j in i:nBlocks) {
-            colIndex <- seq(index[j, 2], index[j, 3])
-            k <- j - i + 1
+            colIndex <- seq(index[j, 2L], index[j, 3L])
+            k <- j - i + 1L
             block <- ff::ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode,
                             initdata = x[rowIndex, colIndex],
                             filename = paste0("data_", i, "_", j, ".bin"))
@@ -106,7 +106,7 @@ as.symDMatrix <- function(x, nBlocks = 3, vmode = "double", folder = randomStrin
             dataList[[i]][[k]] <- block
         }
     }
-    G <- new("symDMatrix", data = dataList, centers = 0, scales = 0)
+    G <- new("symDMatrix", data = dataList, centers = 0L, scales = 0L)
     if (saveRData) {
         save(G, file = "G.RData")
     }
@@ -126,7 +126,7 @@ is.matrix.symDMatrix <- function(x) {
 
 #' @export
 dim.symDMatrix <- function(x) {
-    p <- sum(sapply(x@data[[1]], ncol))
+    p <- sum(sapply(x@data[[1L]], ncol))
     c(p, p)
 }
 
@@ -138,7 +138,7 @@ length.symDMatrix <- function(x) {
 
 
 names.symDMatrix <- function(x) {
-    blockNames <- lapply(x@data[[1]], function(block) {
+    blockNames <- lapply(x@data[[1L]], function(block) {
         colnames(block)
     })
     isNULL <- sapply(blockNames, function(blockName) {
@@ -170,7 +170,7 @@ dimnames.symDMatrix <- function(x) {
     pX <- ncol(x)
 
     if (missing(i)) {
-        i <- 1:nX
+        i <- 1L:nX
     } else if (class(i) == "logical") {
         i <- rep_len(i, nX)
         i <- which(i)
@@ -178,7 +178,7 @@ dimnames.symDMatrix <- function(x) {
         i <- match(i, rownames(x))
     }
     if (missing(j)) {
-        j <- 1:pX
+        j <- 1L:pX
     } else if (class(j) == "logical") {
         j <- rep_len(j, pX)
         j <- which(j)
@@ -188,7 +188,7 @@ dimnames.symDMatrix <- function(x) {
 
     # Retrieve block size
     # TODO: do not assume that all blocks have the same size
-    blockSize <- ncol(x@data[[1]][[1]])
+    blockSize <- ncol(x@data[[1L]][[1L]])
 
     # Create all combinations of i and j and switch indices for combinations in
     # which i is larger than j to redirect queries to the lower triangle to the
@@ -216,8 +216,8 @@ dimnames.symDMatrix <- function(x) {
     OUT <- matrix(data = double(), nrow = length(i), ncol = length(j), dimnames = dimnames)
 
     # Create output index
-    out_i <- rep(1:length(i), each = length(j))
-    out_j <- rep(1:length(j), times = length(i))
+    out_i <- rep(1L:length(i), each = length(j))
+    out_j <- rep(1L:length(j), times = length(i))
 
     # Retrieve elements by block
     for (row_block in unique(row_blocks)) {
@@ -228,7 +228,7 @@ dimnames.symDMatrix <- function(x) {
         }
     }
 
-    if (drop == TRUE && (length(i) == 1 || length(j) == 1)) {
+    if (drop == TRUE && (length(i) == 1L || length(j) == 1L)) {
         return(OUT[, ])
     } else {
         return(OUT)
@@ -260,9 +260,9 @@ load.symDMatrix <- function(file, envir = parent.frame()) {
             setwd(dirname(file))
             # Open ff objects
             nBlocks <- nBlocks(object)
-            for (i in 1:nBlocks) {
+            for (i in 1L:nBlocks) {
                 for (j in i:nBlocks) {
-                    ff::open.ff(object@data[[i]][[j - i + 1]])
+                    ff::open.ff(object@data[[i]][[j - i + 1L]])
                 }
             }
             # Restore the working directory
@@ -279,7 +279,7 @@ load.symDMatrix <- function(file, envir = parent.frame()) {
 #'
 #' @param x A [symDMatrix-class] object.
 #' @export
-nBlocks <- function(x) length(x@data[[1]])
+nBlocks <- function(x) length(x@data[[1L]])
 
 
 #' Returns the column/row block size of a [symDMatrix-class] object. Note, the
@@ -287,7 +287,7 @@ nBlocks <- function(x) length(x@data[[1]])
 #'
 #' @param x A [symDMatrix-class] object.
 #' @export
-blockSize <- function(x) nrow(x@data[[1]][[1]])
+blockSize <- function(x) nrow(x@data[[1L]][[1L]])
 
 
 #' Returns the block structure of a [symDMatrix-class] object.
@@ -296,18 +296,18 @@ blockSize <- function(x) nrow(x@data[[1]][[1]])
 #' @export
 blocks <- function(x) {
     n <- length(x@data)
-    OUT <- matrix(nrow = n, ncol = 3)
+    OUT <- matrix(nrow = n, ncol = 3L)
     colnames(OUT) <- c("block", "ini", "end")
-    end <- 0
-    for (i in 1:n) {
-        ini <- end + 1
-        end <- ini + nrow(x@data[[i]][[1]]) - 1
+    end <- 0L
+    for (i in 1L:n) {
+        ini <- end + 1L
+        end <- ini + nrow(x@data[[i]][[1L]]) - 1L
         OUT[i, ] <- c(i, ini, end)
     }
     return(OUT)
 }
 
 
-randomString <- function(n = 10) {
-    paste(sample(c(0:9, letters, LETTERS), size = n, replace = TRUE), collapse = "")
+randomString <- function(n = 10L) {
+    paste(sample(c(0L:9L, letters, LETTERS), size = n, replace = TRUE), collapse = "")
 }
