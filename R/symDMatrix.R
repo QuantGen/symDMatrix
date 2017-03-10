@@ -201,10 +201,10 @@ dimnames.symDMatrix <- function(x) {
     global.j[switch] <- flip
 
     # Create retrieval index
-    row.chunks <- ceiling(global.i / blockSize)
-    col.chunks <- ceiling(global.j / blockSize)
-    local.i <- global.i - (row.chunks - 1) * blockSize
-    local.j <- global.j - (col.chunks - 1) * blockSize
+    row.blocks <- ceiling(global.i / blockSize)
+    col.blocks <- ceiling(global.j / blockSize)
+    local.i <- global.i - (row.blocks - 1) * blockSize
+    local.j <- global.j - (col.blocks - 1) * blockSize
 
     # Initialize output matrix
     names <- names.symDMatrix(x)
@@ -220,12 +220,12 @@ dimnames.symDMatrix <- function(x) {
     out.j <- rep(1:length(j), times = length(i))
 
     # Retrieve elements by block
-    for (row.chunk in unique(row.chunks)) {
-        for (col.chunk in unique(col.chunks[which(row.chunks == row.chunk)])) {
-            cur.chunk <- which(row.chunks == row.chunk & col.chunks == col.chunk)
-            chunk.idx <- (local.j[cur.chunk] - 1) * nrow(x@data[[row.chunk]][[col.chunk - row.chunk + 1]]) + local.i[cur.chunk]
-            out.idx <- (out.j[cur.chunk] - 1) * length(i) + out.i[cur.chunk]
-            OUT[out.idx] <- x@data[[row.chunk]][[col.chunk - row.chunk + 1]][chunk.idx]
+    for (row.block in unique(row.blocks)) {
+        for (col.block in unique(col.blocks[which(row.blocks == row.block)])) {
+            cur.block <- which(row.blocks == row.block & col.blocks == col.block)
+            block.idx <- (local.j[cur.block] - 1) * nrow(x@data[[row.block]][[col.block - row.block + 1]]) + local.i[cur.block]
+            out.idx <- (out.j[cur.block] - 1) * length(i) + out.i[cur.block]
+            OUT[out.idx] <- x@data[[row.block]][[col.block - row.block + 1]][block.idx]
         }
     }
 
