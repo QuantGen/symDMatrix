@@ -224,9 +224,7 @@ dimnames.symDMatrix <- function(x) {
         row_block_matches <- row_blocks == row_block
         for (col_block in unique(col_blocks[row_block_matches])) {
             cur_block <- row_block_matches & col_blocks == col_block
-            block_idx <- (local_j[cur_block] - 1) * nrow(x@data[[row_block]][[col_block - row_block + 1]]) + local_i[cur_block]
-            out_idx <- (out_j[cur_block] - 1) * length(i) + out_i[cur_block]
-            OUT[out_idx] <- x@data[[row_block]][[col_block - row_block + 1]][block_idx]
+            OUT[cbind(out_i[cur_block], out_j[cur_block])] <- x@data[[row_block]][[col_block - row_block + 1]][cbind(local_i[cur_block], local_j[cur_block])]
         }
     }
 
