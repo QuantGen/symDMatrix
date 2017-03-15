@@ -190,6 +190,9 @@ dimnames.symDMatrix <- function(x) {
         j <- as.integer(j)
     }
 
+    n <- length(i)
+    p <- length(j)
+
     # Retrieve block size
     # TODO: do not assume that all blocks have the same size
     blockSize <- blockSize(x)
@@ -197,8 +200,8 @@ dimnames.symDMatrix <- function(x) {
     # Create all combinations of i and j and switch indices for combinations in
     # which i is larger than j to redirect queries to the lower triangle to the
     # upper triangle
-    paired_i <- rep(i, each = length(j))
-    paired_j <- rep(j, times = length(i))
+    paired_i <- rep(i, each = p)
+    paired_j <- rep(j, times = n)
     switch <- paired_i > paired_j
     flip <- paired_i[switch]
     paired_i[switch] <- paired_j[switch]
@@ -217,22 +220,25 @@ dimnames.symDMatrix <- function(x) {
     } else {
         dimnames <- NULL
     }
-    OUT <- matrix(data = double(), nrow = length(i), ncol = length(j), dimnames = dimnames)
+    OUT <- matrix(data = double(), nrow = n, ncol = p, dimnames = dimnames)
 
     # Create output index
-    out_i <- rep(1L:length(i), each = length(j))
-    out_j <- rep(1L:length(j), times = length(i))
+    out_i <- rep(1L:n, each = p)
+    out_j <- rep(1L:p, times = n)
 
     # Retrieve elements by block
     for (row_block in unique(row_blocks)) {
         row_block_matches <- row_blocks == row_block
         for (col_block in unique(col_blocks[row_block_matches])) {
             cur_block <- row_block_matches & col_blocks == col_block
-            OUT[cbind(out_i[cur_block], out_j[cur_block])] <- x@data[[row_block]][[col_block - row_block + 1L]][cbind(local_i[cur_block], local_j[cur_block])]
+            block <- x@data[[row_block]][[col_block - row_block + 1L]]
+            out_idx <- (out_j[cur_block] - 1L) * n + out_i[cur_block]
+            local_idx <- (local_j[cur_block] - 1L) * nrow(block) + local_i[cur_block]
+            OUT[out_idx] <- block[local_idx]
         }
     }
 
-    if (drop == TRUE && (length(i) == 1L || length(j) == 1L)) {
+    if (drop == TRUE && (n == 1L || p == 1L)) {
         return(OUT[, ])
     } else {
         return(OUT)
