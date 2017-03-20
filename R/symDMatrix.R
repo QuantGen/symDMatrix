@@ -13,42 +13,6 @@
 setClass("symDMatrix", slots = c(data = "list", centers = "numeric", scales = "numeric"))
 
 
-#' A Constructor for Creating symDMatrix Objects.
-#'
-#' A [symDMatrix-class] is a symmetric matrix partitioned into memory-mapped
-#' blocks. Because the matrix is symmetric, only the diagonal and
-#' upper-triangular blocks are stored. Each block is an `ff` object.
-#'
-#' @param dataFiles A character vector with names of the `ff` files that
-#' contain the data needed to create the object. The files must be ordered by
-#' block, G11, G12, G13, ..., G1q, G22, G23, ..., Gqq.
-#' @param centers (numeric) A vector storing the means used, if any, when
-#' creating the symmetric matrix.
-#' @param scales (numeric) A vector storing the standard deviations used, if
-#' any, when creating the symmetric matrix.
-#' @return A [symDMatrix-class] object.
-#' @export
-symDMatrix <- function(dataFiles, centers = 0L, scales = 1L) {
-    counter <- 1L
-    nBlocks <- as.integer((-1L + sqrt(1L + 4L * 2L * length(dataFiles))) / 2L)
-    dataList <- vector(mode = "list", length = nBlocks)
-    for (i in 1L:nBlocks) {
-        dataList[[i]] <- vector(mode = "list", length = nBlocks - i)
-        for (j in i:nBlocks) {
-            loadingEnv <- new.env()
-            load(file = dataFiles[[counter]], envir = loadingEnv)
-            # TODO: Assumes only one object per data file
-            objectName <- ls(envir = loadingEnv)[1L]
-            object <- get(objectName, envir = loadingEnv)
-            dataList[[i]][[j - i + 1L]] <- object
-            counter <- counter + 1L
-        }
-    }
-    G <- new("symDMatrix", data = dataList, centers = centers, scales = scales)
-    return(G)
-}
-
-
 #' @export
 is.matrix.symDMatrix <- function(x) {
     TRUE
@@ -332,6 +296,28 @@ as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = ran
     # Restore working directory
     setwd(curDir)
 
+    return(G)
+}
+
+
+#' @export
+as.symDMatrix.list <- function(x, centers = 0L, scales = 1L) {
+    counter <- 1L
+    nBlocks <- as.integer((-1L + sqrt(1L + 4L * 2L * length(x))) / 2L)
+    dataList <- vector(mode = "list", length = nBlocks)
+    for (i in 1L:nBlocks) {
+        dataList[[i]] <- vector(mode = "list", length = nBlocks - i)
+        for (j in i:nBlocks) {
+            loadingEnv <- new.env()
+            load(file = x[[counter]], envir = loadingEnv)
+            # TODO: Assumes only one object per data file
+            objectName <- ls(envir = loadingEnv)[1L]
+            object <- get(objectName, envir = loadingEnv)
+            dataList[[i]][[j - i + 1L]] <- object
+            counter <- counter + 1L
+        }
+    }
+    G <- new("symDMatrix", data = dataList, centers = centers, scales = scales)
     return(G)
 }
 
