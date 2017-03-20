@@ -249,18 +249,19 @@ blockSize <- function(x, last = FALSE) {
 #' Returns the Block Structure of a symDMatrix Object.
 #'
 #' @param x A [symDMatrix-class] object.
+#' @return A matrix.
 #' @export
-blocks <- function(x) {
+blockIndex <- function(x) {
     n <- length(x@data)
-    OUT <- matrix(nrow = n, ncol = 3L)
-    colnames(OUT) <- c("block", "ini", "end")
+    index <- matrix(nrow = n, ncol = 3L)
+    colnames(index) <- c("block", "ini", "end")
     end <- 0L
     for (i in 1L:n) {
         ini <- end + 1L
         end <- ini + nrow(x@data[[i]][[1L]]) - 1L
-        OUT[i, ] <- c(i, ini, end)
+        index[i, ] <- c(i, ini, end)
     }
-    return(OUT)
+    return(index)
 }
 
 
