@@ -16,6 +16,14 @@ test_that("diag", {
 
 })
 
+test_that("blockSize", {
+
+    expect_equal(blockSize(G), 17)
+    expect_equal(blockSize(G, last = FALSE), 17)
+    expect_equal(blockSize(G, last = TRUE), 16)
+
+})
+
 test_that("subsetting", {
 
     expect_equal(G[], G2[])

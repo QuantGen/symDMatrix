@@ -2,13 +2,21 @@
 % Please edit documentation in R/symDMatrix.R
 \name{blockSize}
 \alias{blockSize}
-\title{Returns the Column/Row Block Size of a symDMatrix Object.}
+\title{Returns the Block Size of a symDMatrix Object.}
 \usage{
-blockSize(x)
+blockSize(x, last = FALSE)
 }
 \arguments{
 \item{x}{A \linkS4class{symDMatrix} object.}
+
+\item{last}{A boolean indicating whether to return the block size of the
+last (\code{TRUE}) column/row block or any of the other blocks (\code{FALSE},
+default).}
+}
+\value{
+The block size of a \linkS4class{symDMatrix} object.
 }
 \description{
-The last column/row block may be smaller.
+The last block of a column/row may be smaller than the other blocks. Its
+size can be retrieved by setting \code{last} to \code{TRUE}.
 }
