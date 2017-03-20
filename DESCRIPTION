@@ -11,8 +11,8 @@ Description: A symmetric matrix is partitioned into blocks as follows: G11 G12
 Authors@R: c(
     person("Gustavo", "de los Campos", email = "gustavoc@msu.edu", role = c("aut", "cre")),
     person("Alexander", "Grueneberg", email = "alexander.grueneberg@googlemail.com", role = c("ctb")))
-URL: https://github.com/gdlc/symDMatrix
-BugReports: https://github.com/gdlc/symDMatrix/issues
+URL: https://github.com/QuantGen/symDMatrix
+BugReports: https://github.com/QuantGen/symDMatrix/issues
 Imports:
     methods,
     ff,
