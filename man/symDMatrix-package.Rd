@@ -7,3 +7,6 @@
 \description{
 A Package Providing Symmetric Matrices Assembled from Memory-Mapped Blocks.
 }
+\seealso{
+\linkS4class{symDMatrix} for the \code{symDMatrix} class.
+}
