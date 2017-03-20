@@ -39,6 +39,16 @@ setMethod("initialize", "symDMatrix", function(.Object, data, centers, scales) {
     if (!identical(blocksPerRow, seq(nBlocks, 1L))) {
         stop("data needs to be a nested list in the following structure: [[G11, G12, G13, ..., G1q], [G22, G23, ..., G2q], [...], [Gqq]]")
     }
+    # Block-level tests
+    for (i in seq(0L, nBlocks - 1L)) {
+        for (j in seq(1L, nBlocks - i)) {
+            block <- data[[i + 1L]][[j]]
+            # Test that all blocks are ff objects
+            if (!inherits(block, "ff_matrix")) {
+                stop("data: all blocks need to be ff_matrix objects")
+            }
+        }
+    }
     .Object@data <- data
     .Object@centers <- centers
     .Object@scales <- scales

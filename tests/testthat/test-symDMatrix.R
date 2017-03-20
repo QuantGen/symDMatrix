@@ -18,6 +18,10 @@ test_that("symDMatrix", {
     # Test that data has the right structure
     expect_error(symDMatrix(data = list(list(), list(), list())), "data needs to be a nested list in the following structure")
 
+    # Test that all blocks are ff objects
+    matrixBlock <- matrix(data = rnorm(25), nrow = 5, ncol = 5)
+    expect_error(symDMatrix(data = list(list(matrixBlock, matrixBlock, matrixBlock), list(matrixBlock, matrixBlock), list(matrixBlock))), "data: all blocks need to be ff_matrix objects")
+
 })
 
 test_that("diag", {
