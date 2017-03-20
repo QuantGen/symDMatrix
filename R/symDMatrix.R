@@ -12,7 +12,7 @@
 setClass("symDMatrix", slots = c(data = "list", centers = "numeric", scales = "numeric"))
 
 
-#' A constructor for creating [symDMatrix-class] objects.
+#' A constructor for creating symDMatrix objects.
 #'
 #' A [symDMatrix-class] is a symmetric matrix assembled from memory-mapped
 #' blocks. Because the matrix is symmetric, only the diagonal and
@@ -48,8 +48,8 @@ symDMatrix <- function(dataFiles, centers = 0L, scales = 1L) {
 }
 
 
-#' Coerce a RAM numeric matrix (assumed to be symmetric) into a
-#' [symDMatrix-class] object.
+#' Coerce a RAM numeric matrix (assumed to be symmetric) into a symDMatrix
+#' object.
 #'
 #' @param x A numeric matrix.
 #' @param nBlocks The number of column (also row) blocks to be used.
@@ -247,7 +247,7 @@ dimnames.symDMatrix <- function(x) {
 }
 
 
-#' A function to load [symDMatrix-class] objects into an R session.
+#' A function to load symDMatrix objects into an R session.
 #'
 #' Conceptually this function is similar to [base::load()]. However,
 #' [load.symDMatrix()] also opens the connections to the `ff` files.
@@ -285,22 +285,22 @@ load.symDMatrix <- function(file, envir = parent.frame()) {
 }
 
 
-#' Determines the number of column/row blocks of a [symDMatrix-class] object.
+#' Determines the number of column/row blocks of a symDMatrix object.
 #'
 #' @param x A [symDMatrix-class] object.
 #' @export
 nBlocks <- function(x) length(x@data[[1L]])
 
 
-#' Returns the column/row block size of a [symDMatrix-class] object. Note, the
-#' last column/row block may be smaller.
+#' Returns the column/row block size of a symDMatrix object. Note, the last
+#' column/row block may be smaller.
 #'
 #' @param x A [symDMatrix-class] object.
 #' @export
 blockSize <- function(x) nrow(x@data[[1L]][[1L]])
 
 
-#' Returns the block structure of a [symDMatrix-class] object.
+#' Returns the block structure of a symDMatrix object.
 #'
 #' @param x A [symDMatrix-class] object.
 #' @export

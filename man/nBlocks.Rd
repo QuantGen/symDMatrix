@@ -2,7 +2,7 @@
 % Please edit documentation in R/symDMatrix.R
 \name{nBlocks}
 \alias{nBlocks}
-\title{Determines the number of column/row blocks of a \linkS4class{symDMatrix} object.}
+\title{Determines the number of column/row blocks of a symDMatrix object.}
 \usage{
 nBlocks(x)
 }
@@ -10,5 +10,5 @@ nBlocks(x)
 \item{x}{A \linkS4class{symDMatrix} object.}
 }
 \description{
-Determines the number of column/row blocks of a \linkS4class{symDMatrix} object.
+Determines the number of column/row blocks of a symDMatrix object.
 }

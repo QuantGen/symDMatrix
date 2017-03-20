@@ -2,10 +2,10 @@
 % Please edit documentation in R/symDMatrix.R
 \name{as.symDMatrix}
 \alias{as.symDMatrix}
-\title{Coerce a RAM numeric matrix (assumed to be symmetric) into a
-\linkS4class{symDMatrix} object.}
+\title{Coerce a RAM numeric matrix (assumed to be symmetric) into a symDMatrix
+object.}
 \usage{
-as.symDMatrix(x, nBlocks = 3, vmode = "double", folder = randomString(),
+as.symDMatrix(x, nBlocks = 3L, vmode = "double", folder = randomString(),
   saveRData = TRUE)
 }
 \arguments{
@@ -25,6 +25,6 @@ using the name G.RData.}
 A \linkS4class{symDMatrix} object.
 }
 \description{
-Coerce a RAM numeric matrix (assumed to be symmetric) into a
-\linkS4class{symDMatrix} object.
+Coerce a RAM numeric matrix (assumed to be symmetric) into a symDMatrix
+object.
 }

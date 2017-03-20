@@ -2,7 +2,7 @@
 % Please edit documentation in R/symDMatrix.R
 \name{blocks}
 \alias{blocks}
-\title{Returns the block structure of a \linkS4class{symDMatrix} object.}
+\title{Returns the block structure of a symDMatrix object.}
 \usage{
 blocks(x)
 }
@@ -10,5 +10,5 @@ blocks(x)
 \item{x}{A \linkS4class{symDMatrix} object.}
 }
 \description{
-Returns the block structure of a \linkS4class{symDMatrix} object.
+Returns the block structure of a symDMatrix object.
 }

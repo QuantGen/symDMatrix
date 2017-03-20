@@ -2,9 +2,9 @@
 % Please edit documentation in R/symDMatrix.R
 \name{symDMatrix}
 \alias{symDMatrix}
-\title{A constructor for creating \linkS4class{symDMatrix} objects.}
+\title{A constructor for creating symDMatrix objects.}
 \usage{
-symDMatrix(dataFiles, centers = 0, scales = 1)
+symDMatrix(dataFiles, centers = 0L, scales = 1L)
 }
 \arguments{
 \item{dataFiles}{A character vector with names of the \code{ff} files that
