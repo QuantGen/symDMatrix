@@ -6,7 +6,9 @@
 #' upper-triangular blocks are stored. Each block is an `ff` object.
 #'
 #' Internally, the blocks are organized as a nested list in the `@@data` slot,
-#' each list element representing one row of the symmetric matrix.
+#' each list element representing one row of the symmetric matrix. All blocks
+#' except the ones in the last column/row are expected to have the same
+#' dimensions.
 #'
 #' @exportClass symDMatrix
 setClass("symDMatrix", slots = c(data = "list", centers = "numeric", scales = "numeric"))
@@ -124,7 +126,6 @@ dimnames.symDMatrix <- function(x) {
     p <- length(j)
 
     # Retrieve block size
-    # TODO: do not assume that all blocks have the same size
     blockSize <- blockSize(x)
 
     # Create all combinations of i and j and switch indices for combinations in

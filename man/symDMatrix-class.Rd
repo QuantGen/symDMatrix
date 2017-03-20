@@ -12,5 +12,7 @@ upper-triangular blocks are stored. Each block is an \code{ff} object.
 }
 \details{
 Internally, the blocks are organized as a nested list in the \code{@data} slot,
-each list element representing one row of the symmetric matrix.
+each list element representing one row of the symmetric matrix. All blocks
+except the ones in the last column/row are expected to have the same
+dimensions.
 }
