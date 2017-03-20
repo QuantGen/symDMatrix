@@ -179,7 +179,7 @@ load.symDMatrix <- function(file, envir = parent.frame()) {
     names <- ls(envir = loadingEnv)
     for (name in names) {
         object <- get(name, envir = loadingEnv)
-        # Load genotypes of BGData objects
+        # Load genotypes of symDMatrix objects
         if (class(object) == "symDMatrix") {
             # Store current working directory and set working directory to
             # dirname of file
