@@ -3,7 +3,7 @@
 \name{as.symDMatrix}
 \alias{as.symDMatrix}
 \alias{as.symDMatrix.matrix}
-\title{Coerce an object to a symDMatrix object.}
+\title{Coerce an Object to a symDMatrix Object.}
 \usage{
 as.symDMatrix(x, ...)
 
@@ -19,5 +19,5 @@ as.symDMatrix(x, ...)
 A \linkS4class{symDMatrix} object.
 }
 \description{
-Coerce an object to a symDMatrix object.
+Coerce an Object to a symDMatrix Object.
 }

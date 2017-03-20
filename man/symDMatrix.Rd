@@ -2,7 +2,7 @@
 % Please edit documentation in R/symDMatrix.R
 \name{symDMatrix}
 \alias{symDMatrix}
-\title{A constructor for creating symDMatrix objects.}
+\title{A Constructor for Creating symDMatrix Objects.}
 \usage{
 symDMatrix(dataFiles, centers = 0L, scales = 1L)
 }

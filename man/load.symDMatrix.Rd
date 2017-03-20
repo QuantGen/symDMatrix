@@ -2,7 +2,7 @@
 % Please edit documentation in R/symDMatrix.R
 \name{load.symDMatrix}
 \alias{load.symDMatrix}
-\title{A function to load symDMatrix objects into an R session.}
+\title{A Function to Load symDMatrix Objects into an R Session.}
 \usage{
 load.symDMatrix(file, envir = parent.frame())
 }

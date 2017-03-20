@@ -3,8 +3,8 @@
 \docType{class}
 \name{symDMatrix-class}
 \alias{symDMatrix-class}
-\title{An S4 class that represents a symmetric matrix assembled from memory-mapped
-blocks.}
+\title{An S4 Class that Represents a Symmetric Matrix Assembled from Memory-Mapped
+Blocks.}
 \description{
 A \linkS4class{symDMatrix} is a symmetric matrix assembled from memory-mapped
 blocks. Because the matrix is symmetric, only the diagonal and

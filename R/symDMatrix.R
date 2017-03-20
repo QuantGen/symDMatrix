@@ -1,5 +1,5 @@
-#' An S4 class that represents a symmetric matrix assembled from memory-mapped
-#' blocks.
+#' An S4 Class that Represents a Symmetric Matrix Assembled from Memory-Mapped
+#' Blocks.
 #'
 #' A [symDMatrix-class] is a symmetric matrix assembled from memory-mapped
 #' blocks. Because the matrix is symmetric, only the diagonal and
@@ -12,7 +12,7 @@
 setClass("symDMatrix", slots = c(data = "list", centers = "numeric", scales = "numeric"))
 
 
-#' A constructor for creating symDMatrix objects.
+#' A Constructor for Creating symDMatrix Objects.
 #'
 #' A [symDMatrix-class] is a symmetric matrix assembled from memory-mapped
 #' blocks. Because the matrix is symmetric, only the diagonal and
@@ -177,7 +177,7 @@ dimnames.symDMatrix <- function(x) {
 }
 
 
-#' A function to load symDMatrix objects into an R session.
+#' A Function to Load symDMatrix Objects into an R Session.
 #'
 #' Conceptually this function is similar to [base::load()]. However,
 #' [load.symDMatrix()] also opens the connections to the `ff` files.
@@ -215,22 +215,23 @@ load.symDMatrix <- function(file, envir = parent.frame()) {
 }
 
 
-#' Determines the number of column/row blocks of a symDMatrix object.
+#' Determines the Number of Column/Row Blocks of a symDMatrix Object.
 #'
 #' @param x A [symDMatrix-class] object.
 #' @export
 nBlocks <- function(x) length(x@data[[1L]])
 
 
-#' Returns the column/row block size of a symDMatrix object. Note, the last
-#' column/row block may be smaller.
+#' Returns the Column/Row Block Size of a symDMatrix Object.
+#'
+#' The last column/row block may be smaller.
 #'
 #' @param x A [symDMatrix-class] object.
 #' @export
 blockSize <- function(x) nrow(x@data[[1L]][[1L]])
 
 
-#' Returns the block structure of a symDMatrix object.
+#' Returns the Block Structure of a symDMatrix Object.
 #'
 #' @param x A [symDMatrix-class] object.
 #' @export
@@ -248,7 +249,7 @@ blocks <- function(x) {
 }
 
 
-#' Coerce an object to a symDMatrix object.
+#' Coerce an Object to a symDMatrix Object.
 #'
 #' @param x A numeric matrix.
 #' @param ... Additional arguments.
