@@ -34,6 +34,11 @@ setMethod("initialize", "symDMatrix", function(.Object, data, centers, scales) {
     if (nBlocks == 0L) {
         stop("data needs to contain at least one block")
     }
+    # Test that data has the right structure
+    blocksPerRow <- sapply(data, length)
+    if (!identical(blocksPerRow, seq(nBlocks, 1L))) {
+        stop("data needs to be a nested list in the following structure: [[G11, G12, G13, ..., G1q], [G22, G23, ..., G2q], [...], [Gqq]]")
+    }
     .Object@data <- data
     .Object@centers <- centers
     .Object@scales <- scales

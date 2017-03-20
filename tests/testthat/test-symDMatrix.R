@@ -15,6 +15,9 @@ test_that("symDMatrix", {
     # Test that there is at least one block
     expect_error(symDMatrix(data = list()), "data needs to contain at least one block")
 
+    # Test that data has the right structure
+    expect_error(symDMatrix(data = list(list(), list(), list())), "data needs to be a nested list in the following structure")
+
 })
 
 test_that("diag", {
