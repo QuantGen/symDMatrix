@@ -29,6 +29,11 @@ symDMatrix <- setClass("symDMatrix", slots = c(data = "list", centers = "numeric
 #' @param scales A numeric vector to fill the `@@scales` slot of the
 #' [symDMatrix-class] object.
 setMethod("initialize", "symDMatrix", function(.Object, data, centers, scales) {
+    nBlocks <- length(data)
+    # Test that there is at least one block
+    if (nBlocks == 0L) {
+        stop("data needs to contain at least one block")
+    }
     .Object@data <- data
     .Object@centers <- centers
     .Object@scales <- scales

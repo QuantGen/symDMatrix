@@ -10,6 +10,13 @@ G2 <- G2 / mean(diag(G2))
 # Prepare dummy symDMatrix
 suppressMessages(load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix")))
 
+test_that("symDMatrix", {
+
+    # Test that there is at least one block
+    expect_error(symDMatrix(data = list()), "data needs to contain at least one block")
+
+})
+
 test_that("diag", {
 
     expect_equal(diag(G), diag(G2))
