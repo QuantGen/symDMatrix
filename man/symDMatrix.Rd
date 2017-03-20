@@ -21,7 +21,7 @@ any, when creating the symmetric matrix.}
 A \linkS4class{symDMatrix} object.
 }
 \description{
-A \linkS4class{symDMatrix} is a symmetric matrix assembled from memory-mapped
+A \linkS4class{symDMatrix} is a symmetric matrix partitioned into memory-mapped
 blocks. Because the matrix is symmetric, only the diagonal and
 upper-triangular blocks are stored. Each block is an \code{ff} object.
 }

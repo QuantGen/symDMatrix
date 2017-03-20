@@ -1,9 +1,8 @@
-#' An S4 Class that Represents a Symmetric Matrix Assembled from Memory-Mapped
-#' Blocks.
+#' A Class to Represent a Symmetric Matrix Paritioned into Memory-Mapped Blocks.
 #'
-#' A [symDMatrix-class] is a symmetric matrix assembled from memory-mapped
-#' blocks. Because the matrix is symmetric, only the diagonal and
-#' upper-triangular blocks are stored. Each block is an `ff` object.
+#' A `symDMatrix` is a symmetric matrix partitioned into memory-mapped blocks.
+#' Because the matrix is symmetric, only the diagonal and upper-triangular
+#' blocks are stored. Each block is an `ff` object.
 #'
 #' Internally, the blocks are organized as a nested list in the `@@data` slot,
 #' each list element representing one row of the symmetric matrix. All blocks
@@ -16,7 +15,7 @@ setClass("symDMatrix", slots = c(data = "list", centers = "numeric", scales = "n
 
 #' A Constructor for Creating symDMatrix Objects.
 #'
-#' A [symDMatrix-class] is a symmetric matrix assembled from memory-mapped
+#' A [symDMatrix-class] is a symmetric matrix partitioned into memory-mapped
 #' blocks. Because the matrix is symmetric, only the diagonal and
 #' upper-triangular blocks are stored. Each block is an `ff` object.
 #'
