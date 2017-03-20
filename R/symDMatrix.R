@@ -218,8 +218,11 @@ load.symDMatrix <- function(file, envir = parent.frame()) {
 #' Determines the Number of Column/Row Blocks of a symDMatrix Object.
 #'
 #' @param x A [symDMatrix-class] object.
+#' @return The number of column/row blocks of a [symDMatrix-class] object.
 #' @export
-nBlocks <- function(x) length(x@data[[1L]])
+nBlocks <- function(x) {
+    length(x@data[[1L]])
+}
 
 
 #' Returns the Block Size of a symDMatrix Object.

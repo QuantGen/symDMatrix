@@ -16,6 +16,12 @@ test_that("diag", {
 
 })
 
+test_that("nBlocks", {
+
+    expect_equal(nBlocks(G), 3)
+
+})
+
 test_that("blockSize", {
 
     expect_equal(blockSize(G), 17)
