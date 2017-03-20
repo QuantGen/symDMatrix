@@ -9,8 +9,31 @@
 #' except the ones in the last column/row are expected to have the same
 #' dimensions.
 #'
+#' @export symDMatrix
 #' @exportClass symDMatrix
-setClass("symDMatrix", slots = c(data = "list", centers = "numeric", scales = "numeric"))
+symDMatrix <- setClass("symDMatrix", slots = c(data = "list", centers = "numeric", scales = "numeric"))
+
+
+#' Creates a New symDMatrix Instance.
+#'
+#' This method is run when a [symDMatrix-class] object is created using
+#' `symDMatrix(...)` or `new("symDMatrix", ...)`.
+#'
+#' @param .Object The [symDMatrix-class] instance to be initialized. This
+#' argument is passed in by R and can be ignored, but still needs to be
+#' documented.
+#' @param data A nested list to fill the `@@data` slot of the
+#' [symDMatrix-class] object.
+#' @param centers A numeric vector to fill the `@@centers` slot of the
+#' [symDMatrix-class] object.
+#' @param scales A numeric vector to fill the `@@scales` slot of the
+#' [symDMatrix-class] object.
+setMethod("initialize", "symDMatrix", function(.Object, data, centers, scales) {
+    .Object@data <- data
+    .Object@centers <- centers
+    .Object@scales <- scales
+    return(.Object)
+})
 
 
 #' @export
