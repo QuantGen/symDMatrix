@@ -2,29 +2,22 @@
 % Please edit documentation in R/symDMatrix.R
 \name{as.symDMatrix}
 \alias{as.symDMatrix}
-\title{Coerce a RAM numeric matrix (assumed to be symmetric) into a symDMatrix
-object.}
+\alias{as.symDMatrix.matrix}
+\title{Coerce an object to a symDMatrix object.}
 \usage{
-as.symDMatrix(x, nBlocks = 3L, vmode = "double", folder = randomString(),
-  saveRData = TRUE)
+as.symDMatrix(x, ...)
+
+\method{as.symDMatrix}{matrix}(x, nBlocks = 3L, vmode = "double",
+  folder = randomString(), saveRData = TRUE)
 }
 \arguments{
 \item{x}{A numeric matrix.}
 
-\item{nBlocks}{The number of column (also row) blocks to be used.}
-
-\item{vmode}{The vmode used to store the data in the \code{ff} objects.}
-
-\item{folder}{A name for a folder where to store the data of the resulting
-\linkS4class{symDMatrix}}
-
-\item{saveRData}{If TRUE, the metadata (the \linkS4class{symDMatrix}) is saved
-using the name G.RData.}
+\item{...}{Additional arguments.}
 }
 \value{
 A \linkS4class{symDMatrix} object.
 }
 \description{
-Coerce a RAM numeric matrix (assumed to be symmetric) into a symDMatrix
-object.
+Coerce an object to a symDMatrix object.
 }

@@ -48,76 +48,6 @@ symDMatrix <- function(dataFiles, centers = 0L, scales = 1L) {
 }
 
 
-#' Coerce a RAM numeric matrix (assumed to be symmetric) into a symDMatrix
-#' object.
-#'
-#' @param x A numeric matrix.
-#' @param nBlocks The number of column (also row) blocks to be used.
-#' @param vmode The vmode used to store the data in the `ff` objects.
-#' @param folder A name for a folder where to store the data of the resulting
-#' [symDMatrix-class]
-#' @param saveRData If TRUE, the metadata (the [symDMatrix-class]) is saved
-#' using the name G.RData.
-#' @return A [symDMatrix-class] object.
-#' @export
-as.symDMatrix <- function(x, nBlocks = 3L, vmode = "double", folder = randomString(), saveRData = TRUE) {
-
-    n <- nrow(x)
-
-    if (ncol(x) != n) {
-        stop("x must by a square matrix")
-    }
-
-    # Save current working directory before switching to destination path to
-    # support relative paths in ff objects
-    curDir <- getwd()
-    dir.create(folder)
-    setwd(folder)
-
-    blockSize <- as.integer(ceiling(n / nBlocks))
-
-    # Determe block size and subjects of each block
-    index <- matrix(data = integer(), nrow = nBlocks, ncol = 3L)
-    index[1L, ] <- c(1L, 1L, blockSize)
-    if (nBlocks > 1L) {
-        for (i in 2L:nBlocks) {
-            index[i, 1L] <- i
-            index[i, 2L] <- index[(i - 1L), 3L] + 1L
-            index[i, 3L] <- min(index[i, 2L] + blockSize - 1L, n)
-        }
-    }
-
-    dataList <- vector(mode = "list", length = nBlocks)
-    ini <- 1L
-    end <- 0L
-    for (i in 1L:nBlocks) {
-        rowIndex <- seq(index[i, 2L], index[i, 3L])
-        dataList[[i]] <- vector(mode = "list", length = nBlocks - i)
-        for (j in i:nBlocks) {
-            colIndex <- seq(index[j, 2L], index[j, 3L])
-            k <- j - i + 1L
-            block <- ff::ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode,
-                            initdata = x[rowIndex, colIndex],
-                            filename = paste0("data_", i, "_", j, ".bin"))
-            colnames(block) <- colnames(x)[colIndex]
-            rownames(block) <- rownames(x)[rowIndex]
-            bit::physical(block)$pattern <- "ff"
-            bit::physical(block)$filename <- paste0("data_", i, "_", j, ".bin")
-            dataList[[i]][[k]] <- block
-        }
-    }
-    G <- new("symDMatrix", data = dataList, centers = 0L, scales = 0L)
-    if (saveRData) {
-        save(G, file = "G.RData")
-    }
-
-    # Restore working directory
-    setwd(curDir)
-
-    return(G)
-}
-
-
 #' @export
 is.matrix.symDMatrix <- function(x) {
     TRUE
@@ -315,6 +245,77 @@ blocks <- function(x) {
         OUT[i, ] <- c(i, ini, end)
     }
     return(OUT)
+}
+
+
+#' Coerce an object to a symDMatrix object.
+#'
+#' @param x A numeric matrix.
+#' @param ... Additional arguments.
+#' @return A [symDMatrix-class] object.
+#' @export
+as.symDMatrix <- function(x, ...) {
+    UseMethod("as.symDMatrix")
+}
+
+
+#' @rdname as.symDMatrix
+#' @export
+as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = randomString(), saveRData = TRUE) {
+
+    n <- nrow(x)
+
+    if (ncol(x) != n) {
+        stop("x must by a square matrix")
+    }
+
+    # Save current working directory before switching to destination path to
+    # support relative paths in ff objects
+    curDir <- getwd()
+    dir.create(folder)
+    setwd(folder)
+
+    blockSize <- as.integer(ceiling(n / nBlocks))
+
+    # Determe block size and subjects of each block
+    index <- matrix(data = integer(), nrow = nBlocks, ncol = 3L)
+    index[1L, ] <- c(1L, 1L, blockSize)
+    if (nBlocks > 1L) {
+        for (i in 2L:nBlocks) {
+            index[i, 1L] <- i
+            index[i, 2L] <- index[(i - 1L), 3L] + 1L
+            index[i, 3L] <- min(index[i, 2L] + blockSize - 1L, n)
+        }
+    }
+
+    dataList <- vector(mode = "list", length = nBlocks)
+    ini <- 1L
+    end <- 0L
+    for (i in 1L:nBlocks) {
+        rowIndex <- seq(index[i, 2L], index[i, 3L])
+        dataList[[i]] <- vector(mode = "list", length = nBlocks - i)
+        for (j in i:nBlocks) {
+            colIndex <- seq(index[j, 2L], index[j, 3L])
+            k <- j - i + 1L
+            block <- ff::ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode,
+                            initdata = x[rowIndex, colIndex],
+                            filename = paste0("data_", i, "_", j, ".bin"))
+            colnames(block) <- colnames(x)[colIndex]
+            rownames(block) <- rownames(x)[rowIndex]
+            bit::physical(block)$pattern <- "ff"
+            bit::physical(block)$filename <- paste0("data_", i, "_", j, ".bin")
+            dataList[[i]][[k]] <- block
+        }
+    }
+    G <- new("symDMatrix", data = dataList, centers = 0L, scales = 0L)
+    if (saveRData) {
+        save(G, file = "G.RData")
+    }
+
+    # Restore working directory
+    setwd(curDir)
+
+    return(G)
 }
 
 
