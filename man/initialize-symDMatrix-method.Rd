@@ -5,7 +5,7 @@
 \alias{initialize,symDMatrix-method}
 \title{Creates a New symDMatrix Instance.}
 \usage{
-\S4method{initialize}{symDMatrix}(.Object, data, centers, scales)
+\S4method{initialize}{symDMatrix}(.Object, data, centers = 0L, scales = 1L)
 }
 \arguments{
 \item{.Object}{The \linkS4class{symDMatrix} instance to be initialized. This
