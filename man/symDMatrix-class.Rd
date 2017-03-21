@@ -3,15 +3,36 @@
 \docType{class}
 \name{symDMatrix-class}
 \alias{symDMatrix-class}
-\title{A Class to Represent a Symmetric Matrix Paritioned into Memory-Mapped Blocks.}
+\alias{symDMatrix}
+\title{A Class to Represent a Symmetric Matrix Paritioned into Memory-Mapped
+Blocks.}
 \description{
 A \code{symDMatrix} is a symmetric matrix partitioned into memory-mapped blocks.
 Because the matrix is symmetric, only the diagonal and upper-triangular
-blocks are stored. Each block is an \code{ff} object.
+blocks are stored. Each block is a memory-efficient \code{ff} object. A
+\code{symDMatrix} object behaves similarly to a regular \code{matrix} by implementing
+key methods such as \code{[}, \code{dim}, and \code{dimnames}.
 }
-\details{
-Internally, the blocks are organized as a nested list in the \code{@data} slot,
-each list element representing one row of the symmetric matrix. All blocks
+\section{Slots}{
+
+\describe{
+\item{\code{data}}{A nested list in the form of \code{[[G11, G12, G13, ..., G1q],
+[G22, G23, ..., G2q], [...], [Gqq]]}, each list element representing one row
+of an upper-triangular symmetrix matrix. There are \code{(q * (q + 1)) / 2}
+blocks in total and each row consists of \code{q - i} blocks, where \code{q} is the
+number of column/row blocks and \code{i} is the current row index. All blocks
 except the ones in the last column/row are expected to have the same
-dimensions.
+dimensions.}
+
+\item{\code{centers}}{A numeric vector storing the means used when creating the
+symmetric matrix.}
+
+\item{\code{scales}}{A numeric vector storing the standard deviations used when
+creating the symmetric matrix.}
+}}
+
+\seealso{
+\link[=initialize,symDMatrix-method]{initialize()} to create a
+\code{symDMatrix} object from scratch, \code{\link[=as.symDMatrix]{as.symDMatrix()}} to create a \code{symDMatrix}
+object from other objects.
 }

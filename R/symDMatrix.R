@@ -1,14 +1,26 @@
-#' A Class to Represent a Symmetric Matrix Paritioned into Memory-Mapped Blocks.
+#' A Class to Represent a Symmetric Matrix Paritioned into Memory-Mapped
+#' Blocks.
 #'
 #' A `symDMatrix` is a symmetric matrix partitioned into memory-mapped blocks.
 #' Because the matrix is symmetric, only the diagonal and upper-triangular
-#' blocks are stored. Each block is an `ff` object.
+#' blocks are stored. Each block is a memory-efficient `ff` object. A
+#' `symDMatrix` object behaves similarly to a regular `matrix` by implementing
+#' key methods such as `[`, `dim`, and `dimnames`.
 #'
-#' Internally, the blocks are organized as a nested list in the `@@data` slot,
-#' each list element representing one row of the symmetric matrix. All blocks
+#' @slot data A nested list in the form of \code{[[G11, G12, G13, ..., G1q],
+#' [G22, G23, ..., G2q], [...], [Gqq]]}, each list element representing one row
+#' of an upper-triangular symmetrix matrix. There are `(q * (q + 1)) / 2`
+#' blocks in total and each row consists of `q - i` blocks, where `q` is the
+#' number of column/row blocks and `i` is the current row index. All blocks
 #' except the ones in the last column/row are expected to have the same
 #' dimensions.
-#'
+#' @slot centers A numeric vector storing the means used when creating the
+#' symmetric matrix.
+#' @slot scales A numeric vector storing the standard deviations used when
+#' creating the symmetric matrix.
+#' @seealso [initialize()][initialize,symDMatrix-method()] to create a
+#' `symDMatrix` object from scratch, [as.symDMatrix()] to create a `symDMatrix`
+#' object from other objects.
 #' @export symDMatrix
 #' @exportClass symDMatrix
 symDMatrix <- setClass("symDMatrix", slots = c(data = "list", centers = "numeric", scales = "numeric"))
