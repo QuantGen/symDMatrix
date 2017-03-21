@@ -251,12 +251,12 @@ dimnames.symDMatrix <- function(x) {
 }
 
 
-#' A Function to Load symDMatrix Objects into an R Session.
+#' Loads symDMatrix Objects from .RData Files.
 #'
-#' Conceptually this function is similar to [base::load()]. However,
-#' [load.symDMatrix()] also opens the connections to the `ff` files.
+#' This function is similar to [base::load()], but also opens the connections
+#' to the `ff` files.
 #'
-#' @param file The name of an .RData file (created using [base::save()]).
+#' @param file The name of an .RData file to be loaded.
 #' @param envir The environment where to load the data.
 #' @export
 load.symDMatrix <- function(file, envir = parent.frame()) {
