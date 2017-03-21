@@ -133,45 +133,71 @@ dimnames.symDMatrix <- function(x) {
 #' @export
 `[.symDMatrix` <- function(x, i, j, drop = TRUE) {
 
+    nargs <- nargs()
+
     nX <- nrow(x)
-    pX <- ncol(x)
 
-    if (missing(i)) {
-        i <- 1L:nX
-    } else if (typeof(i) == "logical") {
-        i <- rep_len(i, nX)
-        i <- which(i)
-    } else if (typeof(i) == "character") {
-        i <- match(i, rownames(x))
-    } else if (typeof(i) == "double") {
-        i <- as.integer(i)
+    # Single Index: x[i]
+    if (nargs == 2L && !missing(i) && missing(j)) {
+
+        singleIndex <- TRUE
+
+        n <- 1L
+        p <- length(i)
+
+        # Convert single index to multi index
+        k <- i - 1L
+        paired_i <- k %% nX
+        paired_j <- as.integer(k / nX)
+        paired_i <- paired_i + 1L
+        paired_j <- paired_j + 1L
+
+    # No index and multi Index: x[], or x[, ], and x[i, j], x[i, ], or x[, j]
+    } else {
+
+        singleIndex <- FALSE
+
+        pX <- ncol(x)
+
+        if (missing(i)) {
+            i <- 1L:nX
+        } else if (typeof(i) == "logical") {
+            i <- rep_len(i, nX)
+            i <- which(i)
+        } else if (typeof(i) == "character") {
+            i <- match(i, rownames(x))
+        } else if (typeof(i) == "double") {
+            i <- as.integer(i)
+        }
+        if (missing(j)) {
+            j <- 1L:pX
+        } else if (typeof(j) == "logical") {
+            j <- rep_len(j, pX)
+            j <- which(j)
+        } else if (typeof(j) == "character") {
+            j <- match(j, colnames(x))
+        } else if (typeof(j) == "double") {
+            j <- as.integer(j)
+        }
+
+        n <- length(i)
+        p <- length(j)
+
+        # Create all combinations of i and j
+        paired_i <- rep(i, each = p)
+        paired_j <- rep(j, times = n)
+
     }
-    if (missing(j)) {
-        j <- 1L:pX
-    } else if (typeof(j) == "logical") {
-        j <- rep_len(j, pX)
-        j <- which(j)
-    } else if (typeof(j) == "character") {
-        j <- match(j, colnames(x))
-    } else if (typeof(j) == "double") {
-        j <- as.integer(j)
-    }
 
-    n <- length(i)
-    p <- length(j)
-
-    # Retrieve block size
-    blockSize <- blockSize(x)
-
-    # Create all combinations of i and j and switch indices for combinations in
-    # which i is larger than j to redirect queries to the lower triangle to the
-    # upper triangle
-    paired_i <- rep(i, each = p)
-    paired_j <- rep(j, times = n)
+    # Switch indices for combinations in which i is larger than j to redirect
+    # queries to the lower triangle to the upper triangle
     switch <- paired_i > paired_j
     flip <- paired_i[switch]
     paired_i[switch] <- paired_j[switch]
     paired_j[switch] <- flip
+
+    # Retrieve block size
+    blockSize <- blockSize(x)
 
     # Create retrieval index
     row_blocks <- as.integer(ceiling(paired_i / blockSize))
@@ -181,7 +207,7 @@ dimnames.symDMatrix <- function(x) {
 
     # Initialize output matrix
     names <- names.symDMatrix(x)
-    if (!is.null(names)) {
+    if (!is.null(names) && !singleIndex) {
         dimnames <- list(names[i], names[j])
     } else {
         dimnames <- NULL

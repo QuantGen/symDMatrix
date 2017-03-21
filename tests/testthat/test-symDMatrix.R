@@ -111,13 +111,13 @@ test_that("subsetting", {
     expect_equal(G[c(TRUE, FALSE, TRUE), c(TRUE, FALSE, TRUE), drop = FALSE], G2[c(TRUE, FALSE, TRUE), c(TRUE, FALSE, TRUE), drop = FALSE])
     expect_equal(typeof(G[c(TRUE, FALSE, TRUE), ]), "double")
 
-    #expect_equal(G[1], G2[1]) # not yet implemented
-    #expect_equal(G[1:2], G2[1:2]) # not yet implemented
-    #expect_equal(G[2:1], G2[2:1]) # not yet implemented
-    #expect_equal(G[c(3, 1)], G2[c(3, 1)]) # not yet implemented
+    expect_equal(G[1], G2[1])
+    expect_equal(G[1:2], G2[1:2])
+    expect_equal(G[2:1], G2[2:1])
+    expect_equal(G[c(3, 1)], G2[c(3, 1)])
     #expect_equal(G[c(TRUE, FALSE, TRUE)], G2[c(TRUE, FALSE, TRUE)]) # not yet implemented
     #expect_equal(G[G2 > 1], G2[G2 > 1]) # not yet implemented
-    #expect_equal(typeof(G[1]), "double") # not yet implemented
+    expect_equal(typeof(G[1]), "double")
 
     expect_equal(G["per0_per0", ], G2["per0_per0", ])
     expect_equal(G[, "per0_per0"], G2[, "per0_per0"])
