@@ -34,6 +34,10 @@ setMethod("initialize", "symDMatrix", function(.Object, data, centers, scales) {
     if (nBlocks == 0L) {
         stop("data needs to contain at least one block")
     }
+    # Test that the first block is square
+    if (nrow(data[[1]][[1]]) != ncol(data[[1]][[1]])) {
+        stop("data: the first block needs to be square")
+    }
     # Test that data has the right structure
     blocksPerRow <- sapply(data, length)
     if (!identical(blocksPerRow, seq(nBlocks, 1L))) {

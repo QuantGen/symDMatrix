@@ -15,6 +15,10 @@ test_that("symDMatrix", {
     # Test that there is at least one block
     expect_error(symDMatrix(data = list()), "data needs to contain at least one block")
 
+    # Test that the first block is square
+    notSquare <- matrix(data = rnorm(20), nrow = 4, ncol = 5)
+    expect_error(symDMatrix(data = list(list(notSquare))), "data: the first block needs to be square")
+
     # Test that data has the right structure
     expect_error(symDMatrix(data = list(list(), list(), list())), "data needs to be a nested list in the following structure")
 
