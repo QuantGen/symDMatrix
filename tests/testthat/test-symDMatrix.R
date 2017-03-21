@@ -27,6 +27,10 @@ test_that("symDMatrix", {
     wrongRows <- ff::ff(initdata = rnorm(15), dim = c(3, 5))
     expect_error(symDMatrix(data = list(list(ffBlock, wrongRows, ffBlock), list(ffBlock, ffBlock), list(ffBlock))), "data: all blocks per row need the same number of rows")
 
+    # Test that all blocks per column have the same number of columns
+    wrongColumns <- ff::ff(initdata = rnorm(15), dim = c(5, 3))
+    expect_error(symDMatrix(data = list(list(ffBlock, wrongColumns, ffBlock), list(ffBlock, ffBlock), list(ffBlock))), "data: all blocks per column need the same number of columns")
+
 })
 
 test_that("diag", {

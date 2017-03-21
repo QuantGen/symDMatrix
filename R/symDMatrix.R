@@ -40,6 +40,7 @@ setMethod("initialize", "symDMatrix", function(.Object, data, centers, scales) {
         stop("data needs to be a nested list in the following structure: [[G11, G12, G13, ..., G1q], [G22, G23, ..., G2q], [...], [Gqq]]")
     }
     # Block-level tests
+    colDims <- rep(NA_integer_, nBlocks)
     for (i in seq(0L, nBlocks - 1L)) {
         rowDim <- NULL
         for (j in seq(1L, nBlocks - i)) {
@@ -54,6 +55,14 @@ setMethod("initialize", "symDMatrix", function(.Object, data, centers, scales) {
             } else {
                 if (nrow(block) != rowDim) {
                     stop("data: all blocks per row need the same number of rows")
+                }
+            }
+            # Test that all blocks per column have the same number of columns
+            if (is.na(colDims[j + i])) {
+                colDims[j + i] <- ncol(block)
+            } else {
+                if (ncol(block) != colDims[j + i]) {
+                    stop("data: all blocks per column need the same number of columns")
                 }
             }
         }
