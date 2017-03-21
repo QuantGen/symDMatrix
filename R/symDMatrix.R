@@ -34,19 +34,15 @@ setMethod("initialize", "symDMatrix", function(.Object, data, centers, scales) {
     if (nBlocks == 0L) {
         stop("data needs to contain at least one block")
     }
-    # Test that the first block is square
-    if (nrow(data[[1]][[1]]) != ncol(data[[1]][[1]])) {
-        stop("data: the first block needs to be square")
-    }
     # Test that data has the right structure
     blocksPerRow <- sapply(data, length)
     if (!identical(blocksPerRow, seq(nBlocks, 1L))) {
         stop("data needs to be a nested list in the following structure: [[G11, G12, G13, ..., G1q], [G22, G23, ..., G2q], [...], [Gqq]]")
     }
     # Block-level tests
+    rowDims <- rep(NA_integer_, nBlocks)
     colDims <- rep(NA_integer_, nBlocks)
     for (i in seq(0L, nBlocks - 1L)) {
-        rowDim <- NULL
         for (j in seq(1L, nBlocks - i)) {
             block <- data[[i + 1L]][[j]]
             # Test that all blocks are ff objects
@@ -54,10 +50,10 @@ setMethod("initialize", "symDMatrix", function(.Object, data, centers, scales) {
                 stop("data: all blocks need to be ff_matrix objects")
             }
             # Test that all blocks per row have the same number of rows
-            if (is.null(rowDim)) {
-                rowDim <- nrow(block)
+            if (is.na(rowDims[i + 1L])) {
+                rowDims[i + 1L] <- nrow(block)
             } else {
-                if (nrow(block) != rowDim) {
+                if (nrow(block) != rowDims[i + 1L]) {
                     stop("data: all blocks per row need the same number of rows")
                 }
             }
@@ -69,6 +65,17 @@ setMethod("initialize", "symDMatrix", function(.Object, data, centers, scales) {
                     stop("data: all blocks per column need the same number of columns")
                 }
             }
+        }
+    }
+    if (nBlocks > 1L) {
+        # Test that non-final blocks are square
+        if (any(rowDims[-length(rowDims)] != colDims[-length(colDims)])) {
+            stop("data: non-final blocks need to be square")
+        }
+    } else {
+        # Test that the first block is square
+        if (nrow(data[[1]][[1]]) != ncol(data[[1]][[1]])) {
+            stop("data: the first block needs to be square")
         }
     }
     .Object@data <- data

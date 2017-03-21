@@ -15,10 +15,6 @@ test_that("symDMatrix", {
     # Test that there is at least one block
     expect_error(symDMatrix(data = list()), "data needs to contain at least one block")
 
-    # Test that the first block is square
-    notSquare <- matrix(data = rnorm(20), nrow = 4, ncol = 5)
-    expect_error(symDMatrix(data = list(list(notSquare))), "data: the first block needs to be square")
-
     # Test that data has the right structure
     expect_error(symDMatrix(data = list(list(), list(), list())), "data needs to be a nested list in the following structure")
 
@@ -34,6 +30,13 @@ test_that("symDMatrix", {
     # Test that all blocks per column have the same number of columns
     wrongColumns <- ff::ff(initdata = rnorm(15), dim = c(5, 3))
     expect_error(symDMatrix(data = list(list(ffBlock, wrongColumns, ffBlock), list(ffBlock, ffBlock), list(ffBlock))), "data: all blocks per column need the same number of columns")
+
+    # Test that the first block is square
+    notSquare <- ff::ff(initdata = rnorm(20), dim = c(4, 5))
+    expect_error(symDMatrix(data = list(list(notSquare))), "data: the first block needs to be square")
+
+    # Test that all non-final blocks need to be square
+    expect_error(symDMatrix(data = list(list(ffBlock, wrongColumns, ffBlock), list(wrongColumns, ffBlock), list(ffBlock))), "data: non-final blocks need to be square")
 
 })
 
