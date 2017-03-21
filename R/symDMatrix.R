@@ -365,7 +365,7 @@ as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = ran
     n <- nrow(x)
 
     if (ncol(x) != n) {
-        stop("x must by a square matrix")
+        stop("x must be a square matrix")
     }
 
     # Save current working directory before switching to destination path to
@@ -374,9 +374,10 @@ as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = ran
     dir.create(folder)
     setwd(folder)
 
+    # Determine block size
     blockSize <- as.integer(ceiling(n / nBlocks))
 
-    # Determe block size and subjects of each block
+    # Determine subjects of each block
     index <- matrix(data = integer(), nrow = nBlocks, ncol = 3L)
     index[1L, ] <- c(1L, 1L, blockSize)
     if (nBlocks > 1L) {
@@ -387,26 +388,26 @@ as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = ran
         }
     }
 
+    # Create nested list
     dataList <- vector(mode = "list", length = nBlocks)
-    ini <- 1L
-    end <- 0L
     for (i in 1L:nBlocks) {
         rowIndex <- seq(index[i, 2L], index[i, 3L])
         dataList[[i]] <- vector(mode = "list", length = nBlocks - i)
         for (j in i:nBlocks) {
             colIndex <- seq(index[j, 2L], index[j, 3L])
-            k <- j - i + 1L
-            block <- ff::ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode,
-                            initdata = x[rowIndex, colIndex],
-                            filename = paste0("data_", i, "_", j, ".bin"))
+            block <- ff::ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode, initdata = x[rowIndex, colIndex], filename = paste0("data_", i, "_", j, ".bin"))
             colnames(block) <- colnames(x)[colIndex]
             rownames(block) <- rownames(x)[rowIndex]
             bit::physical(block)$pattern <- "ff"
             bit::physical(block)$filename <- paste0("data_", i, "_", j, ".bin")
-            dataList[[i]][[k]] <- block
+            dataList[[i]][[j - i + 1L]] <- block
         }
     }
-    G <- symDMatrix(data = dataList, centers = 0L, scales = 0L)
+
+    # Create symDMatrix object from nested list
+    G <- symDMatrix(data = dataList, centers = 0L, scales = 1L)
+
+    # Save RData object
     if (saveRData) {
         save(G, file = "G.RData")
     }
