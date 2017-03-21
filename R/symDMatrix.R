@@ -421,9 +421,9 @@ as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = ran
 #' @rdname as.symDMatrix
 #' @export
 as.symDMatrix.list <- function(x, centers = 0L, scales = 1L) {
-    counter <- 1L
     nBlocks <- as.integer((-1L + sqrt(1L + 4L * 2L * length(x))) / 2L)
     dataList <- vector(mode = "list", length = nBlocks)
+    counter <- 1L
     for (i in 1L:nBlocks) {
         dataList[[i]] <- vector(mode = "list", length = nBlocks - i)
         for (j in i:nBlocks) {
