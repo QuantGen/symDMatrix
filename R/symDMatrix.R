@@ -406,7 +406,7 @@ as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = ran
             dataList[[i]][[k]] <- block
         }
     }
-    G <- new("symDMatrix", data = dataList, centers = 0L, scales = 0L)
+    G <- symDMatrix(data = dataList, centers = 0L, scales = 0L)
     if (saveRData) {
         save(G, file = "G.RData")
     }
@@ -436,7 +436,7 @@ as.symDMatrix.list <- function(x, centers = 0L, scales = 1L) {
             counter <- counter + 1L
         }
     }
-    G <- new("symDMatrix", data = dataList, centers = centers, scales = scales)
+    G <- symDMatrix(data = dataList, centers = centers, scales = scales)
     return(G)
 }
 
