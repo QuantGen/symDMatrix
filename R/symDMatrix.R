@@ -418,6 +418,7 @@ as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = ran
 }
 
 
+#' @rdname as.symDMatrix
 #' @export
 as.symDMatrix.list <- function(x, centers = 0L, scales = 1L) {
     counter <- 1L

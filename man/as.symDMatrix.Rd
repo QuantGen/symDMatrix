@@ -3,12 +3,15 @@
 \name{as.symDMatrix}
 \alias{as.symDMatrix}
 \alias{as.symDMatrix.matrix}
+\alias{as.symDMatrix.list}
 \title{Coerce an Object to a symDMatrix Object.}
 \usage{
 as.symDMatrix(x, ...)
 
 \method{as.symDMatrix}{matrix}(x, nBlocks = 3L, vmode = "double",
   folder = randomString(), saveRData = TRUE)
+
+\method{as.symDMatrix}{list}(x, centers = 0L, scales = 1L)
 }
 \arguments{
 \item{x}{A numeric matrix.}
