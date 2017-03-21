@@ -13,5 +13,5 @@ nBlocks(x)
 The number of column/row blocks of a \linkS4class{symDMatrix} object.
 }
 \description{
-Determines the Number of Column/Row Blocks of a symDMatrix Object.
+Determines the number of column/row blocks of a \linkS4class{symDMatrix} object.
 }

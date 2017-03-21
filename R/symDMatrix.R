@@ -291,6 +291,8 @@ load.symDMatrix <- function(file, envir = parent.frame()) {
 
 #' Determines the Number of Column/Row Blocks of a symDMatrix Object.
 #'
+#' Determines the number of column/row blocks of a [symDMatrix-class] object.
+#'
 #' @param x A [symDMatrix-class] object.
 #' @return The number of column/row blocks of a [symDMatrix-class] object.
 #' @export
@@ -300,6 +302,8 @@ nBlocks <- function(x) {
 
 
 #' Returns the Block Size of a symDMatrix Object.
+#'
+#' Returns the block size of a [symDMatrix-class] object.
 #'
 #' The last block of a column/row may be smaller than the other blocks. Its
 #' size can be retrieved by setting `last` to `TRUE`.
@@ -322,6 +326,8 @@ blockSize <- function(x, last = FALSE) {
 
 #' Returns the Block Structure of a symDMatrix Object.
 #'
+#' Returns the block structure of a [symDMatrix-class] object.
+#'
 #' @param x A [symDMatrix-class] object.
 #' @return A matrix.
 #' @export
@@ -340,6 +346,8 @@ blockIndex <- function(x) {
 
 
 #' Coerce an Object to a symDMatrix Object.
+#'
+#' Coerce an object to a [symDMatrix-class] object.
 #'
 #' @param x A numeric matrix.
 #' @param ... Additional arguments.

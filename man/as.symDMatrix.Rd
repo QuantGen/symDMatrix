@@ -19,5 +19,5 @@ as.symDMatrix(x, ...)
 A \linkS4class{symDMatrix} object.
 }
 \description{
-Coerce an Object to a symDMatrix Object.
+Coerce an object to a \linkS4class{symDMatrix} object.
 }

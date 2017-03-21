@@ -17,6 +17,9 @@ default).}
 The block size of a \linkS4class{symDMatrix} object.
 }
 \description{
+Returns the block size of a \linkS4class{symDMatrix} object.
+}
+\details{
 The last block of a column/row may be smaller than the other blocks. Its
 size can be retrieved by setting \code{last} to \code{TRUE}.
 }

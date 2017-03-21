@@ -13,5 +13,5 @@ blockIndex(x)
 A matrix.
 }
 \description{
-Returns the Block Structure of a symDMatrix Object.
+Returns the block structure of a \linkS4class{symDMatrix} object.
 }
