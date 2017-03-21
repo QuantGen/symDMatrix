@@ -41,11 +41,20 @@ setMethod("initialize", "symDMatrix", function(.Object, data, centers, scales) {
     }
     # Block-level tests
     for (i in seq(0L, nBlocks - 1L)) {
+        rowDim <- NULL
         for (j in seq(1L, nBlocks - i)) {
             block <- data[[i + 1L]][[j]]
             # Test that all blocks are ff objects
             if (!inherits(block, "ff_matrix")) {
                 stop("data: all blocks need to be ff_matrix objects")
+            }
+            # Test that all blocks per row have the same number of rows
+            if (is.null(rowDim)) {
+                rowDim <- nrow(block)
+            } else {
+                if (nrow(block) != rowDim) {
+                    stop("data: all blocks per row need the same number of rows")
+                }
             }
         }
     }
