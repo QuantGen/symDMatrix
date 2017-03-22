@@ -2,16 +2,9 @@
 % Please edit documentation in R/symDMatrix.R
 \name{as.symDMatrix}
 \alias{as.symDMatrix}
-\alias{as.symDMatrix.matrix}
-\alias{as.symDMatrix.list}
 \title{Coerce an Object to a symDMatrix Object.}
 \usage{
 as.symDMatrix(x, ...)
-
-\method{as.symDMatrix}{matrix}(x, nBlocks = 3L, vmode = "double",
-  folder = randomString(), saveRData = TRUE)
-
-\method{as.symDMatrix}{list}(x, centers = 0L, scales = 1L)
 }
 \arguments{
 \item{x}{A numeric matrix.}
@@ -23,4 +16,8 @@ A \linkS4class{symDMatrix} object.
 }
 \description{
 Coerce an object to a \linkS4class{symDMatrix} object.
+}
+\seealso{
+\code{\link[=as.symDMatrix.matrix]{as.symDMatrix.matrix()}} to coerce a matrix or
+\code{\link[=as.symDMatrix.list]{as.symDMatrix.list()}} to coerce a list to a \linkS4class{symDMatrix} object.
 }

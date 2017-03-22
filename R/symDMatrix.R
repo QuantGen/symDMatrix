@@ -352,13 +352,27 @@ blockIndex <- function(x) {
 #' @param x A numeric matrix.
 #' @param ... Additional arguments.
 #' @return A [symDMatrix-class] object.
+#' @seealso [as.symDMatrix.matrix()] to coerce a matrix or
+#' [as.symDMatrix.list()] to coerce a list to a [symDMatrix-class] object.
 #' @export
 as.symDMatrix <- function(x, ...) {
     UseMethod("as.symDMatrix")
 }
 
 
-#' @rdname as.symDMatrix
+#' Coerce a Matrix to a symDMatrix Object.
+#'
+#' Coerce a numeric matrix (assumed to be symmetric) in RAM to a
+#' [symDMatrix-class] object.
+#'
+#' @param x A numeric matrix (assumed to be symmetric).
+#' @param nBlocks The number of column (also row) blocks to be used.
+#' @param vmode The vmode used to store the data in the `ff` objects.
+#' @param folder A name for a folder where to store the data of the resulting
+#' [symDMatrix-class] object.
+#' @param saveRData If TRUE, the metadata (the [symDMatrix-class]) is saved
+#' using the name `G.RData`.
+#' @return A [symDMatrix-class] object.
 #' @export
 as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = randomString(), saveRData = TRUE) {
 
@@ -419,7 +433,18 @@ as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = ran
 }
 
 
-#' @rdname as.symDMatrix
+#' Coerce a List to a symDMatrix Object.
+#'
+#' Coerce a list of names of `ff` files to a [symDMatrix-class] object.
+#'
+#' @param x A character vector with names of the `ff` files that contain the
+#' data needed to create the object. The files must be ordered by block, `G11,
+#' G12, G13, ..., G1q, G22, G23, ..., G2q, ..., Gqq`.
+#' @param centers A numeric vector to fill the `@@centers` slot of the
+#' [symDMatrix-class] object.
+#' @param scales A numeric vector to fill the `@@scales` slot of the
+#' [symDMatrix-class] object.
+#' @return A [symDMatrix-class] object.
 #' @export
 as.symDMatrix.list <- function(x, centers = 0L, scales = 1L) {
     nBlocks <- as.integer((-1L + sqrt(1L + 4L * 2L * length(x))) / 2L)
