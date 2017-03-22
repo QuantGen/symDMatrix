@@ -4,7 +4,7 @@
 \alias{as.symDMatrix.list}
 \title{Coerce a List to a symDMatrix Object.}
 \usage{
-\method{as.symDMatrix}{list}(x, centers = 0L, scales = 1L)
+\method{as.symDMatrix}{list}(x, centers = 0L, scales = 1L, ...)
 }
 \arguments{
 \item{x}{A character vector with names of the \code{ff} files that contain the
@@ -15,6 +15,8 @@ data needed to create the object. The files must be ordered by block, \code{G11,
 
 \item{scales}{A numeric vector to fill the \code{@scales} slot of the
 \linkS4class{symDMatrix} object.}
+
+\item{...}{Additional arguments (currently unused).}
 }
 \value{
 A \linkS4class{symDMatrix} object.

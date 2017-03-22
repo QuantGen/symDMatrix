@@ -5,7 +5,7 @@
 \title{Coerce a Matrix to a symDMatrix Object.}
 \usage{
 \method{as.symDMatrix}{matrix}(x, nBlocks = 3L, vmode = "double",
-  folder = randomString(), saveRData = TRUE)
+  folder = randomString(), saveRData = TRUE, ...)
 }
 \arguments{
 \item{x}{A numeric matrix (assumed to be symmetric).}
@@ -19,6 +19,8 @@
 
 \item{saveRData}{If TRUE, the metadata (the \linkS4class{symDMatrix}) is saved
 using the name \code{G.RData}.}
+
+\item{...}{Additional arguments (currently unused).}
 }
 \value{
 A \linkS4class{symDMatrix} object.

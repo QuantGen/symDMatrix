@@ -372,9 +372,10 @@ as.symDMatrix <- function(x, ...) {
 #' [symDMatrix-class] object.
 #' @param saveRData If TRUE, the metadata (the [symDMatrix-class]) is saved
 #' using the name `G.RData`.
+#' @param ... Additional arguments (currently unused).
 #' @return A [symDMatrix-class] object.
 #' @export
-as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = randomString(), saveRData = TRUE) {
+as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = randomString(), saveRData = TRUE, ...) {
 
     n <- nrow(x)
 
@@ -444,9 +445,10 @@ as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = ran
 #' [symDMatrix-class] object.
 #' @param scales A numeric vector to fill the `@@scales` slot of the
 #' [symDMatrix-class] object.
+#' @param ... Additional arguments (currently unused).
 #' @return A [symDMatrix-class] object.
 #' @export
-as.symDMatrix.list <- function(x, centers = 0L, scales = 1L) {
+as.symDMatrix.list <- function(x, centers = 0L, scales = 1L, ...) {
     nBlocks <- as.integer((-1L + sqrt(1L + 4L * 2L * length(x))) / 2L)
     dataList <- vector(mode = "list", length = nBlocks)
     counter <- 1L
