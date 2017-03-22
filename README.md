@@ -9,10 +9,15 @@ symDMatrix is an R package that provides symmetric matrices assembled from memor
 
 A symmetric matrix is partitioned into blocks as follows:
 
+```
++ --- + --- + --- +
 | G11 | G12 | G13 |
-|:---:|:---:|:---:|
++ --- + --- + --- +
 | G21 | G22 | G23 |
++ --- + --- + --- +
 | G31 | G32 | G33 |
++ --- + --- + --- +
+```
 
 Because the matrix is assumed to be symmetric (i.e., Gij equals Gji), only the upper-triangular blocks are stored. Each block is stored as a flat file using an `ff` object.
 
