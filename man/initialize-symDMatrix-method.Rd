@@ -12,14 +12,15 @@
 argument is passed in by R and can be ignored, but still needs to be
 documented.}
 
-\item{data}{A nested list to fill the \code{@data} slot of the
-\linkS4class{symDMatrix} object.}
+\item{data}{A nested list in the form of \code{[[G11, G12, G13, ..., G1q],
+[G22, G23, ..., G2q], [...], [Gqq]]} containing the blocks of the
+upper-triangular symmetric matrix.}
 
-\item{centers}{A numeric vector to fill the \code{@centers} slot of the
-\linkS4class{symDMatrix} object.}
+\item{centers}{A numeric vector storing the values used for column centering
+when creating the symmetric matrix.}
 
-\item{scales}{A numeric vector to fill the \code{@scales} slot of the
-\linkS4class{symDMatrix} object.}
+\item{scales}{A numeric vector storing the values used for column scaling
+when creating the symmetric matrix.}
 }
 \description{
 This method is run when a \linkS4class{symDMatrix} object is created using

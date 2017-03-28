@@ -24,11 +24,11 @@ number of column/row blocks and \code{i} is the current row index. All blocks
 except the ones in the last column/row are expected to have the same
 dimensions.}
 
-\item{\code{centers}}{A numeric vector storing the means used when creating the
-symmetric matrix.}
+\item{\code{centers}}{A numeric vector storing the values used for column centering
+when creating the symmetric matrix.}
 
-\item{\code{scales}}{A numeric vector storing the standard deviations used when
-creating the symmetric matrix.}
+\item{\code{scales}}{A numeric vector storing the values used for column scaling
+when creating the symmetric matrix.}
 }}
 
 \seealso{

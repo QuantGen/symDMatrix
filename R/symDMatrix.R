@@ -14,10 +14,10 @@
 #' number of column/row blocks and `i` is the current row index. All blocks
 #' except the ones in the last column/row are expected to have the same
 #' dimensions.
-#' @slot centers A numeric vector storing the means used when creating the
-#' symmetric matrix.
-#' @slot scales A numeric vector storing the standard deviations used when
-#' creating the symmetric matrix.
+#' @slot centers A numeric vector storing the values used for column centering
+#' when creating the symmetric matrix.
+#' @slot scales A numeric vector storing the values used for column scaling
+#' when creating the symmetric matrix.
 #' @seealso [initialize()][initialize,symDMatrix-method()] to create a
 #' `symDMatrix` object from scratch, [as.symDMatrix()] to create a `symDMatrix`
 #' object from other objects.
@@ -34,12 +34,13 @@ symDMatrix <- setClass("symDMatrix", slots = c(data = "list", centers = "numeric
 #' @param .Object The [symDMatrix-class] instance to be initialized. This
 #' argument is passed in by R and can be ignored, but still needs to be
 #' documented.
-#' @param data A nested list to fill the `@@data` slot of the
-#' [symDMatrix-class] object.
-#' @param centers A numeric vector to fill the `@@centers` slot of the
-#' [symDMatrix-class] object.
-#' @param scales A numeric vector to fill the `@@scales` slot of the
-#' [symDMatrix-class] object.
+#' @param data A nested list in the form of \code{[[G11, G12, G13, ..., G1q],
+#' [G22, G23, ..., G2q], [...], [Gqq]]} containing the blocks of the
+#' upper-triangular symmetric matrix.
+#' @param centers A numeric vector storing the values used for column centering
+#' when creating the symmetric matrix.
+#' @param scales A numeric vector storing the values used for column scaling
+#' when creating the symmetric matrix.
 setMethod("initialize", "symDMatrix", function(.Object, data, centers = 0L, scales = 1L) {
     nBlocks <- length(data)
     # Test that there is at least one block
