@@ -371,12 +371,10 @@ as.symDMatrix <- function(x, ...) {
 #' @param vmode The vmode used to store the data in the `ff` objects.
 #' @param folder A name for a folder where to store the data of the resulting
 #' [symDMatrix-class] object.
-#' @param saveRData If TRUE, the metadata (the [symDMatrix-class]) is saved
-#' using the name `G.RData`.
 #' @param ... Additional arguments (currently unused).
 #' @return A [symDMatrix-class] object.
 #' @export
-as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = randomString(), saveRData = TRUE, ...) {
+as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = randomString(), ...) {
 
     n <- nrow(x)
 
@@ -424,9 +422,7 @@ as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = ran
     G <- symDMatrix(data = dataList, centers = 0L, scales = 1L)
 
     # Save RData object
-    if (saveRData) {
-        save(G, file = "G.RData")
-    }
+    save(G, file = "G.RData")
 
     # Restore working directory
     setwd(curDir)
