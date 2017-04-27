@@ -413,7 +413,6 @@ as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = ran
             block <- ff::ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode, initdata = x[rowIndex, colIndex], filename = paste0("data_", i, "_", j, ".bin"))
             colnames(block) <- colnames(x)[colIndex]
             rownames(block) <- rownames(x)[rowIndex]
-            bit::physical(block)$pattern <- "ff"
             bit::physical(block)$filename <- paste0("data_", i, "_", j, ".bin")
             dataList[[i]][[j - i + 1L]] <- block
         }
