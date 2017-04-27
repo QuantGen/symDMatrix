@@ -24,5 +24,6 @@ A \linkS4class{symDMatrix} object.
 }
 \description{
 Coerce a numeric matrix (assumed to be symmetric) in RAM to a
-\linkS4class{symDMatrix} object.
+\linkS4class{symDMatrix} object. Saves the metadata to reload the matrix using
+\code{\link[=load.symDMatrix]{load.symDMatrix()}} as \code{symDMatrix.RData}.
 }

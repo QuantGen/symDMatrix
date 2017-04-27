@@ -364,7 +364,8 @@ as.symDMatrix <- function(x, ...) {
 #' Coerce a Matrix to a symDMatrix Object.
 #'
 #' Coerce a numeric matrix (assumed to be symmetric) in RAM to a
-#' [symDMatrix-class] object.
+#' [symDMatrix-class] object. Saves the metadata to reload the matrix using
+#' [load.symDMatrix()] as `symDMatrix.RData`.
 #'
 #' @param x A numeric matrix (assumed to be symmetric).
 #' @param nBlocks The number of column (also row) blocks to be used.
@@ -419,15 +420,15 @@ as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = ran
     }
 
     # Create symDMatrix object from nested list
-    G <- symDMatrix(data = dataList, centers = 0L, scales = 1L)
+    symDMatrix <- symDMatrix(data = dataList, centers = 0L, scales = 1L)
 
     # Save RData object
-    save(G, file = "G.RData")
+    save(symDMatrix, file = "symDMatrix.RData")
 
     # Restore working directory
     setwd(curDir)
 
-    return(G)
+    return(symDMatrix)
 }
 
 
