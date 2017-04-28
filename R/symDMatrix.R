@@ -368,14 +368,16 @@ as.symDMatrix <- function(x, ...) {
 #' [load.symDMatrix()] as `symDMatrix.RData`.
 #'
 #' @param x A numeric matrix (assumed to be symmetric).
-#' @param nBlocks The number of column (also row) blocks to be used.
+#' @param blockSize The number of rows and columns of each block. If `NULL`, a
+#' single block of the same dimensions as `x` will be created. Defaults to
+#' 5000.
 #' @param vmode The vmode used to store the data in the `ff` objects.
 #' @param folder A name for a folder where to store the data of the resulting
 #' [symDMatrix-class] object.
 #' @param ... Additional arguments (currently unused).
 #' @return A [symDMatrix-class] object.
 #' @export
-as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = randomString(), ...) {
+as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folder = randomString(), ...) {
 
     n <- nrow(x)
 
@@ -383,14 +385,14 @@ as.symDMatrix.matrix <- function(x, nBlocks = 3L, vmode = "double", folder = ran
         stop("x must be a square matrix")
     }
 
+    # Determine number of blocks from block size
+    nBlocks <- as.integer(ceiling(nrow(x) / blockSize))
+
     # Save current working directory before switching to destination path to
     # support relative paths in ff objects
     curDir <- getwd()
     dir.create(folder)
     setwd(folder)
-
-    # Determine block size
-    blockSize <- as.integer(ceiling(n / nBlocks))
 
     # Determine subjects of each block
     index <- matrix(data = integer(), nrow = nBlocks, ncol = 3L)
