@@ -372,12 +372,12 @@ as.symDMatrix <- function(x, ...) {
 #' single block of the same dimensions as `x` will be created. Defaults to
 #' 5000.
 #' @param vmode The vmode used to store the data in the `ff` objects.
-#' @param folder A name for a folder where to store the data of the resulting
-#' [symDMatrix-class] object.
+#' @param folderOut A name for a folder where to store the data of the
+#' resulting [symDMatrix-class] object.
 #' @param ... Additional arguments (currently unused).
 #' @return A [symDMatrix-class] object.
 #' @export
-as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folder = randomString(), ...) {
+as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderOut = randomString(), ...) {
 
     n <- nrow(x)
 
@@ -391,8 +391,8 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folder 
     # Save current working directory before switching to destination path to
     # support relative paths in ff objects
     curDir <- getwd()
-    dir.create(folder)
-    setwd(folder)
+    dir.create(folderOut)
+    setwd(folderOut)
 
     # Determine subjects of each block
     index <- matrix(data = integer(), nrow = nBlocks, ncol = 3L)
@@ -415,6 +415,7 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folder 
             block <- ff::ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode, initdata = x[rowIndex, colIndex], filename = paste0("data_", i, "_", j, ".bin"))
             colnames(block) <- colnames(x)[colIndex]
             rownames(block) <- rownames(x)[rowIndex]
+            # Change ff path to a relative one
             bit::physical(block)$filename <- paste0("data_", i, "_", j, ".bin")
             dataList[[i]][[j - i + 1L]] <- block
         }

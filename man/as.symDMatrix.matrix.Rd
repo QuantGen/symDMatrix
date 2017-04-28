@@ -5,7 +5,7 @@
 \title{Coerce a Matrix to a symDMatrix Object.}
 \usage{
 \method{as.symDMatrix}{matrix}(x, blockSize = 5000L, vmode = "double",
-  folder = randomString(), ...)
+  folderOut = randomString(), ...)
 }
 \arguments{
 \item{x}{A numeric matrix (assumed to be symmetric).}
@@ -16,8 +16,8 @@ single block of the same dimensions as \code{x} will be created. Defaults to
 
 \item{vmode}{The vmode used to store the data in the \code{ff} objects.}
 
-\item{folder}{A name for a folder where to store the data of the resulting
-\linkS4class{symDMatrix} object.}
+\item{folderOut}{A name for a folder where to store the data of the
+resulting \linkS4class{symDMatrix} object.}
 
 \item{...}{Additional arguments (currently unused).}
 }
