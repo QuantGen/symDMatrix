@@ -385,14 +385,13 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
         stop("x must be a square matrix")
     }
 
+    if (file.exists(folderOut)) {
+        stop(folderOut, " already exists")
+    }
+    dir.create(folderOut)
+
     # Determine number of blocks from block size
     nBlocks <- as.integer(ceiling(nrow(x) / blockSize))
-
-    # Save current working directory before switching to destination path to
-    # support relative paths in ff objects
-    curDir <- getwd()
-    dir.create(folderOut)
-    setwd(folderOut)
 
     # Determine subjects of each block
     index <- matrix(data = integer(), nrow = nBlocks, ncol = 3L)
@@ -413,7 +412,7 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
         for (s in r:nBlocks) {
             colIndex <- seq(index[s, 2L], index[s, 3L])
             blockName <- paste0("data_", padDigits(r, nBlocks), "_", padDigits(s, nBlocks), ".bin")
-            block <- ff::ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode, initdata = x[rowIndex, colIndex], filename = blockName)
+            block <- ff::ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode, initdata = x[rowIndex, colIndex], filename = paste0(folderOut, "/", blockName))
             colnames(block) <- colnames(x)[colIndex]
             rownames(block) <- rownames(x)[rowIndex]
             # Change ff path to a relative one
@@ -427,9 +426,6 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
 
     # Save RData object
     save(symDMatrix, file = "symDMatrix.RData")
-
-    # Restore working directory
-    setwd(curDir)
 
     return(symDMatrix)
 }
