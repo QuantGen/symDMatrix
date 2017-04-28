@@ -407,17 +407,18 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
 
     # Create nested list
     dataList <- vector(mode = "list", length = nBlocks)
-    for (i in 1L:nBlocks) {
-        rowIndex <- seq(index[i, 2L], index[i, 3L])
-        dataList[[i]] <- vector(mode = "list", length = nBlocks - i)
-        for (j in i:nBlocks) {
-            colIndex <- seq(index[j, 2L], index[j, 3L])
-            block <- ff::ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode, initdata = x[rowIndex, colIndex], filename = paste0("data_", i, "_", j, ".bin"))
+    for (r in 1L:nBlocks) {
+        rowIndex <- seq(index[r, 2L], index[r, 3L])
+        dataList[[r]] <- vector(mode = "list", length = nBlocks - r)
+        for (s in r:nBlocks) {
+            colIndex <- seq(index[s, 2L], index[s, 3L])
+            blockName <- paste0("data_", padDigits(r, nBlocks), "_", padDigits(s, nBlocks), ".bin")
+            block <- ff::ff(dim = c(length(rowIndex), length(colIndex)), vmode = vmode, initdata = x[rowIndex, colIndex], filename = blockName)
             colnames(block) <- colnames(x)[colIndex]
             rownames(block) <- rownames(x)[rowIndex]
             # Change ff path to a relative one
-            bit::physical(block)$filename <- paste0("data_", i, "_", j, ".bin")
-            dataList[[i]][[j - i + 1L]] <- block
+            bit::physical(block)$filename <- blockName
+            dataList[[r]][[s - r + 1L]] <- block
         }
     }
 
@@ -471,4 +472,9 @@ as.symDMatrix.list <- function(x, centers = 0L, scales = 1L, ...) {
 
 randomString <- function(n = 10L) {
     paste(sample(c(0L:9L, letters, LETTERS), size = n, replace = TRUE), collapse = "")
+}
+
+
+padDigits <- function(x, total) {
+    formatC(x, width = as.integer(log10(total) + 1L), format = "d", flag = "0")
 }
