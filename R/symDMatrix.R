@@ -255,8 +255,9 @@ dimnames.symDMatrix <- function(x) {
 
 #' Loads symDMatrix Objects from .RData Files.
 #'
-#' This function is similar to [base::load()], but also opens the connections
-#' to the `ff` files.
+#' This function is similar to [base::load()], but also initializes the
+#' different matrix-like objects that [symDMatrix-class] can take. Currently
+#' supported are `ff_matrix` objects.
 #'
 #' @param file The name of an .RData file to be loaded.
 #' @param envir The environment where to load the data.
@@ -268,26 +269,43 @@ load.symDMatrix <- function(file, envir = parent.frame()) {
     names <- ls(envir = loadingEnv)
     for (name in names) {
         object <- get(name, envir = loadingEnv)
-        # Load genotypes of symDMatrix objects
+        # Initialize blocks of symDMatrix objects
         if (class(object) == "symDMatrix") {
-            # Store current working directory and set working directory to
-            # dirname of file
-            cwd <- getwd()
-            setwd(dirname(file))
-            # Open ff objects
             nBlocks <- nBlocks(object)
             for (i in 1L:nBlocks) {
                 for (j in i:nBlocks) {
-                    ff::open.ff(object@data[[i]][[j - i + 1L]])
+                    object@data[[i]][[j - i + 1L]] <- initializeBlock(object@data[[i]][[j - i + 1L]], path = dirname(file))
                 }
             }
-            # Restore the working directory
-            setwd(cwd)
         }
         # Assign object to envir
         assign(name, object, envir = envir)
     }
     message("Loaded objects: ", paste0(names, collapse = ", "))
+}
+
+
+initializeBlock <- function(x, ...) {
+    UseMethod("initializeBlock")
+}
+
+
+# Absolute paths to ff files are not stored, so the ff objects have to be
+# loaded from the same directory as the RData file.
+initializeBlock.ff_matrix <- function(x, path, ...) {
+    # Store current working directory and set working directory to path
+    cwd <- getwd()
+    setwd(path)
+    # Open ff object
+    ff::open.ff(x)
+    # Restore the working directory
+    setwd(cwd)
+    return(x)
+}
+
+
+initializeBlock.default <- function(x, ...) {
+    return(x)
 }
 
 
