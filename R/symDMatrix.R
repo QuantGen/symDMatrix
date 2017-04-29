@@ -3,9 +3,10 @@
 #'
 #' A `symDMatrix` is a symmetric matrix partitioned into memory-mapped blocks.
 #' Because the matrix is symmetric, only the diagonal and upper-triangular
-#' blocks are stored. Each block is a memory-efficient `ff` object. A
-#' `symDMatrix` object behaves similarly to a regular `matrix` by implementing
-#' key methods such as `[`, `dim`, and `dimnames`.
+#' blocks are stored. Each block is a matrix-like object such as a
+#' memory-efficient `ff` object. A `symDMatrix` object behaves similarly to a
+#' regular `matrix` by implementing key methods such as `[`, `dim`, and
+#' `dimnames`.
 #'
 #' @slot data A nested list in the form of \code{[[G11, G12, G13, ..., G1q],
 #' [G22, G23, ..., G2q], [...], [Gqq]]}, each list element representing one row
@@ -58,9 +59,9 @@ setMethod("initialize", "symDMatrix", function(.Object, data, centers = 0L, scal
     for (i in seq(0L, nBlocks - 1L)) {
         for (j in seq(1L, nBlocks - i)) {
             block <- data[[i + 1L]][[j]]
-            # Test that all blocks are ff objects
-            if (!inherits(block, "ff_matrix")) {
-                stop("data: all blocks need to be ff_matrix objects")
+            # Test that all blocks are matrix-like
+            if (!isMatrixLike(block)) {
+                stop("data: all blocks need to be matrix-like objects")
             }
             # Test that all blocks per row have the same number of rows
             if (is.na(rowDims[i + 1L])) {
@@ -473,4 +474,9 @@ randomString <- function(n = 10L) {
 
 padDigits <- function(x, total) {
     formatC(x, width = as.integer(log10(total) + 1L), format = "d", flag = "0")
+}
+
+
+isMatrixLike <- function(x) {
+    length(dim(x)) == 2L
 }

@@ -9,9 +9,10 @@ Blocks.}
 \description{
 A \code{symDMatrix} is a symmetric matrix partitioned into memory-mapped blocks.
 Because the matrix is symmetric, only the diagonal and upper-triangular
-blocks are stored. Each block is a memory-efficient \code{ff} object. A
-\code{symDMatrix} object behaves similarly to a regular \code{matrix} by implementing
-key methods such as \code{[}, \code{dim}, and \code{dimnames}.
+blocks are stored. Each block is a matrix-like object such as a
+memory-efficient \code{ff} object. A \code{symDMatrix} object behaves similarly to a
+regular \code{matrix} by implementing key methods such as \code{[}, \code{dim}, and
+\code{dimnames}.
 }
 \section{Slots}{
 
