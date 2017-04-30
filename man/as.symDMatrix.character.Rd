@@ -7,8 +7,11 @@
 \method{as.symDMatrix}{character}(x, centers = 0L, scales = 1L, ...)
 }
 \arguments{
-\item{x}{A character vector with names of the \code{ff} files that contain the
-data needed to create the object. The files must be ordered by block, \code{G11, G12, G13, ..., G1q, G22, G23, ..., G2q, ..., Gqq}.}
+\item{x}{A character vector with paths to \code{RData} files that contain the
+blocks needed to create the \linkS4class{symDMatrix} object. Each \code{RData} file can
+only contain one matrix-like block. The blocks are initialized similar to
+the initialization step in \code{\link[=load.symDMatrix]{load.symDMatrix()}}. The files must be ordered by
+block, \code{G11, G12, G13, ..., G1q, G22, G23, ..., G2q, ..., Gqq}.}
 
 \item{centers}{A numeric vector to fill the \code{@centers} slot of the
 \linkS4class{symDMatrix} object.}
@@ -22,6 +25,6 @@ data needed to create the object. The files must be ordered by block, \code{G11,
 A \linkS4class{symDMatrix} object.
 }
 \description{
-Coerce a character vector of names of \code{ff} files to a \linkS4class{symDMatrix}
-object.
+Coerce a character vector of path names to \code{RData} files (e.g., produced by
+the \code{\link[base:list.files]{base::list.files()}} function) to a \linkS4class{symDMatrix} object.
 }

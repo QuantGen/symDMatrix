@@ -452,12 +452,14 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
 
 #' Coerce a Character Vector to a symDMatrix Object.
 #'
-#' Coerce a character vector of names of `ff` files to a [symDMatrix-class]
-#' object.
+#' Coerce a character vector of path names to `RData` files (e.g., produced by
+#' the [base::list.files()] function) to a [symDMatrix-class] object.
 #'
-#' @param x A character vector with names of the `ff` files that contain the
-#' data needed to create the object. The files must be ordered by block, `G11,
-#' G12, G13, ..., G1q, G22, G23, ..., G2q, ..., Gqq`.
+#' @param x A character vector with paths to `RData` files that contain the
+#' blocks needed to create the [symDMatrix-class] object. Each `RData` file can
+#' only contain one matrix-like block. The blocks are initialized similar to
+#' the initialization step in [load.symDMatrix()]. The files must be ordered by
+#' block, `G11, G12, G13, ..., G1q, G22, G23, ..., G2q, ..., Gqq`.
 #' @param centers A numeric vector to fill the `@@centers` slot of the
 #' [symDMatrix-class] object.
 #' @param scales A numeric vector to fill the `@@scales` slot of the
@@ -473,10 +475,20 @@ as.symDMatrix.character <- function(x, centers = 0L, scales = 1L, ...) {
         dataList[[i]] <- vector(mode = "list", length = nBlocks - i)
         for (j in i:nBlocks) {
             loadingEnv <- new.env()
-            load(file = x[[counter]], envir = loadingEnv)
-            # TODO: Assumes only one object per data file
-            objectName <- ls(envir = loadingEnv)[1L]
-            object <- get(objectName, envir = loadingEnv)
+            file <- x[[counter]]
+            load(file = file, envir = loadingEnv)
+            names <- ls(envir = loadingEnv)
+            # Make sure that at least and at most one object is matrix-like
+            isMatrixLike <- sapply(names, function(name) {
+                object <- get(name, envir = loadingEnv)
+                isMatrixLike(object)
+            })
+            if (sum(isMatrixLike) != 1L) {
+                stop("only one object per RData file can be a matrix-like object")
+            }
+            object <- get(names[which(isMatrixLike)], envir = loadingEnv)
+            # Initialize the matrix-like object
+            object <- initializeBlock(object, path = dirname(file))
             dataList[[i]][[j - i + 1L]] <- object
             counter <- counter + 1L
         }
