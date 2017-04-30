@@ -450,9 +450,10 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
 }
 
 
-#' Coerce a List to a symDMatrix Object.
+#' Coerce a Character Vector to a symDMatrix Object.
 #'
-#' Coerce a list of names of `ff` files to a [symDMatrix-class] object.
+#' Coerce a character vector of names of `ff` files to a [symDMatrix-class]
+#' object.
 #'
 #' @param x A character vector with names of the `ff` files that contain the
 #' data needed to create the object. The files must be ordered by block, `G11,
@@ -464,7 +465,7 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
 #' @param ... Additional arguments (currently unused).
 #' @return A [symDMatrix-class] object.
 #' @export
-as.symDMatrix.list <- function(x, centers = 0L, scales = 1L, ...) {
+as.symDMatrix.character <- function(x, centers = 0L, scales = 1L, ...) {
     nBlocks <- as.integer((-1L + sqrt(1L + 4L * 2L * length(x))) / 2L)
     dataList <- vector(mode = "list", length = nBlocks)
     counter <- 1L
