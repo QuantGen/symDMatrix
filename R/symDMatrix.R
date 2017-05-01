@@ -373,7 +373,8 @@ blockIndex <- function(x) {
 #' @param ... Additional arguments.
 #' @return A [symDMatrix-class] object.
 #' @seealso [as.symDMatrix.matrix()] to coerce a matrix or
-#' [as.symDMatrix.list()] to coerce a list to a [symDMatrix-class] object.
+#' [as.symDMatrix.character()] to coerce a vector of path names to a
+#' [symDMatrix-class] object.
 #' @export
 as.symDMatrix <- function(x, ...) {
     UseMethod("as.symDMatrix")
