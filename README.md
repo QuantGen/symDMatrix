@@ -38,15 +38,16 @@ Tutorial
 Before we start, let's create a symmetric matrix in RAM.
 
 ```R
-# Load genotypes from a mice data set
 library(BGLR)
-data(mice)
 
-# Compute a symmetric genetic relationship matrix (G-matrix) in RAM
+# Load genotypes from a mice data set
+data(mice)
 X <- mice.X
 rownames(X) <- paste0("ID_", 1:nrow(X))
-G <- tcrossprod(scale(X))
-G <- G / mean(diag(G))
+
+# Compute a symmetric genetic relationship matrix (G matrix) in RAM
+G1 <- tcrossprod(scale(X))
+G1 <- G1 / mean(diag(G1))
 ```
 
 ### (1) Converting a RAM matrix into a symDMatrix
@@ -56,7 +57,7 @@ In practice, if we can hold a matrix in RAM, there is not much of a point to con
 ```R
 library(symDMatrix)
 
-G2 <- as.symDMatrix(G, folder = "mice", nBlocks = 5, vmode = "double") # can use `single` for lighter files
+G2 <- as.symDMatrix(G1, blockSize = 400, vmode = "double", folderOut = "mice")
 ```
 
 ### (2) Exploring operators
@@ -67,21 +68,19 @@ Now that we have a `symDMatrix` object, let's illustrate some operators.
 # Basic operators applied to a matrix in RAM and to a symDMatrix
 
 # Dimension operators
-dim(G) == dim(G2)
-nrow(G) == nrow(G2)
-ncol(G) == ncol(G2)
-all.equal(diag(G), diag(G2))
+all.equal(dim(G1), dim(G2))
+nrow(G1) == nrow(G2)
+ncol(G1) == ncol(G2)
+all.equal(diag(G1), diag(G2))
 
 # Names operators
-all(dimnames(G)[[1]] == dimnames(G2)[[1]])
-all(dimnames(G)[[2]] == dimnames(G2)[[2]])
-all(rownames(G) == rownames(G2))
-all(colnames(G) == rownames(G2))
+all.equal(dimnames(G1), dimnames(G2))
+all(rownames(G1) == rownames(G2))
+all(colnames(G1) == rownames(G2))
 
 # Block operators
 nBlocks(G2)
 blockSize(G2)
-blocks(G2)
 
 # Indexing (can use booleans, integers or labels)
 G2[1:2, 1:2]
@@ -96,31 +95,30 @@ for (i in 1:100) {
     n2 <- sample(1:50, size = 1)
     i1 <- sample(1:nrow(X), size = n1)
     i2 <- sample(1:nrow(X), size = n2)
-    TMP1 <- G[i1, i2, drop = FALSE]
+    TMP1 <- G1[i1, i2, drop = FALSE]
     TMP2 <- G2[i1, i2, drop = FALSE]
     stopifnot(all.equal(TMP1, TMP2))
 }
-
 ```
 
 ### (3) Creating a symDMatrix from genotypes
 
-The function `getG.symDMatrix` of the [BGData](https://github.com/QuantGen/BGData) package computes G=XX' (with options for centering and scaling) without ever loading G in RAM. It creates the `symDMatrix` object directly. In this example, X is a matrix in RAM. For large genotype data sets, X could be a memory-mapped matrix, `ff` object, or part of a `BGData` object.
+The function `getG.symDMatrix` of the [BGData](https://github.com/QuantGen/BGData) package computes G=XX' (with options for centering and scaling) without ever loading G in RAM. It creates the `symDMatrix` object directly, block by block. In this example, `X` is a matrix in RAM. For large genotype data sets, `X` could be a memory-mapped matrix, e.g., a `BEDMatrix` or `ff` object.
 
 ```R
 library(BGData)
 
-G3 <- getG.symDMatrix(X, scaleCol = TRUE, centerCol = TRUE, nBlocks = 5, folder = "tmp", vmode = "double")
+G3 <- getG_symDMatrix(X, blockSize = 400, vmode = "double", folderOut = "mice2")
 class(G3)
-all.equal(diag(G), diag(G3))
+all.equal(diag(G1), diag(G3))
 
 for(i in 1:10){
     n1 <- sample(1:25, size = 1)
     i1 <- sample(1:25, size = n1)
     for(j in 1:10){
-        n2 <- sample(1:nrow(G), size = 1)
-        i2 <- sample(1:nrow(G), size = n2)
-        tmp1 <- G[i1, i2]
+        n2 <- sample(1:nrow(G1), size = 1)
+        i2 <- sample(1:nrow(G1), size = n2)
+        tmp1 <- G1[i1, i2]
         tmp2 <- G3[i1, i2]
         stopifnot(all.equal(tmp1, tmp2))
     }
@@ -129,53 +127,45 @@ for(i in 1:10){
 
 ### (4) Creating a symDMatrix from `ff` files containing the blocks
 
-The function `symDMatrix` allows creating a `symDMatrix` object from a list of `ff` files. The list is assumed to provide, in order, files for G11, G12, ..., G1q, G22, G23, ..., G2q, ..., Gqq. This approach will be useful for very large G matrices. If n is large it may make sense to compute the blocks of the `symDMatrix` object in parallel jobs (e.g., in an HPC). The function `getGij` is similar to `getG.symDMatrix` (see [BGData](https://github.com/QuantGen/BGData) package) but accepts arguments `i1` and `i2` which define a block of G (i.e., rows of X).
+The function `symDMatrix` allows creating a `symDMatrix` object from a list of `ff` files. The list is assumed to provide, in order, files for `G11, G12, ..., G1q, G22, G23, ..., G2q, ..., Gqq`. This approach is useful for very large G matrices. If `n` is large it may make sense to compute the blocks of the `symDMatrix` object in parallel jobs (e.g., in an HPC). The function `getG` is similar to `getG.symDMatrix` (see [BGData](https://github.com/QuantGen/BGData) package) but accepts arguments `i1` and `i2` which define a block of G (i.e., rows of X).
 
 ```R
-library(BGData)
 library(BGLR)
+library(BGData)
+library(ff)
+
+# Load genotypes from a wheat data set
 data(wheat)
 X <- wheat.X
-rownames(X) <- 1:nrow(X)
+rownames(X) <- paste0("ID_", 1:nrow(X))
 
+# Compute G matrix in RAM for comparison
 centers <- colMeans(X)
 scales <- apply(X = X, MARGIN = 2, FUN = sd)
-
-nBlocks <- 8
-
-dir.create("GMatrix")
-setwd("GMatrix")
-
-stepSize <- ceiling(nrow(X) / nBlocks)
-
 G1 <- tcrossprod(scale(X, center = centers, scale = scales))
 G1 <- G1 / mean(diag(G1))
 
-# This loop may be executed in parallel
-for (i in 1:nBlocks) {
-    i_ini <- (i - 1) * stepSize + 1
-    if (i_ini <= nrow(X)) {
-        i_end <- min(nrow(X), i_ini + stepSize - 1)
-        i1<-i_ini:i_end
-        for (j in i:nBlocks) {
-            j_ini <- (j - 1) * stepSize + 1
-            j_end <- min(nrow(X), j_ini + stepSize - 1)
-            i2 <- j_ini:j_end
-            if (j_ini <= nrow(X)) {
-                Gij <- getG(x = X, i = i1, i2 = i2,
-                            saveName = paste0("G_", i, "_", j, ".bin"),
-                            saveType = "ff", centers = centers,
-                            scales = scales, scaleG = TRUE, verbose = FALSE,
-                            scaleCol = TRUE, nChunks = 4, nChunks2 = 4,
-                            mc.cores = 4, saveG = TRUE)
-                print(paste(i_ini, i_end, " ; ",  j_ini, j_end))
-            }
-        }
+# Compute G matrix in blocks; each block can be parallelized
+nBlocks <- 3
+blockSize <- ceiling(nrow(X) / nBlocks)
+i <- 1:nrow(X)
+blockIndices <- split(i, ceiling(i / blockSize))
+blocks <- vector(mode = "list", length = nBlocks)
+for (r in 1:nBlocks) {
+    blocks[[r]] <- vector(mode = "list", length = nBlocks - r + 1)
+    for (s in r:nBlocks) {
+        blockName <- paste0("wheat_", r, "_", s - r + 1L)
+        block <- ff::as.ff(getG(X, center = centers, scale = scales, scaleG = TRUE,
+                                i = blockIndices[[r]], i2 = blockIndices[[s]]),
+                                filename = paste0(blockName, ".bin"), vmode = "double")
+        save(block, file = paste0(blockName, ".RData"))
+        blocks[[r]][[s - r + 1L]] <- block
     }
 }
-
 # Note: file list needs to be orderd G11, G12, ..., Gqq
-G2 <- symDMatrix(dataFiles = list.files(pattern = "*.ff"), names = rownames(X))
+G2 <- as.symDMatrix(list.files(pattern = "^wheat.*RData$"), centers = centers, scales = scales)
+
+all.equal(diag(G1), diag(G2)) # there will be a slight numerical penalty
 ```
 
 
@@ -206,7 +196,7 @@ library(BGData)
 
 X <- BEDMatrix(system.file("extdata", "example.bed", package = "BEDMatrix"))
 
-G <- getG.symDMatrix(X, nBlocks = 3, folder = "inst/extdata")
+G <- getG.symDMatrix(X, blockSize = 17, folderOut = "inst/extdata")
 ```
 
 To load the dataset:
