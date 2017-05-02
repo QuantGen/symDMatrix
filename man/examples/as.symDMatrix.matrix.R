@@ -8,7 +8,7 @@ centers <- chunkedApply(X, 2, mean, na.rm = TRUE)
 scales <- chunkedApply(X, 2, sd, na.rm = TRUE)
 
 # Compute G matrix
-G <- getG(X, center = centers, scale = scales)
+G1 <- getG(X, center = centers, scale = scales)
 
 # Create symDMatrix object from G matrix
-symG <- as.symDMatrix(G, center = centers, scale = scales, folderOut = "fromMatrix")
+G2 <- as.symDMatrix(G1, center = centers, scale = scales, folderOut = "fromMatrix")

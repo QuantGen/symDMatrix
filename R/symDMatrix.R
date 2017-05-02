@@ -324,7 +324,7 @@ nBlocks <- function(x) {
 
 #' Return the Block Size of a symDMatrix Object.
 #'
-#' Returns the block size of a [symDMatrix-class] object.
+#' This function returns the block size of a [symDMatrix-class] object.
 #'
 #' The last block of a column/row may be smaller than the other blocks. Its
 #' size can be retrieved by setting `last` to `TRUE`.
@@ -334,6 +334,7 @@ nBlocks <- function(x) {
 #' last (`TRUE`) column/row block or any of the other blocks (`FALSE`,
 #' default).
 #' @return The block size of a [symDMatrix-class] object.
+#' @example man/examples/blockSize.R
 #' @export
 blockSize <- function(x, last = FALSE) {
     row <- x@data[[1L]]

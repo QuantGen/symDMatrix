@@ -17,9 +17,19 @@ default).}
 The block size of a \linkS4class{symDMatrix} object.
 }
 \description{
-Returns the block size of a \linkS4class{symDMatrix} object.
+This function returns the block size of a \linkS4class{symDMatrix} object.
 }
 \details{
 The last block of a column/row may be smaller than the other blocks. Its
 size can be retrieved by setting \code{last} to \code{TRUE}.
+}
+\examples{
+# Load example symDMatrix (G)
+load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"))
+
+# Get the block size
+blockSize(G)
+
+# Get the block size of the trailing blocks
+blockSize(G, last = TRUE)
 }
