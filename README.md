@@ -139,30 +139,26 @@ data(wheat)
 X <- wheat.X
 rownames(X) <- paste0("ID_", 1:nrow(X))
 
-# Compute G matrix in RAM for comparison
+# Compute G matrix in RAM
 centers <- colMeans(X)
 scales <- apply(X = X, MARGIN = 2, FUN = sd)
 G1 <- tcrossprod(scale(X, center = centers, scale = scales))
 G1 <- G1 / mean(diag(G1))
 
-# Compute G matrix in blocks; each block can be parallelized
+# Compute G matrix block by block (each block computation can be distributed)
 nBlocks <- 3
 blockSize <- ceiling(nrow(X) / nBlocks)
 i <- 1:nrow(X)
 blockIndices <- split(i, ceiling(i / blockSize))
-blocks <- vector(mode = "list", length = nBlocks)
 for (r in 1:nBlocks) {
-    blocks[[r]] <- vector(mode = "list", length = nBlocks - r + 1)
     for (s in r:nBlocks) {
-        blockName <- paste0("wheat_", r, "_", s - r + 1L)
-        block <- ff::as.ff(getG(X, center = centers, scale = scales, scaleG = TRUE,
-                                i = blockIndices[[r]], i2 = blockIndices[[s]]),
-                                filename = paste0(blockName, ".bin"), vmode = "double")
+        blockName <- paste0("wheat_", r, "_", s - r + 1)
+        block <- getG(X, center = centers, scale = scales, scaleG = TRUE,
+                      i = blockIndices[[r]], i2 = blockIndices[[s]])
+        block <- ff::as.ff(block, filename = paste0(blockName, ".bin"), vmode = "double")
         save(block, file = paste0(blockName, ".RData"))
-        blocks[[r]][[s - r + 1L]] <- block
     }
 }
-# Note: file list needs to be orderd G11, G12, ..., Gqq
 G2 <- as.symDMatrix(list.files(pattern = "^wheat.*RData$"), centers = centers, scales = scales)
 
 all.equal(diag(G1), diag(G2)) # there will be a slight numerical penalty
