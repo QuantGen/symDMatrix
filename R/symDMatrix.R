@@ -384,11 +384,14 @@ as.symDMatrix <- function(x, ...) {
 
 #' Coerce a Matrix to a symDMatrix Object.
 #'
-#' Coerce a numeric matrix (assumed to be symmetric) in RAM to a
-#' [symDMatrix-class] object. Saves the metadata to reload the matrix using
-#' [load.symDMatrix()] as `symDMatrix.RData`.
+#' This function creates a [symDMatrix-class] from a numeric matrix that is
+#' assumed to be symmetric.
 #'
-#' @param x A numeric matrix (assumed to be symmetric).
+#' The input matrix is broken into blocks and each block is stored as an `ff`
+#' object. In addition, a metadata object called `symDMatrix.RData` is created
+#' to allow for easy reloading of the [symDMatrix-class] object.
+#'
+#' @param x A symmetric numeric matrix.
 #' @param blockSize The number of rows and columns of each block. If `NULL`, a
 #' single block of the same dimensions as `x` will be created. Defaults to
 #' 5000.
@@ -397,6 +400,8 @@ as.symDMatrix <- function(x, ...) {
 #' resulting [symDMatrix-class] object.
 #' @param ... Additional arguments (currently unused).
 #' @return A [symDMatrix-class] object.
+#' @examples man/examples/as.symDMatrix.matrix.R
+#' @seealso [load.symDMatrix()] to reload the [symDMatrix-class] object.
 #' @export
 as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderOut = randomString(), ...) {
 
