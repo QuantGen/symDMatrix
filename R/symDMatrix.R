@@ -42,6 +42,7 @@ symDMatrix <- setClass("symDMatrix", slots = c(data = "list", centers = "numeric
 #' when creating the symmetric matrix.
 #' @param scales A numeric vector storing the values used for column scaling
 #' when creating the symmetric matrix.
+#' @export
 setMethod("initialize", "symDMatrix", function(.Object, data, centers = 0L, scales = 1L) {
     nBlocks <- length(data)
     # Test that there is at least one block
