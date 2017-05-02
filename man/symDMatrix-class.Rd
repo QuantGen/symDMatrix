@@ -7,23 +7,27 @@
 \title{A Class to Represent a Symmetric Matrix Paritioned into Memory-Mapped
 Blocks.}
 \description{
-A \code{symDMatrix} is a symmetric matrix partitioned into memory-mapped blocks.
-Because the matrix is symmetric, only the diagonal and upper-triangular
-blocks are stored. Each block is a matrix-like object such as a
-memory-efficient \code{ff} object. A \code{symDMatrix} object behaves similarly to a
+A \code{symDMatrix} is a symmetric matrix partitioned into matrix-like (ideally
+memory-mapped) blocks. This approach allows for very large symmetric
+matrices, commonly found for example when computing genetic relationship
+matrices on large cohorts. A \code{symDMatrix} object behaves similarly to a
 regular \code{matrix} by implementing key methods such as \code{[}, \code{dim}, and
 \code{dimnames}.
+}
+\details{
+Each block is a matrix-like block. Currently supported are \code{ff} objects.
+Because the matrix is symmetric, only the diagonal and upper-triangular
+blocks are stored.
 }
 \section{Slots}{
 
 \describe{
 \item{\code{data}}{A nested list in the form of \code{[[G11, G12, G13, ..., G1q],
-[G22, G23, ..., G2q], [...], [Gqq]]}, each list element representing one row
-of an upper-triangular symmetrix matrix. There are \code{(q * (q + 1)) / 2}
-blocks in total and each row consists of \code{q - i} blocks, where \code{q} is the
-number of column/row blocks and \code{i} is the current row index. All blocks
-except the ones in the last column/row are expected to have the same
-dimensions.}
+[G22, G23, ..., G2q], [...], [Gqq]]}, each list element representing a block
+of a partitioned symmetric and upper-triangular matrix. There are \code{(q * (q + 1)) / 2} blocks in total and each list level consists of \code{q - i} blocks,
+where \code{q} is the number of column/row blocks and \code{i} is the current row
+index. All blocks except the ones in the last column/row are expected to
+have the same dimensions.}
 
 \item{\code{centers}}{A numeric vector storing the values used for column centering
 when creating the symmetric matrix.}
@@ -32,6 +36,31 @@ when creating the symmetric matrix.}
 when creating the symmetric matrix.}
 }}
 
+\examples{
+# Get the path to the example symmetric matrix
+path <- system.file("extdata", "G.RData", package = "symDMatrix")
+
+# Load the example symDMatrix object (G)
+load.symDMatrix(path)
+
+# Get the dimensions
+dim(G)
+
+# Get the row names
+rownames(G)
+
+# Get the column names
+colnames(G)
+
+# Extract the diagonal
+diag(G)
+
+# Extract rows and columns
+G[1, ]
+G[1:3, ]
+G["per0_per0", ]
+G[c("per0_per0", "per1_per1", "per2_per2"), ]
+}
 \seealso{
 \link[=initialize,symDMatrix-method]{initialize()} to create a
 \code{symDMatrix} object from scratch, \code{\link[=as.symDMatrix]{as.symDMatrix()}} to create a \code{symDMatrix}

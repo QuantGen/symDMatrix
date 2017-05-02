@@ -1,27 +1,33 @@
 #' A Class to Represent a Symmetric Matrix Paritioned into Memory-Mapped
 #' Blocks.
 #'
-#' A `symDMatrix` is a symmetric matrix partitioned into memory-mapped blocks.
-#' Because the matrix is symmetric, only the diagonal and upper-triangular
-#' blocks are stored. Each block is a matrix-like object such as a
-#' memory-efficient `ff` object. A `symDMatrix` object behaves similarly to a
+#' A `symDMatrix` is a symmetric matrix partitioned into matrix-like (ideally
+#' memory-mapped) blocks. This approach allows for very large symmetric
+#' matrices, commonly found for example when computing genetic relationship
+#' matrices on large cohorts. A `symDMatrix` object behaves similarly to a
 #' regular `matrix` by implementing key methods such as `[`, `dim`, and
 #' `dimnames`.
 #'
+#' Each block is a matrix-like block. Currently supported are `ff` objects.
+#' Because the matrix is symmetric, only the diagonal and upper-triangular
+#' blocks are stored.
+#'
 #' @slot data A nested list in the form of \code{[[G11, G12, G13, ..., G1q],
-#' [G22, G23, ..., G2q], [...], [Gqq]]}, each list element representing one row
-#' of an upper-triangular symmetrix matrix. There are `(q * (q + 1)) / 2`
-#' blocks in total and each row consists of `q - i` blocks, where `q` is the
-#' number of column/row blocks and `i` is the current row index. All blocks
-#' except the ones in the last column/row are expected to have the same
-#' dimensions.
+#' [G22, G23, ..., G2q], [...], [Gqq]]}, each list element representing a block
+#' of a partitioned symmetric and upper-triangular matrix. There are `(q * (q +
+#' 1)) / 2` blocks in total and each list level consists of `q - i` blocks,
+#' where `q` is the number of column/row blocks and `i` is the current row
+#' index. All blocks except the ones in the last column/row are expected to
+#' have the same dimensions.
 #' @slot centers A numeric vector storing the values used for column centering
 #' when creating the symmetric matrix.
 #' @slot scales A numeric vector storing the values used for column scaling
 #' when creating the symmetric matrix.
+#' @example man/examples/symDMatrix.R
 #' @seealso [initialize()][initialize,symDMatrix-method()] to create a
 #' `symDMatrix` object from scratch, [as.symDMatrix()] to create a `symDMatrix`
 #' object from other objects.
+#' @aliases symDMatrix-class
 #' @export symDMatrix
 #' @exportClass symDMatrix
 symDMatrix <- setClass("symDMatrix", slots = c(data = "list", centers = "numeric", scales = "numeric"))
