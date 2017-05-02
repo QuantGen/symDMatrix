@@ -27,7 +27,7 @@
 symDMatrix <- setClass("symDMatrix", slots = c(data = "list", centers = "numeric", scales = "numeric"))
 
 
-#' Creates a New symDMatrix Instance.
+#' Create a New symDMatrix Instance.
 #'
 #' This method is run when a [symDMatrix-class] object is created using
 #' `symDMatrix(...)` or `new("symDMatrix", ...)`.
@@ -254,7 +254,7 @@ dimnames.symDMatrix <- function(x) {
 }
 
 
-#' Loads symDMatrix Objects from .RData Files.
+#' Load symDMatrix Objects from .RData Files.
 #'
 #' This function is similar to [base::load()], but also initializes the
 #' different matrix-like objects that [symDMatrix-class] can take. Currently
@@ -310,7 +310,7 @@ initializeBlock.default <- function(x, ...) {
 }
 
 
-#' Determines the Number of Column/Row Blocks of a symDMatrix Object.
+#' Determine the Number of Column/Row Blocks of a symDMatrix Object.
 #'
 #' Determines the number of column/row blocks of a [symDMatrix-class] object.
 #'
@@ -322,7 +322,7 @@ nBlocks <- function(x) {
 }
 
 
-#' Returns the Block Size of a symDMatrix Object.
+#' Return the Block Size of a symDMatrix Object.
 #'
 #' Returns the block size of a [symDMatrix-class] object.
 #'
@@ -345,7 +345,7 @@ blockSize <- function(x, last = FALSE) {
 }
 
 
-#' Returns the Block Structure of a symDMatrix Object.
+#' Return the Block Structure of a symDMatrix Object.
 #'
 #' Returns the block structure of a [symDMatrix-class] object.
 #'

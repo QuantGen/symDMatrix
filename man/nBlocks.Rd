@@ -2,7 +2,7 @@
 % Please edit documentation in R/symDMatrix.R
 \name{nBlocks}
 \alias{nBlocks}
-\title{Determines the Number of Column/Row Blocks of a symDMatrix Object.}
+\title{Determine the Number of Column/Row Blocks of a symDMatrix Object.}
 \usage{
 nBlocks(x)
 }

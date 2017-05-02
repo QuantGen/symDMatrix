@@ -2,7 +2,7 @@
 % Please edit documentation in R/symDMatrix.R
 \name{blockIndex}
 \alias{blockIndex}
-\title{Returns the Block Structure of a symDMatrix Object.}
+\title{Return the Block Structure of a symDMatrix Object.}
 \usage{
 blockIndex(x)
 }

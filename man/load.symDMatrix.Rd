@@ -2,7 +2,7 @@
 % Please edit documentation in R/symDMatrix.R
 \name{load.symDMatrix}
 \alias{load.symDMatrix}
-\title{Loads symDMatrix Objects from .RData Files.}
+\title{Load symDMatrix Objects from .RData Files.}
 \usage{
 load.symDMatrix(file, envir = parent.frame())
 }

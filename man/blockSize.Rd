@@ -2,7 +2,7 @@
 % Please edit documentation in R/symDMatrix.R
 \name{blockSize}
 \alias{blockSize}
-\title{Returns the Block Size of a symDMatrix Object.}
+\title{Return the Block Size of a symDMatrix Object.}
 \usage{
 blockSize(x, last = FALSE)
 }
