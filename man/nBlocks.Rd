@@ -2,7 +2,7 @@
 % Please edit documentation in R/symDMatrix.R
 \name{nBlocks}
 \alias{nBlocks}
-\title{Determine the Number of Column/Row Blocks of a symDMatrix Object.}
+\title{Return the Number of Column/Row Blocks of a symDMatrix Object.}
 \usage{
 nBlocks(x)
 }
@@ -13,5 +13,12 @@ nBlocks(x)
 The number of column/row blocks of a \linkS4class{symDMatrix} object.
 }
 \description{
-Determines the number of column/row blocks of a \linkS4class{symDMatrix} object.
+This function returns the number of row blocks the original matrix has been partitioned into.
+}
+\examples{
+# Load example symDMatrix (G)
+load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"))
+
+# Get the number of row blocks the original matrix was partitioned into
+nBlocks(G)
 }

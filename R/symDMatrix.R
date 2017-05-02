@@ -310,12 +310,13 @@ initializeBlock.default <- function(x, ...) {
 }
 
 
-#' Determine the Number of Column/Row Blocks of a symDMatrix Object.
+#' Return the Number of Column/Row Blocks of a symDMatrix Object.
 #'
-#' Determines the number of column/row blocks of a [symDMatrix-class] object.
+#' This function returns the number of row blocks the original matrix has been partitioned into.
 #'
 #' @param x A [symDMatrix-class] object.
 #' @return The number of column/row blocks of a [symDMatrix-class] object.
+#' @example man/examples/nBlocks.R
 #' @export
 nBlocks <- function(x) {
     length(x@data[[1L]])
