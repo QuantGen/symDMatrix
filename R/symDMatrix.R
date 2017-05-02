@@ -416,7 +416,7 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
 
     # Determine subjects of each block
     index <- matrix(data = integer(), nrow = nBlocks, ncol = 3L)
-    index[1L, ] <- c(1L, 1L, blockSize)
+    index[1L, ] <- c(1L, 1L, min(n, blockSize))
     if (nBlocks > 1L) {
         for (i in 2L:nBlocks) {
             index[i, 1L] <- i
