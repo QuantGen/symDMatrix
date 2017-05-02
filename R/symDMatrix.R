@@ -348,10 +348,12 @@ blockSize <- function(x, last = FALSE) {
 
 #' Return the Block Structure of a symDMatrix Object.
 #'
-#' Returns the block structure of a [symDMatrix-class] object.
+#' This function returns the block structure of a [symDMatrix-class] object and
+#' can be useful when implementing custom indexing techniques.
 #'
 #' @param x A [symDMatrix-class] object.
-#' @return A matrix.
+#' @return A matrix with three columns: the block number, the start index and
+#' the end index.
 #' @export
 blockIndex <- function(x) {
     n <- length(x@data)
