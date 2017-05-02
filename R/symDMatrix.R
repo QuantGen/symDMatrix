@@ -32,16 +32,26 @@ symDMatrix <- setClass("symDMatrix", slots = c(data = "list", centers = "numeric
 #' This method is run when a [symDMatrix-class] object is created using
 #' `symDMatrix(...)` or `new("symDMatrix", ...)`.
 #'
+#' Several structural checks are performed on `data`: it must contain at least
+#' one block and have the following nested structure: \code{[[G11, G12, G13,
+#' ..., G1q], [G22, G23, ..., G2q], [...], [Gqq]]}. Each block must be
+#' matrix-like and have the same number of rows or columns as blocks in the
+#' same row or column, respectively. Non-final blocks have to be square, unless
+#' if there is only a single block, in which case that block also has to be
+#' square.
+#'
 #' @param .Object The [symDMatrix-class] instance to be initialized. This
 #' argument is passed in by R and can be ignored, but still needs to be
 #' documented.
-#' @param data A nested list in the form of \code{[[G11, G12, G13, ..., G1q],
-#' [G22, G23, ..., G2q], [...], [Gqq]]} containing the blocks of the
-#' upper-triangular symmetric matrix.
+#' @param data A nested list of blocks.
 #' @param centers A numeric vector storing the values used for column centering
 #' when creating the symmetric matrix.
 #' @param scales A numeric vector storing the values used for column scaling
 #' when creating the symmetric matrix.
+#' @return A [symDMatrix-class] object.
+#' @example man/examples/initialize.R
+#' @seealso [as.symDMatrix()] to create a [symDMatrix-class] object from other
+#' objects.
 #' @export
 setMethod("initialize", "symDMatrix", function(.Object, data, centers = 0L, scales = 1L) {
     nBlocks <- length(data)

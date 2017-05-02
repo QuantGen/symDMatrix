@@ -12,9 +12,7 @@
 argument is passed in by R and can be ignored, but still needs to be
 documented.}
 
-\item{data}{A nested list in the form of \code{[[G11, G12, G13, ..., G1q],
-[G22, G23, ..., G2q], [...], [Gqq]]} containing the blocks of the
-upper-triangular symmetric matrix.}
+\item{data}{A nested list of blocks.}
 
 \item{centers}{A numeric vector storing the values used for column centering
 when creating the symmetric matrix.}
@@ -22,7 +20,38 @@ when creating the symmetric matrix.}
 \item{scales}{A numeric vector storing the values used for column scaling
 when creating the symmetric matrix.}
 }
+\value{
+A \linkS4class{symDMatrix} object.
+}
 \description{
 This method is run when a \linkS4class{symDMatrix} object is created using
 \code{symDMatrix(...)} or \code{new("symDMatrix", ...)}.
+}
+\details{
+Several structural checks are performed on \code{data}: it must contain at least
+one block and have the following nested structure: \code{[[G11, G12, G13,
+..., G1q], [G22, G23, ..., G2q], [...], [Gqq]]}. Each block must be
+matrix-like and have the same number of rows or columns as blocks in the
+same row or column, respectively. Non-final blocks have to be square, unless
+if there is only a single block, in which case that block also has to be
+square.
+}
+\examples{
+# Load example symDMatrix (G)
+load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"))
+
+# Create a symDMatrix from a single block
+G1 <- symDMatrix(data = list(list(G[, ])))
+nBlocks(G1)
+blockSize(G1)
+
+# Create a symDMatrix from three blocks (by pretending to partition the
+# original matrix into two row blocks)
+G2 <- symDMatrix(data = list(list(G[1:25, 1:25], G[1:25, 26:50]), list(G[26:50, 26:50])))
+nBlocks(G2)
+blockSize(G2)
+}
+\seealso{
+\code{\link[=as.symDMatrix]{as.symDMatrix()}} to create a \linkS4class{symDMatrix} object from other
+objects.
 }
