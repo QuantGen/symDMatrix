@@ -19,7 +19,6 @@ Imports:
     bit
 Suggests:
     testthat,
-    BEDMatrix
-Remotes: QuantGen/BEDMatrix
+    BGData
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
