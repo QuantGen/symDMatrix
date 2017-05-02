@@ -454,20 +454,25 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
 
 #' Coerce a Character Vector to a symDMatrix Object.
 #'
-#' Coerce a character vector of path names to `RData` files (e.g., produced by
-#' the [base::list.files()] function) to a [symDMatrix-class] object.
+#' This function creates a [symDMatrix-class] object from a character vector of
+#' path names to `RData` files, each containing exactly one matrix-like object
+#' that is used as a block, and is useful for distributed computing where each
+#' block is processed on a different node.
 #'
-#' @param x A character vector with paths to `RData` files that contain the
-#' blocks needed to create the [symDMatrix-class] object. Each `RData` file can
-#' only contain one matrix-like block. The blocks are initialized similar to
-#' the initialization step in [load.symDMatrix()]. The files must be ordered by
-#' block, `G11, G12, G13, ..., G1q, G22, G23, ..., G2q, ..., Gqq`.
+#' The `RData` files must be ordered by block: `G11, G12, G13, ..., G1q, G22,
+#' G23, ..., G2q, ..., Gqq`. The matrix-like objects are initialized similarly
+#' to [load.symDMatrix()].
+#'
+#' @param x A character vector with path names to `RData` files.
 #' @param centers A numeric vector to fill the `@@centers` slot of the
 #' [symDMatrix-class] object.
 #' @param scales A numeric vector to fill the `@@scales` slot of the
 #' [symDMatrix-class] object.
 #' @param ... Additional arguments (currently unused).
 #' @return A [symDMatrix-class] object.
+#' @example man/examples/as.symDMatrix.character.R
+#' @seealso [base::list.files()] to create a character vector of file paths
+#' that match a certain pattern.
 #' @export
 as.symDMatrix.character <- function(x, centers = 0L, scales = 1L, ...) {
     nBlocks <- as.integer((-1L + sqrt(1L + 4L * 2L * length(x))) / 2L)

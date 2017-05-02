@@ -7,11 +7,7 @@
 \method{as.symDMatrix}{character}(x, centers = 0L, scales = 1L, ...)
 }
 \arguments{
-\item{x}{A character vector with paths to \code{RData} files that contain the
-blocks needed to create the \linkS4class{symDMatrix} object. Each \code{RData} file can
-only contain one matrix-like block. The blocks are initialized similar to
-the initialization step in \code{\link[=load.symDMatrix]{load.symDMatrix()}}. The files must be ordered by
-block, \code{G11, G12, G13, ..., G1q, G22, G23, ..., G2q, ..., Gqq}.}
+\item{x}{A character vector with path names to \code{RData} files.}
 
 \item{centers}{A numeric vector to fill the \code{@centers} slot of the
 \linkS4class{symDMatrix} object.}
@@ -25,6 +21,48 @@ block, \code{G11, G12, G13, ..., G1q, G22, G23, ..., G2q, ..., Gqq}.}
 A \linkS4class{symDMatrix} object.
 }
 \description{
-Coerce a character vector of path names to \code{RData} files (e.g., produced by
-the \code{\link[base:list.files]{base::list.files()}} function) to a \linkS4class{symDMatrix} object.
+This function creates a \linkS4class{symDMatrix} object from a character vector of
+path names to \code{RData} files, each containing exactly one matrix-like object
+that is used as a block, and is useful for distributed computing where each
+block is processed on a different node.
+}
+\details{
+The \code{RData} files must be ordered by block: \code{G11, G12, G13, ..., G1q, G22, G23, ..., G2q, ..., Gqq}. The matrix-like objects are initialized similarly
+to \code{\link[=load.symDMatrix]{load.symDMatrix()}}.
+}
+\examples{
+library(BGData)
+
+# Load example genotypes
+X <- BEDMatrix(system.file("extdata", "example.bed", package = "BEDMatrix"))
+
+# Compute centers and scales
+centers <- chunkedApply(X, 2, mean, na.rm = TRUE)
+scales <- chunkedApply(X, 2, sd, na.rm = TRUE)
+
+# Partition genotypes into three blocks
+nBlocks <- 3
+blockSize <- ceiling(nrow(X) / nBlocks)
+
+# Create index
+i <- 1:nrow(X)
+blockIndices <- split(i, ceiling(i / blockSize))
+
+# Iterate block by block
+for (r in 1:nBlocks) {
+    for (s in r:nBlocks) {
+        blockName <- paste0("G_", r, "_", s - r + 1)
+        block <- getG(X, center = centers, scale = scales, scaleG = TRUE,
+                      i = blockIndices[[r]], i2 = blockIndices[[s]])
+        block <- ff::as.ff(block, filename = paste0(blockName, ".bin"), vmode = "double")
+        save(block, file = paste0(blockName, ".RData"))
+    }
+}
+
+# Create symDMatrix from files
+G <- as.symDMatrix(list.files(pattern = ".RData$"), centers = centers, scales = scales)
+}
+\seealso{
+\code{\link[base:list.files]{base::list.files()}} to create a character vector of file paths
+that match a certain pattern.
 }
