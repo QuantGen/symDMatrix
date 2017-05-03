@@ -19,7 +19,7 @@ A symmetric matrix is partitioned into blocks as follows:
 + --- + --- + --- +
 ```
 
-Because the matrix is assumed to be symmetric (i.e., Gij equals Gji), only the upper-triangular blocks are stored. Each block is stored as a flat file using an `ff` object.
+Because the matrix is assumed to be symmetric (i.e., Gij equals Gji), only the upper-triangular blocks are stored. Each block is a matrix-like object, for example a memory-mapped flat file using the `ff` package.
 
 The package defines the class and multiple methods that allow treating this memory-mapped matrix as a standard RAM matrix.
 
