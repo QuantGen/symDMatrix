@@ -1,13 +1,10 @@
 Package: symDMatrix
 Version: 0.0.0.9000
 License: MIT + file LICENSE
-Title: Memory-Mapped Distributed Symmetric Matrix
-Description: A symmetric matrix is partitioned into blocks as follows: G11 G12
-    G33 \ G21 G22 G33 \ G31 G32 G33. Because the matrix is assumed to be symmetric
-    (i.e., Gij=Gji), only the upper-triangular blocks are stored. Each block is
-    stored as a flat file using an ff object. The package defines the class and
-    multiple methods that allow treating this memory-mapped matrix as a standard RAM
-    matrix.
+Title: Partitioned Symmetric Matrices
+Description: A class that partitions a symmetric matrix into matrix-like
+    objects (blocks) while behaving similarly to a base R matrix. Very large
+    symmetric matrices are supported if the blocks are memory-mapped objects.
 Authors@R: c(
     person("Gustavo", "de los Campos", email = "gustavoc@msu.edu", role = c("aut", "cre")),
     person("Alexander", "Grueneberg", email = "alexander.grueneberg@googlemail.com", role = c("ctb")))
