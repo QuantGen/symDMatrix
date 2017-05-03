@@ -127,7 +127,7 @@ for(i in 1:10){
 
 ### (4) Creating a symDMatrix from `ff` files containing the blocks
 
-The function `symDMatrix` allows creating a `symDMatrix` object from a list of `ff` files. The list is assumed to provide, in order, files for `G11, G12, ..., G1q, G22, G23, ..., G2q, ..., Gqq`. This approach is useful for very large G matrices. If `n` is large it may make sense to compute the blocks of the `symDMatrix` object in parallel jobs (e.g., in an HPC). The function `getG` is similar to `getG_symDMatrix` (see [BGData](https://github.com/QuantGen/BGData) package) but accepts arguments `i1` and `i2` which define a block of G (i.e., rows of X).
+The function `symDMatrix` allows creating a `symDMatrix` object from a list of `ff` files. The list is assumed to provide, in order, files for `G11, G12, ..., G1q, G22, G23, ..., G2q, ..., Gqq`. This approach is useful for very large G matrices. If `n` is large it may make sense to compute the blocks of the `symDMatrix` object in parallel jobs (e.g., in an HPC). The function `getG` of the [BGData](https://github.com/QuantGen/BGData) package is similar to `getG_symDMatrix` but accepts arguments `i1` and `i2` which define a block of G (i.e., rows of `X`).
 
 ```R
 library(BGLR)
