@@ -420,7 +420,7 @@ as.symDMatrix <- function(x, ...) {
 #' resulting [symDMatrix-class] object.
 #' @param ... Additional arguments (currently unused).
 #' @return A [symDMatrix-class] object.
-#' @examples man/examples/as.symDMatrix.matrix.R
+#' @example man/examples/as.symDMatrix.matrix.R
 #' @seealso [load.symDMatrix()] to reload the [symDMatrix-class] object.
 #' @export
 as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderOut = randomString(), ...) {
