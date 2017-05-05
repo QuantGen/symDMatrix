@@ -12,9 +12,9 @@ URL: https://github.com/QuantGen/symDMatrix
 BugReports: https://github.com/QuantGen/symDMatrix/issues
 Imports:
     methods,
-    ff,
     bit
 Suggests:
+    ff,
     testthat,
     BGData
 RoxygenNote: 6.0.1

@@ -310,6 +310,9 @@ initializeBlock <- function(x, ...) {
 # Absolute paths to ff files are not stored, so the ff objects have to be
 # loaded from the same directory as the RData file.
 initializeBlock.ff_matrix <- function(x, path, ...) {
+    if (!requireNamespace("ff", quietly = TRUE)) {
+        stop("The ff package is needed for this function to work. Please install it.", call. = FALSE)
+    }
     # Store current working directory and set working directory to path
     cwd <- getwd()
     setwd(path)
@@ -424,6 +427,10 @@ as.symDMatrix <- function(x, ...) {
 #' @seealso [load.symDMatrix()] to reload the [symDMatrix-class] object.
 #' @export
 as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderOut = randomString(), ...) {
+
+    if (!requireNamespace("ff", quietly = TRUE)) {
+        stop("The ff package is needed for this function to work. Please install it.", call. = FALSE)
+    }
 
     n <- nrow(x)
 
