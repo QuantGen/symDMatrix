@@ -23,20 +23,20 @@ test_that("symDMatrix", {
     expect_error(symDMatrix(data = list(list(listBlock, listBlock, listBlock), list(listBlock, listBlock), list(listBlock))), "data: all blocks need to be matrix-like objects")
 
     # Test that all blocks per row have the same number of rows
-    ffBlock <- ff::ff(initdata = rnorm(25), dim = c(5, 5))
-    wrongRows <- ff::ff(initdata = rnorm(15), dim = c(3, 5))
-    expect_error(symDMatrix(data = list(list(ffBlock, wrongRows, ffBlock), list(ffBlock, ffBlock), list(ffBlock))), "data: all blocks per row need the same number of rows")
+    squareBlock <- matrix(data = rnorm(25), nrow = 5, ncol = 5)
+    wrongRows <- matrix(data = rnorm(15), nrow = 3, ncol = 5)
+    expect_error(symDMatrix(data = list(list(squareBlock, wrongRows, squareBlock), list(squareBlock, squareBlock), list(squareBlock))), "data: all blocks per row need the same number of rows")
 
     # Test that all blocks per column have the same number of columns
-    wrongColumns <- ff::ff(initdata = rnorm(15), dim = c(5, 3))
-    expect_error(symDMatrix(data = list(list(ffBlock, wrongColumns, ffBlock), list(ffBlock, ffBlock), list(ffBlock))), "data: all blocks per column need the same number of columns")
+    wrongColumns <- matrix(data = rnorm(15), nrow = 5, ncol = 3)
+    expect_error(symDMatrix(data = list(list(squareBlock, wrongColumns, squareBlock), list(squareBlock, squareBlock), list(squareBlock))), "data: all blocks per column need the same number of columns")
 
     # Test that the first block is square
-    notSquare <- ff::ff(initdata = rnorm(20), dim = c(4, 5))
+    notSquare <- matrix(data = rnorm(20), nrow = 4, ncol = 5)
     expect_error(symDMatrix(data = list(list(notSquare))), "data: the first block needs to be square")
 
     # Test that all non-final blocks need to be square
-    expect_error(symDMatrix(data = list(list(ffBlock, wrongColumns, ffBlock), list(wrongColumns, ffBlock), list(ffBlock))), "data: non-final blocks need to be square")
+    expect_error(symDMatrix(data = list(list(squareBlock, wrongColumns, squareBlock), list(wrongColumns, squareBlock), list(squareBlock))), "data: non-final blocks need to be square")
 
 })
 
