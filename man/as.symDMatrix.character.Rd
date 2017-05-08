@@ -30,38 +30,6 @@ block is processed on a different node.
 The \code{RData} files must be ordered by block: \code{G11, G12, G13, ..., G1q, G22, G23, ..., G2q, ..., Gqq}. The matrix-like objects are initialized similarly
 to \code{\link[=load.symDMatrix]{load.symDMatrix()}}.
 }
-\examples{
-library(BGData)
-
-# Load example genotypes
-X <- BEDMatrix(system.file("extdata", "example.bed", package = "BEDMatrix"))
-
-# Compute centers and scales
-centers <- chunkedApply(X, 2, mean, na.rm = TRUE)
-scales <- chunkedApply(X, 2, sd, na.rm = TRUE)
-
-# Partition genotypes into three blocks
-nBlocks <- 3
-blockSize <- ceiling(nrow(X) / nBlocks)
-
-# Create index
-i <- 1:nrow(X)
-blockIndices <- split(i, ceiling(i / blockSize))
-
-# Iterate block by block
-for (r in 1:nBlocks) {
-    for (s in r:nBlocks) {
-        blockName <- paste0("G_", r, "_", s - r + 1)
-        block <- getG(X, center = centers, scale = scales, scaleG = TRUE,
-                      i = blockIndices[[r]], i2 = blockIndices[[s]])
-        block <- ff::as.ff(block, filename = paste0(blockName, ".bin"), vmode = "double")
-        save(block, file = paste0(blockName, ".RData"))
-    }
-}
-
-# Create symDMatrix from files
-G <- as.symDMatrix(list.files(pattern = ".RData$"), centers = centers, scales = scales)
-}
 \seealso{
 \code{\link[base:list.files]{base::list.files()}} to create a character vector of file paths
 that match a certain pattern.

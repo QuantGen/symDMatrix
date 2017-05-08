@@ -423,7 +423,6 @@ as.symDMatrix <- function(x, ...) {
 #' resulting [symDMatrix-class] object.
 #' @param ... Additional arguments (currently unused).
 #' @return A [symDMatrix-class] object.
-#' @example man/examples/as.symDMatrix.matrix.R
 #' @seealso [load.symDMatrix()] to reload the [symDMatrix-class] object.
 #' @export
 as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderOut = randomString(), ...) {
@@ -502,7 +501,6 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
 #' [symDMatrix-class] object.
 #' @param ... Additional arguments (currently unused).
 #' @return A [symDMatrix-class] object.
-#' @example man/examples/as.symDMatrix.character.R
 #' @seealso [base::list.files()] to create a character vector of file paths
 #' that match a certain pattern.
 #' @export
