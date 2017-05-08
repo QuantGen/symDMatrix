@@ -11,10 +11,10 @@ Authors@R: c(
 URL: https://github.com/QuantGen/symDMatrix
 BugReports: https://github.com/QuantGen/symDMatrix/issues
 Imports:
-    methods,
-    bit
+    methods
 Suggests:
     ff,
+    bit,
     testthat,
     BGData
 RoxygenNote: 6.0.1
