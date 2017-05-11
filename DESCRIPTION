@@ -1,5 +1,5 @@
 Package: symDMatrix
-Version: 1.0.0
+Version: 1.0.0.9000
 License: MIT + file LICENSE
 Title: Partitioned Symmetric Matrices
 Description: A class that partitions a symmetric matrix into matrix-like
