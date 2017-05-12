@@ -13,9 +13,9 @@ BugReports: https://github.com/QuantGen/symDMatrix/issues
 Imports:
     methods
 Suggests:
+    BGData,
     ff,
     bit,
-    testthat,
-    BEDMatrix
+    testthat
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
