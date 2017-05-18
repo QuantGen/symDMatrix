@@ -182,6 +182,13 @@ devtools::install_github("QuantGen/symDMatrix")
 ```
 
 
+Contribute
+----------
+
+- Issue Tracker: https://github.com/QuantGen/symDMatrix/issues
+- Source Code: https://github.com/QuantGen/symDMatrix
+
+
 Documentation
 -------------
 
