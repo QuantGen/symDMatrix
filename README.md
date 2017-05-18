@@ -180,23 +180,3 @@ To get the current development version from GitHub:
 # install.packages("devtools")
 devtools::install_github("QuantGen/symDMatrix")
 ```
-
-
-Example Dataset
----------------
-
-The example dataset in the `inst/extdata` folder is the G matrix of the dummy dataset that comes with the [BEDMatrix](https://cran.r-project.org/package=BEDMatrix) package. It has been generated as follows:
-
-```R
-library(BGData)
-
-X <- BEDMatrix(system.file("extdata", "example.bed", package = "BEDMatrix"))
-
-G <- getG_symDMatrix(X, blockSize = 17, folderOut = "inst/extdata")
-```
-
-To load the dataset:
-
-```R
-load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix")) # loads G
-```

@@ -7,6 +7,19 @@
 \description{
 A Package Providing Symmetric Matrices Assembled from Memory-Mapped Blocks.
 }
+\section{Example Dataset}{
+ The example dataset in the \code{extdata} folder is the
+G matrix of the dummy dataset that comes with the
+\link[BEDMatrix:BEDMatrix-package]{BEDMatrix} package. It has been generated as
+follows:\preformatted{library(BGData)
+X <- BEDMatrix(system.file("extdata", "example.bed", package = "BEDMatrix"))
+G <- getG_symDMatrix(X, blockSize = 17, folderOut = "inst/extdata")
+}
+
+To load the dataset:\preformatted{load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"))
+}
+}
+
 \seealso{
 \linkS4class{symDMatrix} for the \code{symDMatrix} class.
 }
