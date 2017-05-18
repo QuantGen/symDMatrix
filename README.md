@@ -165,16 +165,16 @@ all.equal(diag(G1), diag(G2)) # there will be a slight numerical penalty
 ```
 
 
-Installation Instructions
--------------------------
+Installation
+------------
 
-To get the current stable version from CRAN:
+Install the stable version from CRAN:
 
 ```R
 install.packages("symDMatrix")
 ```
 
-To get the current development version from GitHub:
+Alternatively, install the development version from GitHub:
 
 ```R
 # install.packages("devtools")
