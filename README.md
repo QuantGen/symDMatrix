@@ -103,7 +103,7 @@ for (i in 1:100) {
 
 ### (3) Creating a symDMatrix from genotypes
 
-The function `getG_symDMatrix` of the [BGData](https://github.com/QuantGen/BGData) package computes G=XX' (with options for centering and scaling) without ever loading G in RAM. It creates the `symDMatrix` object directly, block by block. In this example, `X` is a matrix in RAM. For large genotype data sets, `X` could be a memory-mapped matrix, e.g., a `BEDMatrix` or `ff` object.
+The function `getG_symDMatrix` of the [BGData](https://CRAN.R-project.org/package=BGData) package computes G=XX' (with options for centering and scaling) without ever loading G in RAM. It creates the `symDMatrix` object directly, block by block. In this example, `X` is a matrix in RAM. For large genotype data sets, `X` could be a memory-mapped matrix, e.g., a `BEDMatrix` or `ff` object.
 
 ```R
 library(BGData)
@@ -127,7 +127,7 @@ for(i in 1:10){
 
 ### (4) Creating a symDMatrix from `ff` files containing the blocks
 
-The function `symDMatrix` allows creating a `symDMatrix` object from a list of `ff` files. The list is assumed to provide, in order, files for `G11, G12, ..., G1q, G22, G23, ..., G2q, ..., Gqq`. This approach is useful for very large G matrices. If `n` is large it may make sense to compute the blocks of the `symDMatrix` object in parallel jobs (e.g., in an HPC). The function `getG` of the [BGData](https://github.com/QuantGen/BGData) package is similar to `getG_symDMatrix` but accepts arguments `i1` and `i2` which define a block of G (i.e., rows of `X`).
+The function `symDMatrix` allows creating a `symDMatrix` object from a list of `ff` files. The list is assumed to provide, in order, files for `G11, G12, ..., G1q, G22, G23, ..., G2q, ..., Gqq`. This approach is useful for very large G matrices. If `n` is large it may make sense to compute the blocks of the `symDMatrix` object in parallel jobs (e.g., in an HPC). The function `getG` of the [BGData](https://CRAN.R-project.org/package=BGData) package is similar to `getG_symDMatrix` but accepts arguments `i1` and `i2` which define a block of G (i.e., rows of `X`).
 
 ```R
 library(BGLR)
