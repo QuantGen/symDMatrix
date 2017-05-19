@@ -1,7 +1,3 @@
-# The BGData package is not on CRAN yet and has to be installed from GitHub:
-# https://github.com/QuantGen/BGData
-if (require("BGData")) {
-
 library(BGData)
 
 # Load example genotypes
@@ -32,5 +28,3 @@ for (r in 1:nBlocks) {
 
 # Create symDMatrix from files
 G <- as.symDMatrix(list.files(pattern = ".RData$"), centers = centers, scales = scales)
-
-}
