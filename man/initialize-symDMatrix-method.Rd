@@ -5,14 +5,12 @@
 \alias{initialize,symDMatrix-method}
 \title{Create a New symDMatrix Instance.}
 \usage{
-\S4method{initialize}{symDMatrix}(.Object, data, centers = 0L, scales = 1L)
+\S4method{initialize}{symDMatrix}(.Object, ..., centers = 0L, scales = 1L)
 }
 \arguments{
 \item{.Object}{The \linkS4class{symDMatrix} instance to be initialized. This
 argument is passed in by R and can be ignored, but still needs to be
 documented.}
-
-\item{data}{A nested list of blocks.}
 
 \item{centers}{A numeric vector storing the values used for column centering
 when creating the symmetric matrix.}

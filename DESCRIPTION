@@ -11,11 +11,12 @@ Authors@R: c(
 URL: https://github.com/QuantGen/symDMatrix
 BugReports: https://github.com/QuantGen/symDMatrix/issues
 Imports:
-    methods
+    methods,
+    LinkedMatrix,
+    ff,
+    bit
 Suggests:
     BGData,
-    ff,
-    bit,
     testthat
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)

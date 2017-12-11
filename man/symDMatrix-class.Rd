@@ -17,17 +17,17 @@ regular \code{matrix} by implementing key methods such as \code{[}, \code{dim}, 
 \details{
 Each block is a matrix-like block. Currently supported are \code{ff} objects.
 Because the matrix is symmetric, only the diagonal and upper-triangular
-blocks are stored.
+blocks are stored. The other blocks are inverses of the upper-triangular
+blocks (ff views).
 }
 \section{Slots}{
 
 \describe{
-\item{\code{data}}{A nested list in the form of \code{[[G11, G12, G13, ..., G1q],
-[G22, G23, ..., G2q], [...], [Gqq]]}, each list element representing a block
-of a partitioned symmetric and upper-triangular matrix. There are \code{(q * (q + 1)) / 2} blocks in total and each list level consists of \code{q - i} blocks,
-where \code{q} is the number of column/row blocks and \code{i} is the current row
-index. All blocks except the ones in the last column/row are expected to
-have the same dimensions.}
+\item{\code{blocks}}{A nested list in the form of \code{[[G11, G12, G13, ..., G1q],
+[G21, G22, G23, ..., G2q], [...], [G1q, ..., Gqq]]}, each list element
+representing a block of a partitioned symmetric and upper-triangular matrix.
+All blocks except the ones in the last column/row are expected to have the
+same dimensions.}
 
 \item{\code{centers}}{A numeric vector storing the values used for column centering
 when creating the symmetric matrix.}

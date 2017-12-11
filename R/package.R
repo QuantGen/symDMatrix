@@ -17,9 +17,22 @@
 #' load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"))
 #' ```
 #'
+#' To demonstrate the `as.symDMatrix.character()` method, `RData` files for
+#' each block have been generated:
+#'
+#' ```
+#' for (i in 1:nBlocks(G)) {
+#'     for (j in i:nBlocks(G)) {
+#'         block <- G[[i]][[j]]
+#'         save(block, file = paste0("inst/extdata/data_", i, "_", j, ".RData"))
+#'     }
+#' }
+#' ```
+#'
 #' @seealso [symDMatrix-class] for the `symDMatrix` class.
 #' @docType package
 #' @name symDMatrix-package
 #' @aliases symDMatrix-package
 #' @import methods
+#' @importClassesFrom LinkedMatrix RowLinkedMatrix
 NULL
