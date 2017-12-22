@@ -303,7 +303,7 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
     args <- c(args, list(centers = 0L, scales = 1L))
     # Create symDMatrix object from args
     symDMatrix <- do.call(symDMatrix, args)
-    save(symDMatrix, file = "symDMatrix.RData")
+    save(symDMatrix, file = paste0(folderOut, "/symDMatrix.RData"))
     return(symDMatrix)
 }
 
