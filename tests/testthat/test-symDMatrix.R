@@ -1,5 +1,9 @@
 context("symDMatrix")
 
+testDir <- function() {
+    paste0(tempdir(), "/symDMatrix-", symDMatrix:::randomString(), "/")
+}
+
 # Prepare dummy data
 X <- suppressMessages(BEDMatrix::BEDMatrix(system.file("extdata", "example.bed", package = "BEDMatrix")))
 X <- scale(X)
@@ -41,11 +45,14 @@ test_that("symDMatrix", {
     # Test that all non-final blocks need to be square
     expect_error(symDMatrix(LinkedMatrix::ColumnLinkedMatrix(ffSquareBlock, ffWrongColumns, ffSquareBlock), LinkedMatrix::ColumnLinkedMatrix(ffSquareBlock, ffWrongColumns, ffSquareBlock), LinkedMatrix::ColumnLinkedMatrix(ffSquareBlock, ffWrongColumns, ffSquareBlock)), "non-final blocks need to be square")
 
+    # Test that matrices are the same
+    expect_equal(G2, G[])
+
 })
 
 test_that("diag", {
 
-    expect_equal(diag(G), diag(G2))
+    expect_equal(diag(G2), diag(G))
 
 })
 
@@ -66,5 +73,12 @@ test_that("blockSize", {
 test_that("blockIndex", {
 
     expect_equal(blockIndex(G), matrix(data = c(1, 1, 17, 2, 18, 34, 3, 35, 50), ncol = 3, byrow = TRUE, dimnames = list(NULL, c("block", "ini", "end"))))
+
+})
+
+test_that("as.symDMatrix", {
+
+    expect_equal(G2, as.symDMatrix(G2, blockSize = 17, folderOut = testDir())[])
+    expect_equal(G2, as.symDMatrix(list.files(system.file("extdata", package = "symDMatrix"), pattern = "data_.*\\.RData", full.names = TRUE))[])
 
 })
