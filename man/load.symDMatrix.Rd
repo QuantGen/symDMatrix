@@ -12,7 +12,6 @@ load.symDMatrix(file, envir = parent.frame())
 \item{envir}{The environment where to load the data.}
 }
 \description{
-This function is similar to \code{\link[base:load]{base::load()}}, but also initializes the
-different matrix-like objects that \linkS4class{symDMatrix} can take. Currently
-supported are \code{ff_matrix} objects.
+This function is similar to \code{\link[base:load]{base::load()}}, but it also initializes the
+\code{ff_matrix} blocks in the \linkS4class{symDMatrix} object.
 }

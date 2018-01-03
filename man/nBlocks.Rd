@@ -13,7 +13,8 @@ nBlocks(x)
 The number of column/row blocks of a \linkS4class{symDMatrix} object.
 }
 \description{
-This function returns the number of row blocks the original matrix has been partitioned into.
+This function returns the number of row blocks the original matrix has been
+partitioned into.
 }
 \examples{
 # Load example symDMatrix (G)

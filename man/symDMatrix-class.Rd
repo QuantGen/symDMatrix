@@ -4,31 +4,26 @@
 \name{symDMatrix-class}
 \alias{symDMatrix-class}
 \alias{symDMatrix}
-\title{A Class to Represent a Symmetric Matrix Paritioned into Memory-Mapped
+\title{A Class to Represent a Symmetric Matrix Partitioned into Memory-Mapped
 Blocks.}
 \description{
-A \code{symDMatrix} is a symmetric matrix partitioned into matrix-like (ideally
-memory-mapped) blocks. This approach allows for very large symmetric
-matrices, commonly found for example when computing genetic relationship
-matrices on large cohorts. A \code{symDMatrix} object behaves similarly to a
-regular \code{matrix} by implementing key methods such as \code{[}, \code{dim}, and
-\code{dimnames}.
+A \code{symDMatrix} is a symmetric matrix partitioned into memory-mapped blocks.
+This approach allows for very large symmetric matrices, commonly found for
+example when computing genetic relationship matrices on large cohorts. A
+\code{symDMatrix} object behaves similarly to a regular \code{matrix} by implementing
+key methods such as \code{[}, \code{dim}, and \code{dimnames}.
 }
 \details{
-Each block is a matrix-like block. Currently supported are \code{ff} objects.
-Because the matrix is symmetric, only the diagonal and upper-triangular
-blocks are stored. The other blocks are inverses of the upper-triangular
-blocks (ff views).
+The \code{symDMatrix} class is a \link[LinkedMatrix:RowLinkedMatrix]{LinkedMatrix::RowLinkedMatrix} that nests
+multiple \link[LinkedMatrix:ColumnLinkedMatrix]{LinkedMatrix::ColumnLinkedMatrix} objects containing blocks of
+type \code{ff_matrix}. Because the matrix is symmetric, only the diagonal and
+upper-triangular blocks need to be stored, but for more efficient queries,
+the lower-triangular blocks are virtual transposes of their diagonal
+counterparts.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{blocks}}{A nested list in the form of \code{[[G11, G12, G13, ..., G1q],
-[G21, G22, G23, ..., G2q], [...], [G1q, ..., Gqq]]}, each list element
-representing a block of a partitioned symmetric and upper-triangular matrix.
-All blocks except the ones in the last column/row are expected to have the
-same dimensions.}
-
 \item{\code{centers}}{A numeric vector storing the values used for column centering
 when creating the symmetric matrix.}
 
@@ -63,6 +58,6 @@ G[c("per0_per0", "per1_per1", "per2_per2"), ]
 }
 \seealso{
 \link[=initialize,symDMatrix-method]{initialize()} to create a
-\code{symDMatrix} object from scratch, \code{\link[=as.symDMatrix]{as.symDMatrix()}} to create a \code{symDMatrix}
-object from other objects.
+\code{symDMatrix} object from scratch, or preferably, \code{\link[=as.symDMatrix]{as.symDMatrix()}} to create
+a \code{symDMatrix} object from other objects.
 }

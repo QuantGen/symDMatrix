@@ -7,7 +7,7 @@ symDMatrix
 
 symDMatrix is an R package that provides symmetric matrices assembled from memory-mapped blocks.
 
-A symmetric matrix is partitioned into blocks as follows:
+A symmetric matrix `G` is partitioned into blocks as follows:
 
 ```
 + --- + --- + --- +
@@ -19,7 +19,7 @@ A symmetric matrix is partitioned into blocks as follows:
 + --- + --- + --- +
 ```
 
-Because the matrix is assumed to be symmetric (i.e., Gij equals Gji), only the upper-triangular blocks are stored. Each block is a matrix-like object, for example a memory-mapped flat file using the `ff` package.
+Because the matrix is assumed to be symmetric (i.e., `Gij` equals `Gji`), only the diagonal and upper-triangular blocks are stored and the other blocks are virtual transposes of the corresponding diagonal blocks. Each block is a memory-mapped matrix of type `ff_matrix` of the [ff](https://CRAN.R-project.org/package=ff) package.
 
 The package defines the class and multiple methods that allow treating this memory-mapped matrix as a standard RAM matrix.
 
@@ -127,7 +127,7 @@ for(i in 1:10){
 
 ### (4) Creating a symDMatrix from `ff` files containing the blocks
 
-The function `symDMatrix` allows creating a `symDMatrix` object from a list of `ff` files. The list is assumed to provide, in order, files for `G11, G12, ..., G1q, G22, G23, ..., G2q, ..., Gqq`. This approach is useful for very large G matrices. If `n` is large it may make sense to compute the blocks of the `symDMatrix` object in parallel jobs (e.g., in an HPC). The function `getG` of the [BGData](https://CRAN.R-project.org/package=BGData) package is similar to `getG_symDMatrix` but accepts arguments `i1` and `i2` which define a block of G (i.e., rows of `X`).
+The function `symDMatrix` allows creating a `symDMatrix` object from a list of `.RData` files containing `ff_matrix` objects. The list is assumed to provide, in order, files for `G11, G12, ..., G1q, G22, G23, ..., G2q, ..., Gqq`. This approach is useful for very large G matrices. If `n` is large it may make sense to compute the blocks of the `symDMatrix` object in parallel jobs (e.g., in an HPC). The function `getG` of the [BGData](https://CRAN.R-project.org/package=BGData) package is similar to `getG_symDMatrix` but accepts arguments `i1` and `i2` which define a block of G (i.e., rows of `X`).
 
 ```R
 library(BGLR)

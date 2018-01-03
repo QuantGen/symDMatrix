@@ -29,9 +29,9 @@ This function creates a \linkS4class{symDMatrix} from a numeric matrix that is
 assumed to be symmetric.
 }
 \details{
-The input matrix is broken into blocks and each block is stored as an \code{ff}
-object. In addition, a metadata object called \code{symDMatrix.RData} is created
-to allow for easy reloading of the \linkS4class{symDMatrix} object.
+The input matrix is broken into blocks and each block is stored as an
+\code{ff_matrix} object. In addition, a metadata object called \code{symDMatrix.RData}
+is created to allow for easy reloading of the \linkS4class{symDMatrix} object.
 }
 \seealso{
 \code{\link[=load.symDMatrix]{load.symDMatrix()}} to reload the \linkS4class{symDMatrix} object.

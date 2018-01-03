@@ -22,7 +22,7 @@ A \linkS4class{symDMatrix} object.
 }
 \description{
 This function creates a \linkS4class{symDMatrix} object from a character vector of
-path names to \code{RData} files, each containing exactly one matrix-like object
+path names to \code{RData} files, each containing exactly one \code{ff_matrix} object
 that is used as a block, and is useful for distributed computing where each
 block is processed on a different node.
 }

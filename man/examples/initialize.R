@@ -1,13 +1,18 @@
-# Load example symDMatrix (G)
-load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"))
+# Generate a symmetric matrix
+X <- cov(matrix(data = rnorm(25), nrow = 5, ncol = 5))
 
-# Create a symDMatrix from a single block
-G1 <- symDMatrix(data = list(list(G[, ])))
-nBlocks(G1)
-blockSize(G1)
+# Break this matrix into blocks X11, X12, X22
+# X21 can be stored as a virtual transpose of X12
+X11 <- ff::as.ff(X[1:3, 1:3])
+X12 <- ff::as.ff(X[1:3, 4:5])
+X22 <- ff::as.ff(X[4:5, 4:5])
+X21 <- ff::vt(X12)
 
-# Create a symDMatrix from three blocks (by pretending to partition the
-# original matrix into two row blocks)
-G2 <- symDMatrix(data = list(list(G[1:25, 1:25], G[1:25, 26:50]), list(G[26:50, 26:50])))
-nBlocks(G2)
-blockSize(G2)
+# Create a symDMatrix from blocks
+S <- symDMatrix(
+    LinkedMatrix::ColumnLinkedMatrix(X11, X12),
+    LinkedMatrix::ColumnLinkedMatrix(X21, X22)
+)
+nBlocks(S)
+blockSize(S)
+blockSize(S, last = TRUE)

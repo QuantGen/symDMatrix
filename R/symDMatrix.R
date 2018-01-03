@@ -1,31 +1,27 @@
-#' A Class to Represent a Symmetric Matrix Paritioned into Memory-Mapped
+#' A Class to Represent a Symmetric Matrix Partitioned into Memory-Mapped
 #' Blocks.
 #'
-#' A `symDMatrix` is a symmetric matrix partitioned into matrix-like (ideally
-#' memory-mapped) blocks. This approach allows for very large symmetric
-#' matrices, commonly found for example when computing genetic relationship
-#' matrices on large cohorts. A `symDMatrix` object behaves similarly to a
-#' regular `matrix` by implementing key methods such as `[`, `dim`, and
-#' `dimnames`.
+#' A `symDMatrix` is a symmetric matrix partitioned into memory-mapped blocks.
+#' This approach allows for very large symmetric matrices, commonly found for
+#' example when computing genetic relationship matrices on large cohorts. A
+#' `symDMatrix` object behaves similarly to a regular `matrix` by implementing
+#' key methods such as `[`, `dim`, and `dimnames`.
 #'
-#' Each block is a matrix-like block. Currently supported are `ff` objects.
-#' Because the matrix is symmetric, only the diagonal and upper-triangular
-#' blocks are stored. The other blocks are inverses of the upper-triangular
-#' blocks (ff views).
+#' The `symDMatrix` class is a [LinkedMatrix::RowLinkedMatrix] that nests
+#' multiple [LinkedMatrix::ColumnLinkedMatrix] objects containing blocks of
+#' type `ff_matrix`. Because the matrix is symmetric, only the diagonal and
+#' upper-triangular blocks need to be stored, but for more efficient queries,
+#' the lower-triangular blocks are virtual transposes of their diagonal
+#' counterparts.
 #'
-#' @slot blocks A nested list in the form of \code{[[G11, G12, G13, ..., G1q],
-#' [G21, G22, G23, ..., G2q], [...], [G1q, ..., Gqq]]}, each list element
-#' representing a block of a partitioned symmetric and upper-triangular matrix.
-#' All blocks except the ones in the last column/row are expected to have the
-#' same dimensions.
 #' @slot centers A numeric vector storing the values used for column centering
 #' when creating the symmetric matrix.
 #' @slot scales A numeric vector storing the values used for column scaling
 #' when creating the symmetric matrix.
 #' @example man/examples/symDMatrix.R
 #' @seealso [initialize()][initialize,symDMatrix-method()] to create a
-#' `symDMatrix` object from scratch, [as.symDMatrix()] to create a `symDMatrix`
-#' object from other objects.
+#' `symDMatrix` object from scratch, or preferably, [as.symDMatrix()] to create
+#' a `symDMatrix` object from other objects.
 #' @aliases symDMatrix-class
 #' @export symDMatrix
 #' @exportClass symDMatrix
@@ -37,17 +33,20 @@ symDMatrix <- setClass("symDMatrix", slots = c(centers = "numeric", scales = "nu
 #' This method is run when a [symDMatrix-class] object is created using
 #' `symDMatrix(...)` or `new("symDMatrix", ...)`.
 #'
-#' Several structural checks are performed on `data`: it must contain at least
-#' one block and have the following nested structure: \code{[[G11, G12, G13,
-#' ..., G1q], [G22, G23, ..., G2q], [...], [Gqq]]}. Each block must be
-#' matrix-like and have the same number of rows or columns as blocks in the
-#' same row or column, respectively. Non-final blocks have to be square, unless
-#' if there is only a single block, in which case that block also has to be
-#' square.
+#' Several structural checks are performed on the passed blocks: there must be
+#' at least one block, the blocks must be of type
+#' [LinkedMatrix::ColumnLinkedMatrix], and the number of blocks must be
+#' consistent across the [LinkedMatrix::ColumnLinkedMatrix] objects. Each block
+#' must inherit from `ff_matrix` and have the same number of rows or columns as
+#' blocks in the same row or column, respectively. Non-final blocks have to be
+#' square, unless if there is only a single block, in which case that block
+#' also has to be square.
 #'
 #' @param .Object The [symDMatrix-class] instance to be initialized. This
 #' argument is passed in by R and can be ignored, but still needs to be
 #' documented.
+#' @param ... [LinkedMatrix::ColumnLinkedMatrix] objects containing blocks that
+#' inherit from `ff_matrix`.
 #' @param centers A numeric vector storing the values used for column centering
 #' when creating the symmetric matrix.
 #' @param scales A numeric vector storing the values used for column scaling
@@ -110,9 +109,8 @@ setMethod("initialize", "symDMatrix", function(.Object, ..., centers = 0L, scale
 
 #' Load symDMatrix Objects from .RData Files.
 #'
-#' This function is similar to [base::load()], but also initializes the
-#' different matrix-like objects that [symDMatrix-class] can take. Currently
-#' supported are `ff_matrix` objects.
+#' This function is similar to [base::load()], but it also initializes the
+#' `ff_matrix` blocks in the [symDMatrix-class] object.
 #'
 #' @param file The name of an .RData file to be loaded.
 #' @param envir The environment where to load the data.
@@ -166,7 +164,8 @@ initializeBlock.default <- function(x, ...) {
 
 #' Return the Number of Column/Row Blocks of a symDMatrix Object.
 #'
-#' This function returns the number of row blocks the original matrix has been partitioned into.
+#' This function returns the number of row blocks the original matrix has been
+#' partitioned into.
 #'
 #' @param x A [symDMatrix-class] object.
 #' @return The number of column/row blocks of a [symDMatrix-class] object.
@@ -245,9 +244,9 @@ as.symDMatrix <- function(x, ...) {
 #' This function creates a [symDMatrix-class] from a numeric matrix that is
 #' assumed to be symmetric.
 #'
-#' The input matrix is broken into blocks and each block is stored as an `ff`
-#' object. In addition, a metadata object called `symDMatrix.RData` is created
-#' to allow for easy reloading of the [symDMatrix-class] object.
+#' The input matrix is broken into blocks and each block is stored as an
+#' `ff_matrix` object. In addition, a metadata object called `symDMatrix.RData`
+#' is created to allow for easy reloading of the [symDMatrix-class] object.
 #'
 #' @param x A symmetric numeric matrix.
 #' @param blockSize The number of rows and columns of each block. If `NULL`, a
@@ -311,7 +310,7 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
 #' Coerce a Character Vector to a symDMatrix Object.
 #'
 #' This function creates a [symDMatrix-class] object from a character vector of
-#' path names to `RData` files, each containing exactly one matrix-like object
+#' path names to `RData` files, each containing exactly one `ff_matrix` object
 #' that is used as a block, and is useful for distributed computing where each
 #' block is processed on a different node.
 #'
