@@ -17,6 +17,7 @@ Imports:
     bit
 Suggests:
     BGData,
-    testthat
+    testthat,
+    covr
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
