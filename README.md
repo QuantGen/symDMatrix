@@ -24,12 +24,6 @@ Because the matrix is assumed to be symmetric (i.e., `Gij` equals `Gji`), only t
 
 The package defines the class and multiple methods that allow treating this memory-mapped matrix as a standard RAM matrix.
 
-Internally, a `symDMatrix` object is an S4 class with the following slots:
-
-* `@data` (list) each element of the list is an ff object
-* `@centers` (numeric) column-means used in the computation of the matrix
-* `@scales` (numeric) column-standard deviations used to scale the matrix
-
 
 Tutorial
 --------
@@ -160,7 +154,9 @@ for (r in 1:nBlocks) {
         save(block, file = paste0(blockName, ".RData"))
     }
 }
-G2 <- as.symDMatrix(list.files(pattern = "^wheat.*RData$"), centers = centers, scales = scales)
+G2 <- as.symDMatrix(list.files(pattern = "^wheat.*RData$"))
+attr(G2, "centers") <- centers
+attr(G2, "scales") <- scales
 
 all.equal(diag(G1), diag(G2)) # there will be a slight numerical penalty
 ```

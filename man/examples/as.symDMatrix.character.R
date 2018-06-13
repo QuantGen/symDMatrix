@@ -27,4 +27,6 @@ for (r in 1:nBlocks) {
 }
 
 # Create symDMatrix from files
-G <- as.symDMatrix(list.files(pattern = ".RData$"), centers = centers, scales = scales)
+G <- as.symDMatrix(list.files(pattern = ".RData$"))
+attr(G, "centers") <- centers
+attr(G, "scales") <- scales

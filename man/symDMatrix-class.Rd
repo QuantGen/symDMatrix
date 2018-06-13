@@ -21,16 +21,6 @@ upper-triangular blocks need to be stored, but for more efficient queries,
 the lower-triangular blocks are virtual transposes of their diagonal
 counterparts.
 }
-\section{Slots}{
-
-\describe{
-\item{\code{centers}}{A numeric vector storing the values used for column centering
-when creating the symmetric matrix.}
-
-\item{\code{scales}}{A numeric vector storing the values used for column scaling
-when creating the symmetric matrix.}
-}}
-
 \examples{
 # Get the path to the example symmetric matrix
 path <- system.file("extdata", "G.RData", package = "symDMatrix")

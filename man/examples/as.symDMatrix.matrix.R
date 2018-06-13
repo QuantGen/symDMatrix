@@ -14,4 +14,6 @@ scales <- apply(X, 2, sd, na.rm = TRUE)
 G1 <- getG(X, center = centers, scale = scales)
 
 # Create symDMatrix object from G matrix
-G2 <- as.symDMatrix(G1, center = centers, scale = scales, folderOut = "fromMatrix")
+G2 <- as.symDMatrix(G1, folderOut = "fromMatrix")
+attr(G2, "centers") <- centers
+attr(G2, "scales") <- scales

@@ -5,7 +5,7 @@
 \alias{initialize,symDMatrix-method}
 \title{Create a New symDMatrix Instance.}
 \usage{
-\S4method{initialize}{symDMatrix}(.Object, ..., centers = 0L, scales = 1L)
+\S4method{initialize}{symDMatrix}(.Object, ...)
 }
 \arguments{
 \item{.Object}{The \linkS4class{symDMatrix} instance to be initialized. This
@@ -14,12 +14,6 @@ documented.}
 
 \item{...}{\link[LinkedMatrix:ColumnLinkedMatrix]{LinkedMatrix::ColumnLinkedMatrix} objects containing blocks that
 inherit from \code{ff_matrix}.}
-
-\item{centers}{A numeric vector storing the values used for column centering
-when creating the symmetric matrix.}
-
-\item{scales}{A numeric vector storing the values used for column scaling
-when creating the symmetric matrix.}
 }
 \value{
 A \linkS4class{symDMatrix} object.

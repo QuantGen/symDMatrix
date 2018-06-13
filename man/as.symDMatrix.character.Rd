@@ -4,16 +4,10 @@
 \alias{as.symDMatrix.character}
 \title{Coerce a Character Vector to a symDMatrix Object.}
 \usage{
-\method{as.symDMatrix}{character}(x, centers = 0L, scales = 1L, ...)
+\method{as.symDMatrix}{character}(x, ...)
 }
 \arguments{
 \item{x}{A character vector with path names to \code{RData} files.}
-
-\item{centers}{A numeric vector to fill the \code{@centers} slot of the
-\linkS4class{symDMatrix} object.}
-
-\item{scales}{A numeric vector to fill the \code{@scales} slot of the
-\linkS4class{symDMatrix} object.}
 
 \item{...}{Additional arguments (currently unused).}
 }

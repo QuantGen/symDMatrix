@@ -14,10 +14,6 @@
 #' the lower-triangular blocks are virtual transposes of their diagonal
 #' counterparts.
 #'
-#' @slot centers A numeric vector storing the values used for column centering
-#' when creating the symmetric matrix.
-#' @slot scales A numeric vector storing the values used for column scaling
-#' when creating the symmetric matrix.
 #' @example man/examples/symDMatrix.R
 #' @seealso [initialize()][initialize,symDMatrix-method()] to create a
 #' `symDMatrix` object from scratch, or preferably, [as.symDMatrix()] to create
@@ -25,7 +21,7 @@
 #' @aliases symDMatrix-class
 #' @export symDMatrix
 #' @exportClass symDMatrix
-symDMatrix <- setClass("symDMatrix", slots = c(centers = "numeric", scales = "numeric"), contains = "RowLinkedMatrix")
+symDMatrix <- setClass("symDMatrix", contains = "RowLinkedMatrix")
 
 
 #' Create a New symDMatrix Instance.
@@ -47,16 +43,12 @@ symDMatrix <- setClass("symDMatrix", slots = c(centers = "numeric", scales = "nu
 #' documented.
 #' @param ... [LinkedMatrix::ColumnLinkedMatrix] objects containing blocks that
 #' inherit from `ff_matrix`.
-#' @param centers A numeric vector storing the values used for column centering
-#' when creating the symmetric matrix.
-#' @param scales A numeric vector storing the values used for column scaling
-#' when creating the symmetric matrix.
 #' @return A [symDMatrix-class] object.
 #' @example man/examples/initialize.R
 #' @seealso [as.symDMatrix()] to create a [symDMatrix-class] object from other
 #' objects.
 #' @export
-setMethod("initialize", "symDMatrix", function(.Object, ..., centers = 0L, scales = 1L) {
+setMethod("initialize", "symDMatrix", function(.Object, ...) {
     blocks <- list(...)
     nBlocks <- length(blocks)
     # Stop if there are no blocks
@@ -101,8 +93,6 @@ setMethod("initialize", "symDMatrix", function(.Object, ..., centers = 0L, scale
     }
     # Call RowLinkedMatrix constructor
     .Object <- callNextMethod(.Object, ...)
-    .Object@centers <- centers
-    .Object@scales <- scales
     return(.Object)
 })
 
@@ -298,8 +288,6 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
         }
         args[[rowIndex]] <- do.call(LinkedMatrix::ColumnLinkedMatrix, rowArgs)
     }
-    # Append centers and scales to args
-    args <- c(args, list(centers = 0L, scales = 1L))
     # Create symDMatrix object from args
     symDMatrix <- do.call(symDMatrix, args)
     save(symDMatrix, file = paste0(folderOut, "/symDMatrix.RData"))
@@ -319,16 +307,12 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
 #' to [load.symDMatrix()].
 #'
 #' @param x A character vector with path names to `RData` files.
-#' @param centers A numeric vector to fill the `@@centers` slot of the
-#' [symDMatrix-class] object.
-#' @param scales A numeric vector to fill the `@@scales` slot of the
-#' [symDMatrix-class] object.
 #' @param ... Additional arguments (currently unused).
 #' @return A [symDMatrix-class] object.
 #' @seealso [base::list.files()] to create a character vector of file paths
 #' that match a certain pattern.
 #' @export
-as.symDMatrix.character <- function(x, centers = 0L, scales = 1L, ...) {
+as.symDMatrix.character <- function(x, ...) {
     nBlocks <- as.integer((-1L + sqrt(1L + 4L * 2L * length(x))) / 2L)
     args <- vector(mode = "list", length = nBlocks)
     counter <- 1L
@@ -359,8 +343,6 @@ as.symDMatrix.character <- function(x, centers = 0L, scales = 1L, ...) {
         }
         args[[i]] <- do.call(LinkedMatrix::ColumnLinkedMatrix, rowArgs)
     }
-    # Append centers and scales to args
-    args <- c(args, list(centers = 0L, scales = 1L))
     # Create symDMatrix object from args
     symDMatrix <- do.call(symDMatrix, args)
     return(symDMatrix)
