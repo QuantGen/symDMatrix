@@ -27,9 +27,6 @@ files for each block have been generated:\preformatted{for (i in 1:nBlocks(G)) {
     }
 }
 }
-
-[[i]: R:[i
-[j]: R:j
 }
 
 \seealso{
