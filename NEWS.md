@@ -1,4 +1,4 @@
-# symDMatrix 1.0.0.9000
+# symDMatrix 2.0.0
 
 The symDMatrix package is now based on the
 [LinkedMatrix](https://CRAN.R-project.org/package=LinkedMatrix) package. The
