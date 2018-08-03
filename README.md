@@ -6,7 +6,7 @@ symDMatrix
 [![Travis-CI Build Status](https://travis-ci.org/QuantGen/symDMatrix.svg?branch=master)](https://travis-ci.org/QuantGen/symDMatrix)
 [![Coverage status](https://codecov.io/gh/QuantGen/symDMatrix/branch/master/graph/badge.svg)](https://codecov.io/github/QuantGen/symDMatrix?branch=master)
 
-symDMatrix is an R package that provides symmetric matrices assembled from memory-mapped blocks.
+symDMatrix is an R package that provides symmetric matrices partitioned into file-backed blocks.
 
 A symmetric matrix `G` is partitioned into blocks as follows:
 
@@ -20,9 +20,9 @@ A symmetric matrix `G` is partitioned into blocks as follows:
 + --- + --- + --- +
 ```
 
-Because the matrix is assumed to be symmetric (i.e., `Gij` equals `Gji`), only the diagonal and upper-triangular blocks are stored and the other blocks are virtual transposes of the corresponding diagonal blocks. Each block is a memory-mapped matrix of type `ff_matrix` of the [ff](https://CRAN.R-project.org/package=ff) package.
+Because the matrix is assumed to be symmetric (i.e., `Gij` equals `Gji`), only the diagonal and upper-triangular blocks are stored and the other blocks are virtual transposes of the corresponding diagonal blocks. Each block is a file-backed matrix of type `ff_matrix` of the [ff](https://CRAN.R-project.org/package=ff) package.
 
-The package defines the class and multiple methods that allow treating this memory-mapped matrix as a standard RAM matrix.
+The package defines the class and multiple methods that allow treating this file-backed matrix as a standard RAM matrix.
 
 
 Tutorial
@@ -98,7 +98,7 @@ for (i in 1:100) {
 
 ### (3) Creating a symDMatrix from genotypes
 
-The function `getG_symDMatrix` of the [BGData](https://CRAN.R-project.org/package=BGData) package computes G=XX' (with options for centering and scaling) without ever loading G in RAM. It creates the `symDMatrix` object directly, block by block. In this example, `X` is a matrix in RAM. For large genotype data sets, `X` could be a memory-mapped matrix, e.g., a `BEDMatrix` or `ff` object.
+The function `getG_symDMatrix` of the [BGData](https://CRAN.R-project.org/package=BGData) package computes G=XX' (with options for centering and scaling) without ever loading G in RAM. It creates the `symDMatrix` object directly, block by block. In this example, `X` is a matrix in RAM. For large genotype data sets, `X` could be a file-backed matrix, e.g., a `BEDMatrix` or `ff` object.
 
 ```R
 library(BGData)

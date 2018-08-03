@@ -4,10 +4,10 @@
 \name{symDMatrix-class}
 \alias{symDMatrix-class}
 \alias{symDMatrix}
-\title{A Class to Represent a Symmetric Matrix Partitioned into Memory-Mapped
-Blocks.}
+\title{A Matrix-Like Class to Represent a Symmetric Matrix Partitioned into
+File-Backed Blocks.}
 \description{
-A \code{symDMatrix} is a symmetric matrix partitioned into memory-mapped blocks.
+A \code{symDMatrix} is a symmetric matrix partitioned into file-backed blocks.
 This approach allows for very large symmetric matrices, commonly found for
 example when computing genetic relationship matrices on large cohorts. A
 \code{symDMatrix} object behaves similarly to a regular \code{matrix} by implementing

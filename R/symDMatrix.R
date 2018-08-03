@@ -1,7 +1,7 @@
-#' A Class to Represent a Symmetric Matrix Partitioned into Memory-Mapped
-#' Blocks.
+#' A Matrix-Like Class to Represent a Symmetric Matrix Partitioned into
+#' File-Backed Blocks.
 #'
-#' A `symDMatrix` is a symmetric matrix partitioned into memory-mapped blocks.
+#' A `symDMatrix` is a symmetric matrix partitioned into file-backed blocks.
 #' This approach allows for very large symmetric matrices, commonly found for
 #' example when computing genetic relationship matrices on large cohorts. A
 #' `symDMatrix` object behaves similarly to a regular `matrix` by implementing

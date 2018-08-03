@@ -1,4 +1,4 @@
-#' A Package Providing Symmetric Matrices Assembled from Memory-Mapped Blocks.
+#' A Package Providing Symmetric Matrices Partitioned into File-Backed Blocks.
 #'
 #' @section Example Dataset: The example dataset in the `extdata` folder is the
 #' G matrix of the dummy dataset that comes with the
@@ -17,8 +17,8 @@
 #' load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"))
 #' ```
 #'
-#' To demonstrate the `as.symDMatrix.character()` method, `RData` files for
-#' each block have been generated:
+#' To demonstrate the [as.symDMatrix()] method for character vectors, `RData`
+#' files for each block have been generated:
 #'
 #' ```
 #' for (i in 1:nBlocks(G)) {

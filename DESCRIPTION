@@ -2,9 +2,8 @@ Package: symDMatrix
 Version: 1.0.0.9000
 License: MIT + file LICENSE
 Title: Partitioned Symmetric Matrices
-Description: A class that partitions a symmetric matrix into matrix-like
-    objects (blocks) while behaving similarly to a base R matrix. Very large
-    symmetric matrices are supported if the blocks are memory-mapped objects.
+Description: A matrix-like class to represent a symmetric matrix partitioned
+    into file-backed blocks.
 Authors@R: c(
     person("Gustavo", "de los Campos", email = "gustavoc@msu.edu", role = c("aut")),
     person("Alexander", "Grueneberg", email = "alexander.grueneberg@googlemail.com", role = c("aut", "cre")))
