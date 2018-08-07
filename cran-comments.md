@@ -7,12 +7,7 @@
 
 ## R CMD check results
 
-There were 0 errors, 1 warning, and 0 notes.
-
-### WARNING: '::' or ':::' import not declared from: 'BEDMatrix'
-
-This package depends on the BGData package which depends on the BEDMatrix
-package. Therefore, the import should not need to be declared.
+There were 0 errors, 0 warning, and 0 notes.
 
 
 ## revdep_check results
