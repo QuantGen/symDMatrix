@@ -16,6 +16,7 @@ Imports:
     bit
 Suggests:
     BGData,
+    BEDMatrix,
     testthat,
     covr
 RoxygenNote: 6.1.0
