@@ -4,6 +4,7 @@ symDMatrix
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/symDMatrix)](https://CRAN.R-project.org/package=symDMatrix)
 [![Rdoc](http://www.rdocumentation.org/badges/version/symDMatrix)](http://www.rdocumentation.org/packages/symDMatrix)
 [![Travis-CI Build Status](https://travis-ci.org/QuantGen/symDMatrix.svg?branch=master)](https://travis-ci.org/QuantGen/symDMatrix)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/QuantGen/symDMatrix?branch=master&svg=true)](https://ci.appveyor.com/project/QuantGen/symDMatrix)
 [![Coverage status](https://codecov.io/gh/QuantGen/symDMatrix/branch/master/graph/badge.svg)](https://codecov.io/github/QuantGen/symDMatrix?branch=master)
 
 symDMatrix is an R package that provides symmetric matrices partitioned into file-backed blocks.
