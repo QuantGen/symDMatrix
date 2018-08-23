@@ -16,7 +16,8 @@ X <- BEDMatrix(system.file("extdata", "example.bed", package = "BEDMatrix"))
 G <- getG_symDMatrix(X, blockSize = 17, folderOut = "inst/extdata")
 }
 
-To load the dataset:\preformatted{load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"))
+To load the dataset:\preformatted{load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"),
+readonly = TRUE)
 }
 
 To demonstrate the \code{\link[=as.symDMatrix]{as.symDMatrix()}} method for character vectors, \code{RData}

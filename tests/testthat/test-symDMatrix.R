@@ -12,7 +12,7 @@ G2 <- tcrossprod(X)
 G2 <- G2 / mean(diag(G2))
 
 # Prepare dummy symDMatrix
-suppressMessages(load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix")))
+suppressMessages(load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"), readonly = TRUE))
 
 test_that("symDMatrix", {
 

@@ -14,7 +14,8 @@
 #' To load the dataset:
 #'
 #' ```
-#' load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"))
+#' load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"),
+#' readonly = TRUE)
 #' ```
 #'
 #' To demonstrate the [as.symDMatrix()] method for character vectors, `RData`

@@ -1,6 +1,7 @@
 # symDMatrix 2.0.1
 
-* `load.symDMatrix()`: Add `readonly` parameter
+- `load.symDMatrix()`: Add `readonly` parameter and suggest to use when loading
+  example dataset.
 
 
 # symDMatrix 2.0.0
