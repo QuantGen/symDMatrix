@@ -1,3 +1,8 @@
+# symDMatrix 2.0.1
+
+* `load.symDMatrix()`: Add `readonly` parameter
+
+
 # symDMatrix 2.0.0
 
 The symDMatrix package is now based on the

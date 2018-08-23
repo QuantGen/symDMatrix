@@ -4,10 +4,12 @@
 \alias{load.symDMatrix}
 \title{Load symDMatrix Objects from .RData Files.}
 \usage{
-load.symDMatrix(file, envir = parent.frame())
+load.symDMatrix(file, readonly = FALSE, envir = parent.frame())
 }
 \arguments{
 \item{file}{The name of an .RData file to be loaded.}
+
+\item{readonly}{Set to TRUE to forbid writing to existing files.}
 
 \item{envir}{The environment where to load the data.}
 }

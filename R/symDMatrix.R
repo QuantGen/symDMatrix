@@ -103,9 +103,10 @@ setMethod("initialize", "symDMatrix", function(.Object, ...) {
 #' `ff_matrix` blocks in the [symDMatrix-class] object.
 #'
 #' @param file The name of an .RData file to be loaded.
+#' @param readonly Set to TRUE to forbid writing to existing files.
 #' @param envir The environment where to load the data.
 #' @export
-load.symDMatrix <- function(file, envir = parent.frame()) {
+load.symDMatrix <- function(file, readonly = FALSE, envir = parent.frame()) {
     # Load data into new environment
     loadingEnv <- new.env()
     load(file = file, envir = loadingEnv)
@@ -117,7 +118,7 @@ load.symDMatrix <- function(file, envir = parent.frame()) {
             nBlocks <- nBlocks(object)
             for (i in 1L:nBlocks) {
                 for (j in 1L:nBlocks) {
-                    object[[i]][[j]] <- initializeBlock(object[[i]][[j]], path = dirname(file))
+                    object[[i]][[j]] <- initializeBlock(object[[i]][[j]], path = dirname(file), readonly = readonly)
                 }
             }
         }
@@ -135,12 +136,12 @@ initializeBlock <- function(x, ...) {
 
 # Absolute paths to ff files are not stored, so the ff objects have to be
 # loaded from the same directory as the RData file.
-initializeBlock.ff_matrix <- function(x, path, ...) {
+initializeBlock.ff_matrix <- function(x, path, readonly = FALSE, ...) {
     # Store current working directory and set working directory to path
     cwd <- getwd()
     setwd(path)
     # Open ff object
-    ff::open.ff(x)
+    ff::open.ff(x, readonly = readonly)
     # Restore the working directory
     setwd(cwd)
     return(x)
