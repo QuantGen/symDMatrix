@@ -1,3 +1,8 @@
+# symDMatrix 2.0.2
+
+- Load example symDMatrix readonly in examples to pass CRAN checks.
+
+
 # symDMatrix 2.0.1
 
 - `load.symDMatrix()`: Add `readonly` parameter and suggest to use when loading

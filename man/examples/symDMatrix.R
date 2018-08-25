@@ -2,7 +2,7 @@
 path <- system.file("extdata", "G.RData", package = "symDMatrix")
 
 # Load the example symDMatrix object (G)
-load.symDMatrix(path)
+load.symDMatrix(path, readonly = TRUE)
 
 # Get the dimensions
 dim(G)

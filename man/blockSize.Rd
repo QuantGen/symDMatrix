@@ -25,7 +25,7 @@ size can be retrieved by setting \code{last} to \code{TRUE}.
 }
 \examples{
 # Load example symDMatrix (G)
-load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"))
+load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"), readonly = TRUE)
 
 # Get the block size
 blockSize(G)
