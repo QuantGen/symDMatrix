@@ -1,3 +1,6 @@
+# symDMatrix 2.0.2.9000
+
+
 # symDMatrix 2.0.2
 
 - Load example symDMatrix readonly in examples to pass CRAN checks.
