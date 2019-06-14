@@ -2,8 +2,8 @@
 \alias{load.symDMatrix}
 \title{Load symDMatrix Objects from .RData Files}
 \description{
-This function is similar to \code{\link[base:load]{base::load()}}, but it also
-initializes the \code{ff_matrix} blocks in the \linkS4class{symDMatrix} object.
+This function is similar to \code{load}, but it also initializes the
+\code{ff_matrix} blocks in the \code{symDMatrix} object.
 }
 \usage{
 load.symDMatrix(file, readonly = FALSE, envir = parent.frame())

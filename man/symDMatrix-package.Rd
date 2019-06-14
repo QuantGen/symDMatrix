@@ -7,7 +7,7 @@ A Package Providing Symmetric Matrices Partitioned into File-Backed Blocks.
 }
 \section{Example Dataset}{
 The example dataset in the \code{extdata} folder is the G matrix of the dummy
-dataset that comes with the \link[BEDMatrix:BEDMatrix-package]{BEDMatrix}
+dataset that comes with the \code{BEDMatrix}
 package. It has been generated as follows:
 \preformatted{library(BGData)
 X <- BEDMatrix(system.file("extdata", "example.bed", package = "BEDMatrix"))
@@ -19,8 +19,8 @@ To load the dataset:
 readonly = TRUE)
 }
 
-To demonstrate the \code{\link[=as.symDMatrix]{as.symDMatrix()}} method for
-character vectors, \code{RData} files for each block have been generated:
+To demonstrate the \code{as.symDMatrix} method for character vectors,
+\code{RData} files for each block have been generated:
 \preformatted{for (i in 1:nBlocks(G)) {
     for (j in i:nBlocks(G)) {
         block <- G[[i]][[j]]
@@ -30,5 +30,7 @@ character vectors, \code{RData} files for each block have been generated:
 }
 }
 \seealso{
-\linkS4class{symDMatrix} for the \code{symDMatrix} class.
+\code{\link{symDMatrix-class}} for the \code{symDMatrix} class.
+\code{\link[BEDMatrix]{BEDMatrix-package}} for more information on the
+\code{BEDMatrix} package.
 }

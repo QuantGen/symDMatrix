@@ -10,11 +10,11 @@ nBlocks(x)
 }
 \arguments{
   \item{x}{
-    A \linkS4class{symDMatrix} object.
+    A \code{symDMatrix} object.
   }
 }
 \value{
-The number of column/row blocks of a \linkS4class{symDMatrix} object.
+The number of column/row blocks of a \code{symDMatrix} object.
 }
 \examples{
 # Load example symDMatrix (G)

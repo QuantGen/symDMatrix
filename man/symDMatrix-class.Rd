@@ -12,20 +12,16 @@ example when computing genetic relationship matrices on large cohorts. A
 implementing key methods such as \code{[}, \code{dim}, and \code{dimnames}.
 }
 \details{
-The \code{symDMatrix} class is a
-\link[LinkedMatrix:RowLinkedMatrix]{LinkedMatrix::RowLinkedMatrix} that nests
-multiple
-\link[LinkedMatrix:ColumnLinkedMatrix]{LinkedMatrix::ColumnLinkedMatrix}
-objects containing blocks of type \code{ff_matrix}. Because the matrix is
-symmetric, only the diagonal and upper-triangular blocks need to be stored, but
-for more efficient queries, the lower-triangular blocks are virtual transposes
-of their diagonal counterparts.
+The \code{symDMatrix} class is a \code{RowLinkedMatrix} that nests multiple
+\code{ColumnLinkedMatrix} objects containing blocks of type \code{ff_matrix}.
+Because the matrix is symmetric, only the diagonal and upper-triangular blocks
+need to be stored, but for more efficient queries, the lower-triangular blocks
+are virtual transposes of their diagonal counterparts.
 }
 \seealso{
-\link[=initialize,symDMatrix-method]{initialize()} to create a
-\code{symDMatrix} object from scratch, or preferably,
-\code{\link[=as.symDMatrix]{as.symDMatrix()}} to create a \code{symDMatrix}
-object from other objects.
+\code{\link{initialize,symDMatrix-method}} to create a \code{symDMatrix} object
+from scratch, or preferably, \code{\link{as.symDMatrix}} to create a
+\code{symDMatrix} object from other objects.
 }
 \examples{
 # Get the path to the example symmetric matrix

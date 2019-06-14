@@ -2,7 +2,7 @@
 \alias{as.symDMatrix}
 \title{Coerce an Object to a symDMatrix Object}
 \description{
-Coerce an object to a \linkS4class{symDMatrix} object.
+Coerce an object to a \code{symDMatrix} object.
 }
 \usage{
 as.symDMatrix(x, ...)
@@ -16,10 +16,10 @@ as.symDMatrix(x, ...)
   }
 }
 \value{
-A \linkS4class{symDMatrix} object.
+A \code{symDMatrix} object.
 }
 \seealso{
-\code{\link[=as.symDMatrix.matrix]{as.symDMatrix.matrix()}} to coerce a matrix
-or \code{\link[=as.symDMatrix.character]{as.symDMatrix.character()}} to coerce
-a vector of path names to a \linkS4class{symDMatrix} object.
+\code{\link{as.symDMatrix.matrix}} to coerce a matrix or
+\code{\link{as.symDMatrix.character}} to coerce a vector of path names to a
+\code{symDMatrix} object.
 }
