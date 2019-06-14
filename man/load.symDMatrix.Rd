@@ -1,6 +1,6 @@
 \name{load.symDMatrix}
 \alias{load.symDMatrix}
-\title{Load symDMatrix Objects from .RData Files.}
+\title{Load symDMatrix Objects from .RData Files}
 \usage{
 load.symDMatrix(file, readonly = FALSE, envir = parent.frame())
 }

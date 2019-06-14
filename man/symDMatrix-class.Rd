@@ -3,7 +3,7 @@
 \alias{symDMatrix-class}
 \alias{symDMatrix}
 \title{A Matrix-Like Class to Represent a Symmetric Matrix Partitioned into
-File-Backed Blocks.}
+File-Backed Blocks}
 \description{
 A \code{symDMatrix} is a symmetric matrix partitioned into file-backed blocks.
 This approach allows for very large symmetric matrices, commonly found for

@@ -1,6 +1,6 @@
 \name{as.symDMatrix}
 \alias{as.symDMatrix}
-\title{Coerce an Object to a symDMatrix Object.}
+\title{Coerce an Object to a symDMatrix Object}
 \usage{
 as.symDMatrix(x, ...)
 }

@@ -1,6 +1,6 @@
 \name{blockSize}
 \alias{blockSize}
-\title{Return the Block Size of a symDMatrix Object.}
+\title{Return the Block Size of a symDMatrix Object}
 \usage{
 blockSize(x, last = FALSE)
 }

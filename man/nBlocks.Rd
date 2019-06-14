@@ -1,6 +1,6 @@
 \name{nBlocks}
 \alias{nBlocks}
-\title{Return the Number of Column/Row Blocks of a symDMatrix Object.}
+\title{Return the Number of Column/Row Blocks of a symDMatrix Object}
 \usage{
 nBlocks(x)
 }

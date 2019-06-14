@@ -1,6 +1,6 @@
 \name{blockIndex}
 \alias{blockIndex}
-\title{Return the Block Structure of a symDMatrix Object.}
+\title{Return the Block Structure of a symDMatrix Object}
 \usage{
 blockIndex(x)
 }

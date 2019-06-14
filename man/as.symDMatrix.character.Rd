@@ -1,6 +1,6 @@
 \name{as.symDMatrix.character}
 \alias{as.symDMatrix.character}
-\title{Coerce a Character Vector to a symDMatrix Object.}
+\title{Coerce a Character Vector to a symDMatrix Object}
 \usage{
 \method{as.symDMatrix}{character}(x, ...)
 }

@@ -1,6 +1,6 @@
 \name{as.symDMatrix.matrix}
 \alias{as.symDMatrix.matrix}
-\title{Coerce a Matrix to a symDMatrix Object.}
+\title{Coerce a Matrix to a symDMatrix Object}
 \usage{
 \method{as.symDMatrix}{matrix}(x, blockSize = 5000L, vmode = "double",
   folderOut = randomString(), ...)

@@ -1,7 +1,7 @@
 \docType{methods}
 \name{initialize,symDMatrix-method}
 \alias{initialize,symDMatrix-method}
-\title{Create a New symDMatrix Instance.}
+\title{Create a New symDMatrix Instance}
 \usage{
 \S4method{initialize}{symDMatrix}(.Object, ...)
 }

@@ -1,7 +1,7 @@
 \docType{package}
 \name{symDMatrix-package}
 \alias{symDMatrix-package}
-\title{A Package Providing Symmetric Matrices Partitioned into File-Backed Blocks.}
+\title{A Package Providing Symmetric Matrices Partitioned into File-Backed Blocks}
 \description{
 A Package Providing Symmetric Matrices Partitioned into File-Backed Blocks.
 }
