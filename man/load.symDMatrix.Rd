@@ -2,16 +2,20 @@
 \alias{load.symDMatrix}
 \title{Load symDMatrix Objects from .RData Files}
 \description{
-This function is similar to \code{\link[base:load]{base::load()}}, but it also initializes the
-\code{ff_matrix} blocks in the \linkS4class{symDMatrix} object.
+This function is similar to \code{\link[base:load]{base::load()}}, but it also
+initializes the \code{ff_matrix} blocks in the \linkS4class{symDMatrix} object.
 }
 \usage{
 load.symDMatrix(file, readonly = FALSE, envir = parent.frame())
 }
 \arguments{
-\item{file}{The name of an .RData file to be loaded.}
-
-\item{readonly}{Set to TRUE to forbid writing to existing files.}
-
-\item{envir}{The environment where to load the data.}
+  \item{file}{
+    The name of an .RData file to be loaded.
+  }
+  \item{readonly}{
+    Set to TRUE to forbid writing to existing files.
+  }
+  \item{envir}{
+    The environment where to load the data.
+  }
 }

@@ -9,7 +9,9 @@ partitioned into.
 nBlocks(x)
 }
 \arguments{
-\item{x}{A \linkS4class{symDMatrix} object.}
+  \item{x}{
+    A \linkS4class{symDMatrix} object.
+  }
 }
 \value{
 The number of column/row blocks of a \linkS4class{symDMatrix} object.

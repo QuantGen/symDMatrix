@@ -10,29 +10,32 @@ This method is run when a \linkS4class{symDMatrix} object is created using
 \S4method{initialize}{symDMatrix}(.Object, ...)
 }
 \arguments{
-\item{.Object}{The \linkS4class{symDMatrix} instance to be initialized. This
-argument is passed in by R and can be ignored, but still needs to be
-documented.}
-
-\item{...}{\link[LinkedMatrix:ColumnLinkedMatrix]{LinkedMatrix::ColumnLinkedMatrix} objects containing blocks that
-inherit from \code{ff_matrix}.}
+  \item{.Object}{
+    The \linkS4class{symDMatrix} instance to be initialized. This argument is
+    passed in by R and can be ignored, but still needs to be documented.
+  }
+  \item{...}{
+    \link[LinkedMatrix:ColumnLinkedMatrix]{LinkedMatrix::ColumnLinkedMatrix}
+    objects containing blocks that inherit from \code{ff_matrix}.
+  }
 }
 \details{
-Several structural checks are performed on the passed blocks: there must be
-at least one block, the blocks must be of type
-\link[LinkedMatrix:ColumnLinkedMatrix]{LinkedMatrix::ColumnLinkedMatrix}, and the number of blocks must be
-consistent across the \link[LinkedMatrix:ColumnLinkedMatrix]{LinkedMatrix::ColumnLinkedMatrix} objects. Each block
-must inherit from \code{ff_matrix} and have the same number of rows or columns as
-blocks in the same row or column, respectively. Non-final blocks have to be
-square, unless if there is only a single block, in which case that block
-also has to be square.
+Several structural checks are performed on the passed blocks: there must be at
+least one block, the blocks must be of type
+\link[LinkedMatrix:ColumnLinkedMatrix]{LinkedMatrix::ColumnLinkedMatrix}, and
+the number of blocks must be consistent across the
+\link[LinkedMatrix:ColumnLinkedMatrix]{LinkedMatrix::ColumnLinkedMatrix}
+objects. Each block must inherit from \code{ff_matrix} and have the same number
+of rows or columns as blocks in the same row or column, respectively. Non-final
+blocks have to be square, unless if there is only a single block, in which case
+that block also has to be square.
 }
 \value{
 A \linkS4class{symDMatrix} object.
 }
 \seealso{
-\code{\link[=as.symDMatrix]{as.symDMatrix()}} to create a \linkS4class{symDMatrix} object from other
-objects.
+\code{\link[=as.symDMatrix]{as.symDMatrix()}} to create a
+\linkS4class{symDMatrix} object from other objects.
 }
 \examples{
 # Generate a symmetric matrix
