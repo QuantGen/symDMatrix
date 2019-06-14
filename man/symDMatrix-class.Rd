@@ -19,6 +19,11 @@ upper-triangular blocks need to be stored, but for more efficient queries,
 the lower-triangular blocks are virtual transposes of their diagonal
 counterparts.
 }
+\seealso{
+\link[=initialize,symDMatrix-method]{initialize()} to create a
+\code{symDMatrix} object from scratch, or preferably, \code{\link[=as.symDMatrix]{as.symDMatrix()}} to create
+a \code{symDMatrix} object from other objects.
+}
 \examples{
 # Get the path to the example symmetric matrix
 path <- system.file("extdata", "G.RData", package = "symDMatrix")
@@ -43,9 +48,4 @@ G[1, ]
 G[1:3, ]
 G["per0_per0", ]
 G[c("per0_per0", "per1_per1", "per2_per2"), ]
-}
-\seealso{
-\link[=initialize,symDMatrix-method]{initialize()} to create a
-\code{symDMatrix} object from scratch, or preferably, \code{\link[=as.symDMatrix]{as.symDMatrix()}} to create
-a \code{symDMatrix} object from other objects.
 }

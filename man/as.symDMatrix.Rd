@@ -1,6 +1,9 @@
 \name{as.symDMatrix}
 \alias{as.symDMatrix}
 \title{Coerce an Object to a symDMatrix Object}
+\description{
+Coerce an object to a \linkS4class{symDMatrix} object.
+}
 \usage{
 as.symDMatrix(x, ...)
 }
@@ -11,9 +14,6 @@ as.symDMatrix(x, ...)
 }
 \value{
 A \linkS4class{symDMatrix} object.
-}
-\description{
-Coerce an object to a \linkS4class{symDMatrix} object.
 }
 \seealso{
 \code{\link[=as.symDMatrix.matrix]{as.symDMatrix.matrix()}} to coerce a matrix or

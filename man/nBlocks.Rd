@@ -1,6 +1,10 @@
 \name{nBlocks}
 \alias{nBlocks}
 \title{Return the Number of Column/Row Blocks of a symDMatrix Object}
+\description{
+This function returns the number of row blocks the original matrix has been
+partitioned into.
+}
 \usage{
 nBlocks(x)
 }
@@ -9,10 +13,6 @@ nBlocks(x)
 }
 \value{
 The number of column/row blocks of a \linkS4class{symDMatrix} object.
-}
-\description{
-This function returns the number of row blocks the original matrix has been
-partitioned into.
 }
 \examples{
 # Load example symDMatrix (G)

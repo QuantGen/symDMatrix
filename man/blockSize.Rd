@@ -1,6 +1,9 @@
 \name{blockSize}
 \alias{blockSize}
 \title{Return the Block Size of a symDMatrix Object}
+\description{
+This function returns the block size of a \linkS4class{symDMatrix} object.
+}
 \usage{
 blockSize(x, last = FALSE)
 }
@@ -11,15 +14,12 @@ blockSize(x, last = FALSE)
 last (\code{TRUE}) column/row block or any of the other blocks (\code{FALSE},
 default).}
 }
-\value{
-The block size of a \linkS4class{symDMatrix} object.
-}
-\description{
-This function returns the block size of a \linkS4class{symDMatrix} object.
-}
 \details{
 The last block of a column/row may be smaller than the other blocks. Its
 size can be retrieved by setting \code{last} to \code{TRUE}.
+}
+\value{
+The block size of a \linkS4class{symDMatrix} object.
 }
 \examples{
 # Load example symDMatrix (G)
