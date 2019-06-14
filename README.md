@@ -180,14 +180,14 @@ remotes::install_github("QuantGen/symDMatrix")
 ```
 
 
-Contribute
-----------
-
-- Issue Tracker: https://github.com/QuantGen/symDMatrix/issues
-- Source Code: https://github.com/QuantGen/symDMatrix
-
-
 Documentation
 -------------
 
 Further documentation can be found on [RDocumentation](http://www.rdocumentation.org/packages/symDMatrix).
+
+
+Contributing
+------------
+
+- Issue Tracker: https://github.com/QuantGen/symDMatrix/issues
+- Source Code: https://github.com/QuantGen/symDMatrix
