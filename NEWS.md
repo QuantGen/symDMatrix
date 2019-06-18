@@ -1,6 +1,8 @@
 # symDMatrix 2.0.2.9000
 
-* Update citation instructions.
+- Follow [Bioconductor S4 practices][2]. If you have used `new()` to create
+  `symDMatrix` instances, please use the constructor `symDMatrix()` instead.
+- Update citation instructions.
 
 
 # symDMatrix 2.0.2
@@ -16,8 +18,7 @@
 
 # symDMatrix 2.0.0
 
-The symDMatrix package is now based on the
-[LinkedMatrix](https://CRAN.R-project.org/package=LinkedMatrix) package. The
+The symDMatrix package is now based on the [LinkedMatrix][1] package. The
 internal structure of a `symDMatrix` object has changed; therefore, previous
 objects need to be regenerated. We apologize for the inconvenience, but assure
 you that this change will make the package as a whole more robust and
@@ -39,3 +40,6 @@ efficient.
 # symDMatrix 1.0.0
 
 Initial release.
+
+[1]: https://CRAN.R-project.org/package=LinkedMatrix
+[2]: https://bioconductor.org/help/course-materials/2017/Zurich/S4-classes-and-methods.html

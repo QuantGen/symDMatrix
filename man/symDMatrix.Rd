@@ -1,19 +1,13 @@
-\docType{methods}
-\name{initialize,symDMatrix-method}
-\alias{initialize,symDMatrix-method}
+\name{symDMatrix}
+\alias{symDMatrix}
 \title{Create a New symDMatrix Instance}
 \description{
-    This method is run when a \code{symDMatrix} object is created using
-    \code{symDMatrix(...)} or \code{new("symDMatrix", ...)}.
+    This function constructs a new \code{symDMatrix} object.
 }
 \usage{
-\S4method{initialize}{symDMatrix}(.Object, ...)
+symDMatrix(...)
 }
 \arguments{
-    \item{.Object}{
-        The \code{symDMatrix} instance to be initialized. This argument is
-        passed in by R and can be ignored, but still needs to be documented.
-    }
     \item{...}{
         \code{ColumnLinkedMatrix} objects containing blocks that inherit from
         \code{ff_matrix}.

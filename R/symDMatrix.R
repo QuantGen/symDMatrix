@@ -1,51 +1,48 @@
 symDMatrix <- setClass("symDMatrix", contains = "RowLinkedMatrix")
 
-setMethod("initialize", "symDMatrix", function(.Object, ...) {
-    blocks <- list(...)
-    nBlocks <- length(blocks)
+setValidity("symDMatrix", function(object) {
+    nBlocks <- nBlocks(object)
     # Stop if there are no blocks
     if (nBlocks == 0L) {
-        stop("there needs to be at least one block")
+        return("there needs to be at least one block")
     }
     # Stop if blocks are not of type ColumnLinkedMatrix
-    if (!all(sapply(blocks, class) == "ColumnLinkedMatrix")) {
-        stop("blocks need to be of type ColumnLinkedMatrix")
+    if (!all(sapply(object, class) == "ColumnLinkedMatrix")) {
+        return("blocks need to be of type ColumnLinkedMatrix")
     }
     # Stop if the number of nested blocks is inconsistent
-    if (length(unique(sapply(blocks, LinkedMatrix::nNodes))) > 1L) {
-        stop("number of nested blocks is inconsistent")
+    if (length(unique(sapply(object, LinkedMatrix::nNodes))) > 1L) {
+        return("number of nested blocks is inconsistent")
     }
-    rowDims <- sapply(blocks, nrow)
+    rowDims <- sapply(object, nrow)
     colDims <- rep(NA_integer_, nBlocks)
     for (rowIndex in seq_len(nBlocks)) {
-        rowBlocks <- blocks[[rowIndex]]
+        rowBlocks <- object[[rowIndex]]
         # Stop if nested blocks do not inherit from ff_matrix
         if (!all(sapply(rowBlocks, inherits, "ff_matrix"))) {
-            stop("nested blocks need to inherit from ff_matrix")
+            return("nested blocks need to inherit from ff_matrix")
         }
         # Stop if nested blocks do not have the same number of columns per column of blocks
         if (all(is.na(colDims))) {
             colDims[] <- sapply(rowBlocks, ncol)
         } else {
             if (!all(sapply(rowBlocks, ncol) == colDims)) {
-                stop("all nested blocks need the same number of columns per column of blocks")
+                return("all nested blocks need the same number of columns per column of blocks")
             }
         }
     }
     if (nBlocks > 1L) {
         # Stop if non-final block is not square
         if (any(rowDims[-length(rowDims)] != colDims[-length(colDims)])) {
-            stop("non-final blocks need to be square")
+            return("non-final blocks need to be square")
         }
     } else {
         # Stop if first block is not square
-        if (nrow(blocks[[1]][[1]]) != ncol(blocks[[1]][[1]])) {
-            stop("the first block needs to be square")
+        if (nrow(object[[1]][[1]]) != ncol(object[[1]][[1]])) {
+            return("the first block needs to be square")
         }
     }
-    # Call RowLinkedMatrix constructor
-    .Object <- callNextMethod(.Object, ...)
-    return(.Object)
+    return(TRUE)
 })
 
 load.symDMatrix <- function(file, readonly = FALSE, envir = parent.frame()) {

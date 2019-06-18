@@ -1,7 +1,6 @@
 \docType{class}
 \name{symDMatrix-class}
 \alias{symDMatrix-class}
-\alias{symDMatrix}
 \title{A Matrix-Like Class to Represent a Symmetric Matrix Partitioned into
     File-Backed Blocks}
 \description{
@@ -21,9 +20,9 @@
     counterparts.
 }
 \seealso{
-    \code{\link{initialize,symDMatrix-method}} to create a \code{symDMatrix}
-    object from scratch, or preferably, \code{\link{as.symDMatrix}} to create a
-    \code{symDMatrix} object from other objects.
+    \code{\link{symDMatrix}} to create a \code{symDMatrix} object from scratch,
+    or preferably, \code{\link{as.symDMatrix}} to create a \code{symDMatrix}
+    object from other objects.
 }
 \examples{
 # Get the path to the example symmetric matrix
