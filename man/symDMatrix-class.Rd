@@ -5,23 +5,25 @@
 \title{A Matrix-Like Class to Represent a Symmetric Matrix Partitioned into
     File-Backed Blocks}
 \description{
-A \code{symDMatrix} is a symmetric matrix partitioned into file-backed blocks.
-This approach allows for very large symmetric matrices, commonly found for
-example when computing genetic relationship matrices on large cohorts. A
-\code{symDMatrix} object behaves similarly to a regular \code{matrix} by
-implementing key methods such as \code{[}, \code{dim}, and \code{dimnames}.
+    A \code{symDMatrix} is a symmetric matrix partitioned into file-backed
+    blocks.  This approach allows for very large symmetric matrices, commonly
+    found for example when computing genetic relationship matrices on large
+    cohorts. A \code{symDMatrix} object behaves similarly to a regular
+    \code{matrix} by implementing key methods such as \code{[}, \code{dim}, and
+    \code{dimnames}.
 }
 \details{
-The \code{symDMatrix} class is a \code{RowLinkedMatrix} that nests multiple
-\code{ColumnLinkedMatrix} objects containing blocks of type \code{ff_matrix}.
-Because the matrix is symmetric, only the diagonal and upper-triangular blocks
-need to be stored, but for more efficient queries, the lower-triangular blocks
-are virtual transposes of their diagonal counterparts.
+    The \code{symDMatrix} class is a \code{RowLinkedMatrix} that nests multiple
+    \code{ColumnLinkedMatrix} objects containing blocks of type
+    \code{ff_matrix}.  Because the matrix is symmetric, only the diagonal and
+    upper-triangular blocks need to be stored, but for more efficient queries,
+    the lower-triangular blocks are virtual transposes of their diagonal
+    counterparts.
 }
 \seealso{
-\code{\link{initialize,symDMatrix-method}} to create a \code{symDMatrix} object
-from scratch, or preferably, \code{\link{as.symDMatrix}} to create a
-\code{symDMatrix} object from other objects.
+    \code{\link{initialize,symDMatrix-method}} to create a \code{symDMatrix}
+    object from scratch, or preferably, \code{\link{as.symDMatrix}} to create a
+    \code{symDMatrix} object from other objects.
 }
 \examples{
 # Get the path to the example symmetric matrix

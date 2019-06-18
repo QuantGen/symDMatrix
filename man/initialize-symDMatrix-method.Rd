@@ -3,37 +3,38 @@
 \alias{initialize,symDMatrix-method}
 \title{Create a New symDMatrix Instance}
 \description{
-This method is run when a \code{symDMatrix} object is created using
-\code{symDMatrix(...)} or \code{new("symDMatrix", ...)}.
+    This method is run when a \code{symDMatrix} object is created using
+    \code{symDMatrix(...)} or \code{new("symDMatrix", ...)}.
 }
 \usage{
 \S4method{initialize}{symDMatrix}(.Object, ...)
 }
 \arguments{
-  \item{.Object}{
-    The \code{symDMatrix} instance to be initialized. This argument is passed
-    in by R and can be ignored, but still needs to be documented.
-  }
-  \item{...}{
-    \code{ColumnLinkedMatrix} objects containing blocks that inherit from
-    \code{ff_matrix}.
-  }
+    \item{.Object}{
+        The \code{symDMatrix} instance to be initialized. This argument is
+        passed in by R and can be ignored, but still needs to be documented.
+    }
+    \item{...}{
+        \code{ColumnLinkedMatrix} objects containing blocks that inherit from
+        \code{ff_matrix}.
+    }
 }
 \details{
-Several structural checks are performed on the passed blocks: there must be at
-least one block, the blocks must be of type \code{ColumnLinkedMatrix}, and the
-number of blocks must be consistent across the \code{ColumnLinkedMatrix}
-objects. Each block must inherit from \code{ff_matrix} and have the same number
-of rows or columns as blocks in the same row or column, respectively. Non-final
-blocks have to be square, unless if there is only a single block, in which case
-that block also has to be square.
+    Several structural checks are performed on the passed blocks: there must be
+    at least one block, the blocks must be of type \code{ColumnLinkedMatrix},
+    and the number of blocks must be consistent across the
+    \code{ColumnLinkedMatrix} objects. Each block must inherit from
+    \code{ff_matrix} and have the same number of rows or columns as blocks in
+    the same row or column, respectively. Non-final blocks have to be square,
+    unless if there is only a single block, in which case that block also has
+    to be square.
 }
 \value{
-A \code{symDMatrix} object.
+    A \code{symDMatrix} object.
 }
 \seealso{
-\code{\link{as.symDMatrix}} to create a \code{symDMatrix} object from other
-objects.
+    \code{\link{as.symDMatrix}} to create a \code{symDMatrix} object from other
+    objects.
 }
 \examples{
 # Generate a symmetric matrix

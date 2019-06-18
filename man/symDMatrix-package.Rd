@@ -3,34 +3,36 @@
 \alias{symDMatrix-package}
 \title{A Package Providing Symmetric Matrices Partitioned into File-Backed Blocks}
 \description{
-A Package Providing Symmetric Matrices Partitioned into File-Backed Blocks.
+    A Package Providing Symmetric Matrices Partitioned into File-Backed Blocks.
 }
 \section{Example Dataset}{
-The example dataset in the \code{extdata} folder is the G matrix of the dummy
-dataset that comes with the \code{BEDMatrix}
-package. It has been generated as follows:
-\preformatted{library(BGData)
+    The example dataset in the \code{extdata} folder is the G matrix of the
+    dummy dataset that comes with the \code{BEDMatrix} package. It has been
+    generated as follows:
+
+    \preformatted{library(BGData)
 X <- BEDMatrix(system.file("extdata", "example.bed", package = "BEDMatrix"))
 G <- getG_symDMatrix(X, blockSize = 17, folderOut = "inst/extdata")
-}
+    }
 
-To load the dataset:
-\preformatted{load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"),
-readonly = TRUE)
-}
+    To load the dataset:
 
-To demonstrate the \code{as.symDMatrix} method for character vectors,
-\code{RData} files for each block have been generated:
-\preformatted{for (i in 1:nBlocks(G)) {
+    \preformatted{load.symDMatrix(system.file("extdata", "G.RData", package = "symDMatrix"),
+    readonly = TRUE)}
+
+    To demonstrate the \code{as.symDMatrix} method for character vectors,
+    \code{RData} files for each block have been generated:
+
+    \preformatted{for (i in 1:nBlocks(G)) {
     for (j in i:nBlocks(G)) {
         block <- G[[i]][[j]]
         save(block, file = paste0("inst/extdata/data_", i, "_", j, ".RData"))
     }
 }
-}
+    }
 }
 \seealso{
-\code{\link{symDMatrix-class}} for the \code{symDMatrix} class.
-\code{\link[BEDMatrix]{BEDMatrix-package}} for more information on the
-\code{BEDMatrix} package.
+    \code{\link{symDMatrix-class}} for the \code{symDMatrix} class.
+    \code{\link[BEDMatrix]{BEDMatrix-package}} for more information on the
+    \code{BEDMatrix} package.
 }
