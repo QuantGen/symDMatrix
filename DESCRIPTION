@@ -9,6 +9,8 @@ Authors@R: c(
     person("Alexander", "Grueneberg", email = "alexander.grueneberg@googlemail.com", role = c("aut", "cre")))
 URL: https://github.com/QuantGen/symDMatrix
 BugReports: https://github.com/QuantGen/symDMatrix/issues
+Depends:
+    R (>= 3.0.2)
 Imports:
     methods,
     LinkedMatrix (>= 1.3.0),
