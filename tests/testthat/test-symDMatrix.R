@@ -16,15 +16,15 @@ suppressMessages(load.symDMatrix(system.file("extdata", "G.RData", package = "sy
 
 test_that("symDMatrix", {
 
-    # Test that there is at least one block
-    expect_error(symDMatrix(), "there needs to be at least one block")
+    # Test that there is at least one block (will be detected by LinkedMatrix)
+    expect_error(symDMatrix())
 
     # Test that blocks are of type ColumnLinkedMatrix
     matrixSquareBlock <- matrix(data = rnorm(25), nrow = 5, ncol = 5)
     expect_error(symDMatrix(matrixSquareBlock), "blocks need to be of type ColumnLinkedMatrix")
 
-    # Test that number of blocks is consistent
-    expect_error(symDMatrix(LinkedMatrix::ColumnLinkedMatrix(matrixSquareBlock, matrixSquareBlock), LinkedMatrix::ColumnLinkedMatrix(matrixSquareBlock)), "number of nested blocks is inconsistent")
+    # Test that number of blocks is consistent (will be detected by LinkedMatrix)
+    expect_error(symDMatrix(LinkedMatrix::ColumnLinkedMatrix(matrixSquareBlock, matrixSquareBlock), LinkedMatrix::ColumnLinkedMatrix(matrixSquareBlock)))
 
     # Test that nested blocks inherit from ff_matrix
     expect_error(symDMatrix(LinkedMatrix::ColumnLinkedMatrix(matrixSquareBlock)), "nested blocks need to inherit from ff_matrix")
@@ -34,9 +34,9 @@ test_that("symDMatrix", {
     ffWrongRows <- ff::ff(dim = c(3, 5), initdata = rnorm(15))
     expect_error(symDMatrix(LinkedMatrix::ColumnLinkedMatrix(ffWrongRows, ffWrongRows), LinkedMatrix::ColumnLinkedMatrix(ffSquareBlock, ffSquareBlock)), "non-final blocks need to be square")
 
-    # Test that all blocks per column have the same number of columns
+    # Test that all blocks per column have the same number of columns (will be detected by LinkedMatrix)
     ffWrongColumns <- ff::ff(dim = c(5, 3), initdata = rnorm(15))
-    expect_error(symDMatrix(LinkedMatrix::ColumnLinkedMatrix(ffWrongColumns, ffWrongColumns), LinkedMatrix::ColumnLinkedMatrix(ffSquareBlock, ffSquareBlock)), "all nested blocks need the same number of columns per column of blocks")
+    expect_error(symDMatrix(LinkedMatrix::ColumnLinkedMatrix(ffWrongColumns, ffWrongColumns), LinkedMatrix::ColumnLinkedMatrix(ffSquareBlock, ffSquareBlock)))
 
     # Test that the first block is square
     ffNotSquare <- ff::ff(dim = c(4, 5), initdata = rnorm(20))
