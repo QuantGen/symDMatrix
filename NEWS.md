@@ -3,6 +3,7 @@
 - Follow [Bioconductor S4 practices][2]. If you have used `new()` to create
   `symDMatrix` instances, please use the constructor `symDMatrix()` instead.
 - Update citation instructions.
+- Use `inherits(., *)` instead of `class(.) == *` (R4 compat).
 
 
 # symDMatrix 2.0.2

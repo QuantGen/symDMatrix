@@ -7,7 +7,7 @@ setValidity("symDMatrix", function(object) {
         return("there needs to be at least one block")
     }
     # Stop if blocks are not of type ColumnLinkedMatrix
-    if (!all(sapply(object, class) == "ColumnLinkedMatrix")) {
+    if (!all(vapply(object, inherits, TRUE, "ColumnLinkedMatrix"))) {
         return("blocks need to be of type ColumnLinkedMatrix")
     }
     # Stop if the number of nested blocks is inconsistent
@@ -53,7 +53,7 @@ load.symDMatrix <- function(file, readonly = FALSE, envir = parent.frame()) {
     for (name in names) {
         object <- get(name, envir = loadingEnv)
         # Initialize blocks of symDMatrix objects
-        if (class(object) == "symDMatrix") {
+        if (inherits(object, "symDMatrix")) {
             nBlocks <- nBlocks(object)
             for (i in 1L:nBlocks) {
                 for (j in 1L:nBlocks) {
