@@ -148,7 +148,7 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
             blockName <- paste0("data_", padDigits(rowIndex, nBlocks), "_", padDigits(colIndex, nBlocks), ".bin")
             block <- ff::ff(dim = c(length(rowRanges), length(colRanges)), vmode = vmode, initdata = x[rowRanges, colRanges], filename = paste0(folderOut, "/", blockName), dimnames = list(rownames(x)[rowRanges], colnames(x)[colRanges]))
             # Change ff path to a relative one
-            bit::physical(block)$filename <- blockName
+            bit::physical(block)[["filename"]] <- blockName
             if (colIndex >= rowIndex) {
                 rowArgs[[colIndex]] <- block
             } else {
