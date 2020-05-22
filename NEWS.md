@@ -1,4 +1,4 @@
-# symDMatrix 2.0.2.9000
+# symDMatrix 2.1.0
 
 - Follow [Bioconductor S4 practices][2]. If you have used `new()` to create
   `symDMatrix` instances, please use the constructor `symDMatrix()` instead.
