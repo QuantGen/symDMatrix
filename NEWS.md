@@ -4,6 +4,7 @@
   `symDMatrix` instances, please use the constructor `symDMatrix()` instead.
 - Update citation instructions.
 - Use `inherits(., *)` instead of `class(.) == *` (R4 compat).
+- Replace testthat with tinytest.
 
 
 # symDMatrix 2.0.2
