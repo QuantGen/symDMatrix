@@ -6,7 +6,7 @@ Description: A matrix-like class to represent a symmetric matrix partitioned
     into file-backed blocks.
 Authors@R: c(
     person("Gustavo", "de los Campos", email = "gustavoc@msu.edu", role = c("aut")),
-    person("Alexander", "Grueneberg", email = "alexander.grueneberg@googlemail.com", role = c("aut", "cre")))
+    person("Alexander", "Grueneberg", email = "cran@agrueneberg.info", role = c("aut", "cre")))
 URL: https://github.com/QuantGen/symDMatrix
 BugReports: https://github.com/QuantGen/symDMatrix/issues
 Depends:
