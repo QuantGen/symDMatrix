@@ -11,7 +11,7 @@ setValidity("symDMatrix", function(object) {
         return("blocks need to be of type ColumnLinkedMatrix")
     }
     # Stop if the number of nested blocks is inconsistent
-    if (length(unique(sapply(object, LinkedMatrix::nNodes))) > 1L) {
+    if (length(unique(sapply(object, nNodes))) > 1L) {
         return("number of nested blocks is inconsistent")
     }
     rowDims <- sapply(object, nrow)
@@ -78,7 +78,7 @@ initializeBlock.ff_matrix <- function(x, path, readonly = FALSE, ...) {
     cwd <- getwd()
     setwd(path)
     # Open ff object
-    ff::open.ff(x, readonly = readonly)
+    open(x, readonly = readonly)
     # Restore the working directory
     setwd(cwd)
     return(x)
@@ -89,20 +89,20 @@ initializeBlock.default <- function(x, ...) {
 }
 
 nBlocks <- function(x) {
-    LinkedMatrix::nNodes(x)
+    nNodes(x)
 }
 
 blockSize <- function(x, last = FALSE) {
     row <- x[[1L]]
     if (last) {
-        ncol(row[[LinkedMatrix::nNodes(row)]])
+        ncol(row[[nNodes(row)]])
     } else {
         ncol(row[[1L]])
     }
 }
 
 blockIndex <- function(x) {
-    nNodes <- LinkedMatrix::nNodes(x)
+    nNodes <- nNodes(x)
     index <- matrix(nrow = nNodes, ncol = 3L)
     colnames(index) <- c("block", "ini", "end")
     end <- 0L
@@ -146,16 +146,16 @@ as.symDMatrix.matrix <- function(x, blockSize = 5000L, vmode = "double", folderO
         for (colIndex in 1L:nBlocks) {
             colRanges <- seq(index[colIndex, 1L], index[colIndex, 2L])
             blockName <- paste0("data_", padDigits(rowIndex, nBlocks), "_", padDigits(colIndex, nBlocks), ".bin")
-            block <- ff::ff(dim = c(length(rowRanges), length(colRanges)), vmode = vmode, initdata = x[rowRanges, colRanges], filename = paste0(folderOut, "/", blockName), dimnames = list(rownames(x)[rowRanges], colnames(x)[colRanges]))
+            block <- ff(dim = c(length(rowRanges), length(colRanges)), vmode = vmode, initdata = x[rowRanges, colRanges], filename = paste0(folderOut, "/", blockName), dimnames = list(rownames(x)[rowRanges], colnames(x)[colRanges]))
             # Change ff path to a relative one
-            bit::physical(block)[["filename"]] <- blockName
+            physical(block)[["filename"]] <- blockName
             if (colIndex >= rowIndex) {
                 rowArgs[[colIndex]] <- block
             } else {
-                rowArgs[[colIndex]] <- ff::vt(args[[colIndex]][[rowIndex]])
+                rowArgs[[colIndex]] <- vt(args[[colIndex]][[rowIndex]])
             }
         }
-        args[[rowIndex]] <- do.call(LinkedMatrix::ColumnLinkedMatrix, rowArgs)
+        args[[rowIndex]] <- do.call(ColumnLinkedMatrix, rowArgs)
     }
     # Create symDMatrix object from args
     symDMatrix <- do.call(symDMatrix, args)
@@ -189,10 +189,10 @@ as.symDMatrix.character <- function(x, ...) {
                 rowArgs[[j]] <- object
                 counter <- counter + 1L
             } else {
-                rowArgs[[j]] <- ff::vt(args[[j]][[i]])
+                rowArgs[[j]] <- vt(args[[j]][[i]])
             }
         }
-        args[[i]] <- do.call(LinkedMatrix::ColumnLinkedMatrix, rowArgs)
+        args[[i]] <- do.call(ColumnLinkedMatrix, rowArgs)
     }
     # Create symDMatrix object from args
     symDMatrix <- do.call(symDMatrix, args)
