@@ -1,4 +1,4 @@
-# symDMatrix 2.1.0.9000
+# symDMatrix 2.1.1
 
 - Use `open` instead of `open.ff` for compatibility with ff 4.
 
